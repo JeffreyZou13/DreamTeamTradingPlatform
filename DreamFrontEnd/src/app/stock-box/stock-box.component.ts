@@ -14,10 +14,16 @@ import * as $ from 'jquery';
 
 export class StockBoxComponent implements OnInit {
 
+  changeLabel(obj) {
+    (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML = obj;
+  }
+
   constructor() {
-   }
+    
+  }
 
   ngOnInit() {
+    
   }
 
 
