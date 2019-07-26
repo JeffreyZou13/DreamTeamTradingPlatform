@@ -1,13 +1,23 @@
 
 <div class="col">
   <div class="row">
-    <div ngbDropdown class="d-inline-block">
+    <!-- <div ngbDropdown class="d-inline-block">
       <label for="stockSelector">Stock: </label>
       <button class="btn btn-outline-primary" id="stockSelector" ngbDropdownToggle>Select Stock</button>
       <div ngbDropdownMenu aria-labelledby="stockSelector">
         <button ngbDropdownItem id="APPL">AAPL</button>
         <button class="dropdown-item" ngbDropdownItem id="GOOG">GOOG</button>
         <button class="dropdown-item" ngbDropdownItem id="MSFTS">MSFT</button>
+      </div>
+    </div> -->
+    <div class="form-group">
+      <div class="floaty">
+        <label for="stockSelector">Stock:</label>
+        <input type="email" class="form-control" id="stockSelector">
+      </div>
+      <div class="floaty">
+        <label for="stockSelector">Quantity:</label>
+        <input type="email" class="form-control" id="stockSelector">
       </div>
     </div>
   </div>

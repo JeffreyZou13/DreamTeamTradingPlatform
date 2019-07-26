@@ -7,3 +7,8 @@ button{
 /* .inputBox{
     margin:15px;
 } */
+
+.floaty{
+    float:left;
+    margin-right:15px;
+}
