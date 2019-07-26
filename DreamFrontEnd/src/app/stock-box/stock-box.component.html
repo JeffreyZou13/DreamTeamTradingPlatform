@@ -1,0 +1,33 @@
+<p>stock-box works!</p>
+
+<div class="row">
+  <div class="col">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Stock</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem>AAPL</button>
+        <button ngbDropdownItem>GOOG</button>
+        <button ngbDropdownItem>MSFT</button>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Strategy</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button ngbDropdownItem>Two Moving Averages</button>
+        <button ngbDropdownItem>Bollinger Bands</button>
+        <button ngbDropdownItem>Price Breakout</button>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <label for="longTime">Long Time:  </label>
+    <input id="longTime"/>
+  </div>
+  <div class="col">
+    <label for="shortTime">Short Time:  </label>
+    <input id="shortTime"/>
+  </div>
+    
+</div>
