@@ -6,28 +6,28 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/strategy")
 @CrossOrigin
 public class StrategyController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
     // Start up a new strategy
-    @RequestMapping(method = RequestMethod.POST, value="/strategy/start")
+    @RequestMapping(method = RequestMethod.POST, value="/start")
     public String startStrategy(@RequestBody Strategy strategy) {
         logger.info("Entered startStrategy");
         return "successfully started a new strategy of type " + strategy.getType();
     }
 
     // Pause a strategy
-    @RequestMapping(method = RequestMethod.POST, value="/strategy/pause")
+    @RequestMapping(method = RequestMethod.POST, value="/pause")
     public String pauseStrategy(@RequestBody Strategy strategy) {
         logger.info("Entered pauseStrategy");
         return "successfully paused strategy of type " + strategy.getType();
     }
 
     // Stop a strategy
-    @RequestMapping(method = RequestMethod.POST, value="/strategy/stop")
+    @RequestMapping(method = RequestMethod.POST, value="/stop")
     public String stopStrategy(@RequestBody Strategy strategy) {
         logger.info("Entered stopStrategy");
         return "successfully stopped strategy of type " + strategy.getType();
