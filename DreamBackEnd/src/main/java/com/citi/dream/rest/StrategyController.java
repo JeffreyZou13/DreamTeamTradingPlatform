@@ -1,6 +1,7 @@
 package com.citi.dream.rest;
 
-import com.citi.dream.entities.Strategy;
+import com.citi.dream.rest.requests.StrategyForm;
+import com.citi.dream.rest.responses.StrategyResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +15,28 @@ public class StrategyController {
 
     // Start up a new strategy
     @RequestMapping(method = RequestMethod.POST, value="/start")
-    public String startStrategy(@RequestBody Strategy strategy) {
+    public StrategyResponse startStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered startStrategy");
-        return "successfully started a new strategy of type " + strategy.getType();
+        StrategyResponse resp = new StrategyResponse();
+        resp.setResult("successfully started a new strategy of type " + strategy.getType());
+        return resp;
     }
 
     // Pause a strategy
     @RequestMapping(method = RequestMethod.POST, value="/pause")
-    public String pauseStrategy(@RequestBody Strategy strategy) {
+    public StrategyResponse pauseStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered pauseStrategy");
-        return "successfully paused strategy of type " + strategy.getType();
+        StrategyResponse resp = new StrategyResponse();
+        resp.setResult("successfully paused strategy of type " + strategy.getType());
+        return resp;
     }
 
     // Stop a strategy
     @RequestMapping(method = RequestMethod.POST, value="/stop")
-    public String stopStrategy(@RequestBody Strategy strategy) {
+    public StrategyResponse stopStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered stopStrategy");
-        return "successfully stopped strategy of type " + strategy.getType();
+        StrategyResponse resp = new StrategyResponse();
+        resp.setResult("successfully stopped strategy of type " + strategy.getType());
+        return resp;
     }
 }
