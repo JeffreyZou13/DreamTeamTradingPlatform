@@ -14,15 +14,20 @@ import * as $ from 'jquery';
 })
 
 export class StockBoxComponent implements OnInit {
-  
-  // show:boolean = true;
+
+
+  stockboxes: Array<StockBoxComponent> = [];
+
   changeLabel(obj) {
     (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML = obj;
   }
 
   addModule(obj){
-    document.getElementById("top-level").appendChild('<app-stock-box></app-stock-box>');
-    // document.body.innerHTML = document.body.innerHTML + '<app-stock-box></app-stock-box>'
+    var copy = document.getElementById("module1");
+    var clone = copy.cloneNode(true);
+    // clone.id = "module2"
+    document.getElementById("top-level").appendChild(clone);
+
   }
 
   exitModule(obj){
