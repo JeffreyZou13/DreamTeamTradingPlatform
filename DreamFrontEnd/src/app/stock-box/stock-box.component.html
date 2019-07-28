@@ -1,54 +1,56 @@
 
-<div class="col">
-  <div class="row">
-    <div class="form-group">
-      <div class="floaty">
-        <label for="stockSelector">Stock:</label>
-        <input type="email" class="form-control" id="stockSelector">
-      </div>
-      <div class="floaty">
-        <label for="stockSelector">Quantity:</label>
-        <input type="email" class="form-control" id="stockSelector">
-      </div>
-      <button style= "position:absolute; right:0" type="button" class="btn btn-danger">X</button>
-    </div>
-  </div>
-  <div class="row">
-    <div ngbDropdown class="d-inline-block">
-    <label for="strategySelector">Strategy: </label>
-    <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Select Strategy</button>
-      <div ngbDropdownMenu aria-labelledby="strategySelector">
-        <button (click)="changeLabel('Two Moving Averages')" ngbDropdownItem>Two Moving Averages</button>
-        <button (click)="changeLabel('Bollinger Bands')" ngbDropdownItem>Bollinger Bands</button>
-        <button (click)="changeLabel('Price Breakout')"ngbDropdownItem>Price Breakout</button>
+<div id="module1">
+  <div class="col">
+    <div class="row">
+      <div class="form-group">
+        <div class="floaty">
+          <label for="stockSelector">Stock:</label>
+          <input type="email" class="form-control" id="stockSelector">
+        </div>
+        <div class="floaty">
+          <label for="stockSelector">Quantity:</label>
+          <input type="email" class="form-control" id="stockSelector">
+        </div>
+        <div style= "position:absolute; right:0">
+          <button (click)="addModule()" type="button" class="btn btn-success">+</button>
+          <button  (click)="exitModule()" type="button" class="btn btn-danger">X</button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div ngbDropdown class="d-inline-block">
-        <label for="strategySelector">Time Frames: </label>
-        <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Short Time</button>
-          <div ngbDropdownMenu aria-labelledby="strategySelector">
-            <button ngbDropdownItem>1 min</button>
-            <button ngbDropdownItem>2 min</button>
-            <button ngbDropdownItem>3 min</button>
-          </div>
+    <div class="row">
+      <div ngbDropdown class="d-inline-block">
+      <label for="strategySelector">Strategy: </label>
+      <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Select Strategy</button>
+        <div ngbDropdownMenu aria-labelledby="strategySelector">
+          <button (click)="changeLabel('Two Moving Averages')" ngbDropdownItem>Two Moving Averages</button>
+          <button (click)="changeLabel('Bollinger Bands')" ngbDropdownItem>Bollinger Bands</button>
+          <button (click)="changeLabel('Price Breakout')"ngbDropdownItem>Price Breakout</button>
+        </div>
+      </div>
     </div>
-    <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-primary smooth-scroll" id="strategySelector" ngbDropdownToggle>Long Time</button>
-          <div ngbDropdownMenu aria-labelledby="strategySelector">
-            <button ngbDropdownItem>1 s</button>
-            <button ngbDropdownItem>2 s</button>
-            <button ngbDropdownItem>3 s</button>
-          </div>
-    </div>
-    <div class="inputBox">
-      <button type="button" class="btn btn-success">Start</button>
-      <button type="button" class="btn btn-warning">Pause</button>
-      <button type="button" class="btn btn-danger">End</button>
+    <div class="row">
+      <div ngbDropdown class="d-inline-block">
+          <label for="strategySelector">Time Frames: </label>
+          <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Short Time</button>
+            <div ngbDropdownMenu aria-labelledby="strategySelector">
+              <button ngbDropdownItem>1 min</button>
+              <button ngbDropdownItem>2 min</button>
+              <button ngbDropdownItem>3 min</button>
+            </div>
+      </div>
+      <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-primary smooth-scroll" id="strategySelector" ngbDropdownToggle>Long Time</button>
+            <div ngbDropdownMenu aria-labelledby="strategySelector">
+              <button ngbDropdownItem>1 s</button>
+              <button ngbDropdownItem>2 s</button>
+              <button ngbDropdownItem>3 s</button>
+            </div>
+      </div>
+      <div class="inputBox">
+        <button type="button" class="btn btn-success">Start</button>
+        <button type="button" class="btn btn-warning">Pause</button>
+        <button type="button" class="btn btn-danger">End</button>
+      </div>
     </div>
   </div>
 </div>
-<!-- <div class="col">
-  <h1>Trading History</h1>
-</div> -->
