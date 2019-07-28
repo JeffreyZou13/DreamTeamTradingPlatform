@@ -1,6 +1,7 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import * as $ from 'jquery';
+// import * as angular from "angular";
 
 @Component({
   selector: 'app-stock-box',
@@ -20,7 +21,8 @@ export class StockBoxComponent implements OnInit {
   }
 
   addModule(obj){
-    
+    document.getElementById("top-level").appendChild('<app-stock-box></app-stock-box>');
+    // document.body.innerHTML = document.body.innerHTML + '<app-stock-box></app-stock-box>'
   }
 
   exitModule(obj){
