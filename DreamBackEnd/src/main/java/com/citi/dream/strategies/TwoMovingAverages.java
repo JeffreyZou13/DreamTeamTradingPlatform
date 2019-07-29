@@ -123,9 +123,10 @@ public class TwoMovingAverages implements Strategy{
         JSONArray result = priceGetter.getStockPriceList(stockName, period);
 
         double sum = 0;
-
-        for(int i = 0; i < period; i++){
-            sum+= Double.parseDouble(result.getJSONObject(i).getString("price"));
+        if (result != null) {
+            for(int i = 0; i < period; i++) {
+                sum += Double.parseDouble(result.getJSONObject(i).getString("price"));
+            }
         }
 
         //this is for testing purposes:
