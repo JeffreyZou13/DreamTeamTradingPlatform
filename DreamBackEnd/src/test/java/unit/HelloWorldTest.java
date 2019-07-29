@@ -1,6 +1,7 @@
 package unit;
 
 import com.citi.dream.strategies.PriceGetter;
+import org.json.JSONObject;
 import org.junit.Test;
 
 public class HelloWorldTest {
@@ -10,9 +11,8 @@ public class HelloWorldTest {
 
         String stockName = "msft";
         PriceGetter pg = new PriceGetter();
-        String result = pg.getStockPrice(stockName);
-
-        System.out.println(result);
+        JSONObject result = pg.getStockPrice(stockName);
+        System.out.println(result.getString("symbol"));
 
     }
 }

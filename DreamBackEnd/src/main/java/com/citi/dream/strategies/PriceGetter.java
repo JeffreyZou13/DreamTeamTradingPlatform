@@ -11,10 +11,11 @@ import java.net.URL;
 @Component
 public class PriceGetter {
 
-    public String getStockPrice(String stockName){
+    public JSONObject getStockPrice(String stockName){
 
         String requestURL  = "http://nyc31.conygre.com:31/Stock/getStockPrice/" + stockName;
         StringBuilder result = new StringBuilder();
+        JSONObject actualResult = new JSONObject();
         try {
             URL url = new URL(requestURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -25,9 +26,12 @@ public class PriceGetter {
                 result.append(line);
             }
             rd.close();
+            actualResult = new JSONObject(result.toString());
         } catch(Exception e){
+
         }finally{
-            return result.toString();
+//            return result.toString();
+            return actualResult;
         }
 
     }
