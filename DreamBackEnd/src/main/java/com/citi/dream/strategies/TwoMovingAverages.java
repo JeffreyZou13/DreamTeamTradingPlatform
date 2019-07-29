@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.UUID;
@@ -19,16 +20,12 @@ public class TwoMovingAverages implements Strategy{
     private int shortTime;
     private String stockName;
     private int volume;
-    private int strategyID;
+    private String strategyID;
     private double cutOffPercentage; //the cutoff that stops the strategy
     private String action; //buy or sell
-    boolean buying; //true if buying, false if selling
-
-    @Autowired
-    PriceGetter priceGetter = new PriceGetter();
-
-    @Autowired
-    MessageSender messageSender = new MessageSender();
+    private boolean buying; //true if buying, false if selling
+    private PriceGetter priceGetter;
+    private MessageSender messageSender;
 
     public String getType() {
         return type;
@@ -70,11 +67,11 @@ public class TwoMovingAverages implements Strategy{
         this.volume = volume;
     }
 
-    public int getStrategyID() {
+    public String getStrategyID() {
         return strategyID;
     }
 
-    public void setStrategyID(int strategyID) {
+    public void setStrategyID(String strategyID) {
         this.strategyID = strategyID;
     }
 
@@ -110,7 +107,7 @@ public class TwoMovingAverages implements Strategy{
         this.buying = buying;
     }
 
-    public TwoMovingAverages(String type, int longTime, int shortTime, String stockName, int volume, int strategyID, double cutOffPercentage) {
+    public TwoMovingAverages(String type, int longTime, int shortTime, String stockName, int volume, String strategyID, double cutOffPercentage, PriceGetter priceGetter, MessageSender messageSender) {
         this.type = type;
         this.longTime = longTime;
         this.shortTime = shortTime;
@@ -118,6 +115,8 @@ public class TwoMovingAverages implements Strategy{
         this.volume = volume;
         this.strategyID = strategyID;
         this.cutOffPercentage = cutOffPercentage;
+        this.priceGetter = priceGetter;
+        this.messageSender = messageSender;
     }
 
     public double calculateAverage(int period) throws JSONException {
@@ -155,13 +154,10 @@ public class TwoMovingAverages implements Strategy{
             o = new Order(buying, UUID.randomUUID().toString(), priceGetter.getStockPrice(stockName),
                     volume, stockName, new Date(), "");
             System.out.println(o);
-//            messageSender.sendMessage("queue/OrderBroker", o);
+            messageSender.sendMessage("queue/OrderBroker", o);
             System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
         }
 
         System.out.println("buying??? " +  buying);
     }
-
-
-
 }

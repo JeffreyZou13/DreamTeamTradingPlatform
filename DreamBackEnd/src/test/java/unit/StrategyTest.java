@@ -1,15 +1,39 @@
 package unit;
 
+import com.citi.Application;
+import com.citi.dream.jms.MessageSender;
 import com.citi.dream.strategies.PriceGetter;
+import com.citi.dream.strategies.Strategy;
+import com.citi.dream.strategies.StrategyManager;
 import com.citi.dream.strategies.TwoMovingAverages;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.annotation.Repeat;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
-public class HelloWorldTest {
+import java.util.ArrayList;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@ContextConfiguration(classes = {Application.class})
+public class StrategyTest {
+
+    @Autowired
+    private StrategyManager strategyManager;
+
+    @MockBean
+    private PriceGetter priceGetter;
+
+    @MockBean
+    private MessageSender messageSender;
 
     @Test
     public void testIfCanGetOneStockPrice() throws JSONException {
@@ -40,6 +64,13 @@ public class HelloWorldTest {
         }
     }
 
+    @Test
+    public void testIfManagerCanCreateStrategy() {
+        Strategy strategy = strategyManager.createStrategy("two moving averages", 5, 1, "HON", 100, "aa-bb-cc-dd", 0.01);
+        ArrayList<Strategy> newStrategies = strategyManager.getStrategies();
+        assert(newStrategies.size() == 1);
+    }
+
 
     @Test
     public void testIfICanCalculateAverage()throws JSONException{
@@ -53,7 +84,7 @@ public class HelloWorldTest {
 //        this.cutOffPercentage = cutOffPercentage;
 
         TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
-                100, 3244,.01);
+                100, "aa-bb-cc-dd",.01, priceGetter, messageSender);
 
         System.out.print(ma.calculateAverage(5));
 
@@ -63,7 +94,7 @@ public class HelloWorldTest {
     @Test
     public void testIfICanPerformTwoMovingAverages() throws JSONException {
         TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
-                100, 3244,.01);
+                100, "aa-bb-cc-dd",.01, priceGetter, messageSender);
         ma.performStrategy();
     }
 }
