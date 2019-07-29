@@ -22,14 +22,6 @@ export class StockBoxComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML = obj;
   }
 
-  addModule(obj){
-    var copy = document.getElementById("module1");
-    var clone = copy.cloneNode(true);
-    // clone.id = "module2"
-    document.getElementById("top-level").appendChild(clone);
-
-  }
-
   exitModule(obj){
     (<HTMLInputElement>document.getElementById("module1")).remove();
     //WILL HAVE TO ADD LOGIC TO EXIT TRADE HERE, ALSO WITH ALERT
@@ -40,6 +32,46 @@ export class StockBoxComponent implements OnInit {
   }
 
   ngOnInit() {
+    var stratCounter = 0;
+        $("#bt3").click(
+            function () {
+                stratCounter++;
+                var stockName = document.getElementById("stockSelector").value;
+                var stockQuantity = document.getElementById("quantSelector").value;
+                var strat = document.getElementById("strategySelector").innerHTML;
+
+                var markup = 
+                `<div id="strat${stratCounter}"class = "floaty style="width=30%">
+                  <div class="col">
+                    <div class = "row">
+                      Stock: ${stockName}
+                      <br>
+                      Quantity: ${stockQuantity}
+                      <br>
+                      Strategy: ${strat}
+                      <br>
+                      Time Frames: 1 to 2
+                    </div>
+                    <div class="row">
+                      <button type="button" class="btn btn-success" id="bt3">Restart</button>
+                      <button type="button" class="btn btn-warning" id="bt3">Pause</button>
+                      <button type="button" id="${stratCounter}" class="btn btn-danger" id="bt3">End</button>
+                    </div>
+                  </div>
+                </div>`
+
+                $("body").append(markup);
+
+                $(".btn-danger").click(
+                    function () {
+                        var id = $(this).attr("id");
+                        console.log(id)
+                        var remove="strat" + id;
+                        (<HTMLInputElement>document.getElementById(remove)).remove();
+                    }
+                )
+            }
+        )
     
   }
 
