@@ -1,5 +1,6 @@
 package com.citi.dream.strategies;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,34 @@ public class PriceGetter {
             }
             rd.close();
             actualResult = new JSONObject(result.toString());
+        } catch(Exception e){
+
+        }finally{
+//            return result.toString();
+            return actualResult;
+        }
+
+    }
+
+
+    public JSONArray getStockPriceList(String stockName, int numOfValues){
+
+        String requestURL  = "http://nyc31.conygre.com:31/Stock/getStockPriceList/" + stockName + "?howManyValues=" +
+                Integer.toString(numOfValues);
+
+        StringBuilder result = new StringBuilder();
+        JSONArray actualResult = new JSONArray();
+        try {
+            URL url = new URL(requestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+            rd.close();
+            actualResult = new JSONArray(result.toString());
         } catch(Exception e){
 
         }finally{

@@ -27,7 +27,6 @@ public class HelloWorldTest {
         JSONArray result = pg.getStockPriceList(stockName, numOfValues);
         
         System.out.println(result);
-//        System.out.println(result.getString("symbol"));
 
     }
 }
