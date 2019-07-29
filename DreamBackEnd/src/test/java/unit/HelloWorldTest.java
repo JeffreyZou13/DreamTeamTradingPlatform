@@ -25,6 +25,7 @@ public class HelloWorldTest {
         int numOfValues = 20;
         PriceGetter pg = new PriceGetter();
         JSONArray result = pg.getStockPriceList(stockName, numOfValues);
+        
         System.out.println(result);
 //        System.out.println(result.getString("symbol"));
 
