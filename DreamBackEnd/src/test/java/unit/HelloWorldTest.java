@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.test.annotation.Repeat;
 
 public class HelloWorldTest {
 
@@ -55,6 +57,13 @@ public class HelloWorldTest {
 
         System.out.print(ma.calculateAverage(5));
 
+    }
 
+    @Repeat(value = 10)
+    @Test
+    public void testIfICanPerformTwoMovingAverages() throws JSONException {
+        TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
+                100, 3244,.01);
+        ma.performStrategy();
     }
 }

@@ -121,38 +121,45 @@ public class TwoMovingAverages implements Strategy{
     }
 
     public double calculateAverage(int period) throws JSONException {
-        System.out.println((stockName + period));
         JSONArray result = priceGetter.getStockPriceList(stockName, period);
 
         double sum = 0;
-        double[] priceArray = new double[period];
 
         for(int i = 0; i < period; i++){
-            priceArray[i] = Double.parseDouble(result.getJSONObject(i).getString("price"));
             sum+= Double.parseDouble(result.getJSONObject(i).getString("price"));
         }
 
-        for(int i = 0; i < period; i++){
-            System.out.println("AT ELEMENT " +  i + " :" + priceArray[i]);
-        }
-
+        //this is for testing purposes:
+//        return Math.round(sum/period) / 10.0;
+        
         return sum/period;
     }
 
-    @Scheduled(fixedRate = 1000)
-    public void peformStrategy() throws JSONException {
+
+    public void performStrategy() throws JSONException {
 
         double shortAverage = calculateAverage(shortTime);
         double longAverage = calculateAverage(longTime);
+        Order o;
 
-        if(shortAverage == longAverage){
-            if(buying){
-                //send an order here
-                Order o = new Order(true, UUID.randomUUID().toString(), priceGetter.getStockPrice(stockName),
-                        volume, stockName, new Date(),  "");
-                messageSender.sendMessage("queue/OrderBroker",o);
-            }
+        System.out.println("long average: " +  longAverage);
+        System.out.println("short average: " + shortAverage);
+
+        if(shortAverage > longAverage) {
+            System.out.println("we're flipping to false");
+            buying = false;
+        }else if(shortAverage < longAverage){
+            System.out.println("we're flipping to true");
+            buying = true;
+        }else { //if they're equal
+            o = new Order(buying, UUID.randomUUID().toString(), priceGetter.getStockPrice(stockName),
+                    volume, stockName, new Date(), "");
+            System.out.println(o);
+//            messageSender.sendMessage("queue/OrderBroker", o);
+            System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
         }
+
+        System.out.println("buying??? " +  buying);
     }
 
 
