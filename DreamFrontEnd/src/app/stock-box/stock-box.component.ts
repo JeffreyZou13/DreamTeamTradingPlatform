@@ -40,23 +40,34 @@ export class StockBoxComponent implements OnInit {
                 var stockQuantity = document.getElementById("quantSelector").value;
                 var strat = document.getElementById("strategySelector").innerHTML;
 
-                console.log(strat)
-
-                var markup = `<div id="stratBox${stratCounter}" class="stratBox" > 
-                <button id="redButton${stratCounter}" class="redButtonClass">${stockName}</button> 
-                <div> </div>
-                <button type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
-                <input type="text" id="redText${stratCounter}" class="redTextClass" value=""/>  </div>`;
+                var markup = 
+                `<div id="strat${stratCounter}"class = "floaty style="width=30%">
+                  <div class="col">
+                    <div class = "row">
+                      Stock: ${stockName}
+                      <br>
+                      Quantity: ${stockQuantity}
+                      <br>
+                      Strategy: ${strat}
+                      <br>
+                      Time Frames: 1 to 2
+                    </div>
+                    <div class="row">
+                      <button type="button" class="btn btn-success" id="bt3">Restart</button>
+                      <button type="button" class="btn btn-warning" id="bt3">Pause</button>
+                      <button type="button" id="${stratCounter}" class="btn btn-danger" id="bt3">End</button>
+                    </div>
+                  </div>
+                </div>`
 
                 $("body").append(markup);
 
-                $(".redButtonClass").click(
+                $(".btn-danger").click(
                     function () {
                         var id = $(this).attr("id");
-                        var idLength = id.length;
-                        var strNumber = id.substr(idLength - 1, 1);
-                        $("#redText" + strNumber).val("I was clicked");
-                        $("#topDiv").text("A click occurred in stratBox numbered: " + strNumber);
+                        console.log(id)
+                        var remove="strat" + id;
+                        (<HTMLInputElement>document.getElementById(remove)).remove();
                     }
                 )
             }
