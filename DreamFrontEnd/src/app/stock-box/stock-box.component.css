@@ -1,9 +1,37 @@
 button{
-    margin:15px;
+    /*margin:15px;*/
 }
 
 .scrollable-menu {
     /* height: auto;
     max-height: 200px; */
     overflow-x: hidden;
+}
+
+.center{
+	margin:0 auto;
+}
+
+#color-box{
+	background: aliceblue;
+}
+
+.row{
+	margin-top:15px;
+}
+
+#bt1{
+	margin:15px;
+}
+
+#bt2{
+	margin:15px;
+}
+
+#bt3{
+	margin:15px;
+}
+
+#strategySelector{
+	margin:15px;
 }
