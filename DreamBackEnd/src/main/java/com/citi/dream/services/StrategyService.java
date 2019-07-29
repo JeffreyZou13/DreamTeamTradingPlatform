@@ -1,6 +1,6 @@
 package com.citi.dream.services;
 
-import com.citi.dream.entities.Strategy;
+import com.citi.dream.strategies.Strategy;
 
 public interface StrategyService {
     Strategy addStrategy(Strategy strategy);
