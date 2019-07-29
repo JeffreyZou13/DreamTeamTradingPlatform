@@ -1,7 +1,9 @@
 package com.citi.dream.strategies;
 
 import com.citi.dream.jms.MessageSender;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,5 +31,13 @@ public class StrategyManager {
             return newStrategy;
         }
         return null;
+    }
+
+    // TODO chedule strategy
+    @Scheduled(fixedDelay = 1000)
+    public void runStrategies() throws JSONException {
+        for (Strategy strategy : strategies) {
+            strategy.performStrategy();
+        }
     }
 }
