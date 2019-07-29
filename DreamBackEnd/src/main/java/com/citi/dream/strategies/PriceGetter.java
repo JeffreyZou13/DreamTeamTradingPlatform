@@ -2,6 +2,7 @@ package com.citi.dream.strategies;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -12,8 +13,32 @@ import java.net.URL;
 @Component
 public class PriceGetter {
 
-    public JSONObject getStockPrice(String stockName){
+    JSONObject stock;
+    JSONArray stocklist;
 
+    public PriceGetter(JSONObject stock, JSONArray stocklist) {
+        this.stock = stock;
+        this.stocklist = stocklist;
+    }
+
+    public JSONObject getStock() {
+        return stock;
+    }
+
+    public void setStock(JSONObject stock) {
+        this.stock = stock;
+    }
+
+    public JSONArray getStocklist() {
+        return stocklist;
+    }
+
+    public void setStocklist(JSONArray stocklist) {
+        this.stocklist = stocklist;
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public JSONObject getStockPrice(String stockName){
         String requestURL  = "http://nyc31.conygre.com:31/Stock/getStockPrice/" + stockName;
         StringBuilder result = new StringBuilder();
         JSONObject actualResult = new JSONObject();
@@ -32,14 +57,14 @@ public class PriceGetter {
 
         }finally{
 //            return result.toString();
+            setStock(actualResult);
             return actualResult;
         }
 
     }
 
-
+    @Scheduled(fixedRate = 1000)
     public JSONArray getStockPriceList(String stockName, int numOfValues){
-
         String requestURL  = "http://nyc31.conygre.com:31/Stock/getStockPriceList/" + stockName + "?howManyValues=" +
                 Integer.toString(numOfValues);
 
@@ -60,6 +85,7 @@ public class PriceGetter {
 
         }finally{
 //            return result.toString();
+            setStocklist(actualResult);
             return actualResult;
         }
 

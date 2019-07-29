@@ -1,5 +1,9 @@
 package com.citi.dream.strategies;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+
 public class TwoMovingAverages implements Strategy{
 
     private String type;
@@ -10,6 +14,8 @@ public class TwoMovingAverages implements Strategy{
     private int strategyID;
     private double cutOffPercentage; //the cutoff that stops the strategy
 
+    @Autowired
+    PriceGetter priceGetter;
 
     public String getType() {
         return type;
@@ -76,9 +82,18 @@ public class TwoMovingAverages implements Strategy{
         this.volume = volume;
         this.strategyID = strategyID;
         this.cutOffPercentage = cutOffPercentage;
+    }
 
+    public void calculateAverage(){
+        priceGetter.getStockPriceList(stockName, shortTime);
+        priceGetter.getStockPriceList(stockName, longTime);
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void peformStrategy(){
 
     }
+
 
 
 }
