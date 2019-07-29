@@ -12,10 +12,10 @@ public class HelloWorldTest {
     @Test
     public void testIfCanGetOneStockPrice() throws JSONException {
 
-        String stockName = "msft";
-        PriceGetter pg = new PriceGetter();
-        JSONObject result = pg.getStockPrice(stockName);
-        System.out.println(result.getString("symbol"));
+//        String stockName = "msft";
+//        PriceGetter pg = new PriceGetter();
+////        JSONObject result = pg.getStockPrice(stockName);
+//        System.out.println(result.getString("symbol"));
 
     }
 
@@ -40,8 +40,20 @@ public class HelloWorldTest {
 
 
     @Test
-    public void testIfCanGetPriceAverage()throws JSONException{
+    public void testIfICanCalculateAverage()throws JSONException{
 
+//        this.type = type;
+//        this.longTime = longTime;
+//        this.shortTime = shortTime;
+//        this.stockName = stockName;
+//        this.volume = volume;
+//        this.strategyID = strategyID;
+//        this.cutOffPercentage = cutOffPercentage;
+
+        TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
+                100, 3244,.01);
+
+        System.out.print(ma.calculateAverage(5));
 
 
     }

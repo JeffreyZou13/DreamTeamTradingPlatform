@@ -1,6 +1,7 @@
 package com.citi.dream.strategies;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class PriceGetter {
     }
 
     @Scheduled(fixedRate = 1000)
-    public JSONObject getStockPrice(String stockName){
+    public double getStockPrice(String stockName) throws JSONException {
         String requestURL  = "http://nyc31.conygre.com:31/Stock/getStockPrice/" + stockName;
         StringBuilder result = new StringBuilder();
         JSONObject actualResult = new JSONObject();
@@ -54,7 +55,7 @@ public class PriceGetter {
         }finally{
 //            return result.toString();
             setStock(actualResult);
-            return actualResult;
+            return Double.parseDouble(actualResult.getString("price"));
         }
 
     }

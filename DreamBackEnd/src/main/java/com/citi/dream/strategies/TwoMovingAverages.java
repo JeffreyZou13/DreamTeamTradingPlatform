@@ -1,23 +1,34 @@
 package com.citi.dream.strategies;
 
 
+import com.citi.dream.jms.MessageSender;
+import com.citi.dream.jms.Order;
+import org.aspectj.weaver.ast.Or;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.Date;
+import java.util.UUID;
+
 public class TwoMovingAverages implements Strategy{
 
-    private String type;
+    private String type; //two moving averages
     private int longTime;
     private int shortTime;
     private String stockName;
     private int volume;
     private int strategyID;
     private double cutOffPercentage; //the cutoff that stops the strategy
+    private String action; //buy or sell
+    boolean buying; //true if buying, false if selling
 
     @Autowired
-    PriceGetter priceGetter;
+    PriceGetter priceGetter = new PriceGetter();
+
+    @Autowired
+    MessageSender messageSender = new MessageSender();
 
     public String getType() {
         return type;
@@ -75,6 +86,29 @@ public class TwoMovingAverages implements Strategy{
         this.cutOffPercentage = cutOffPercentage;
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public PriceGetter getPriceGetter() {
+        return priceGetter;
+    }
+
+    public void setPriceGetter(PriceGetter priceGetter) {
+        this.priceGetter = priceGetter;
+    }
+
+    public boolean isBuying() {
+        return buying;
+    }
+
+    public void setBuying(boolean buying) {
+        this.buying = buying;
+    }
 
     public TwoMovingAverages(String type, int longTime, int shortTime, String stockName, int volume, int strategyID, double cutOffPercentage) {
         this.type = type;
@@ -86,15 +120,39 @@ public class TwoMovingAverages implements Strategy{
         this.cutOffPercentage = cutOffPercentage;
     }
 
-    public double calculateAverage(String stockName, int period) throws JSONException {
+    public double calculateAverage(int period) throws JSONException {
+        System.out.println((stockName + period));
+        JSONArray result = priceGetter.getStockPriceList(stockName, period);
 
-//        priceGetter.getStockPriceList(stockName, longTime);
-        return 1.0;
+        double sum = 0;
+        double[] priceArray = new double[period];
+
+        for(int i = 0; i < period; i++){
+            priceArray[i] = Double.parseDouble(result.getJSONObject(i).getString("price"));
+            sum+= Double.parseDouble(result.getJSONObject(i).getString("price"));
+        }
+
+        for(int i = 0; i < period; i++){
+            System.out.println("AT ELEMENT " +  i + " :" + priceArray[i]);
+        }
+
+        return sum/period;
     }
 
     @Scheduled(fixedRate = 1000)
-    public void peformStrategy(){
+    public void peformStrategy() throws JSONException {
 
+        double shortAverage = calculateAverage(shortTime);
+        double longAverage = calculateAverage(longTime);
+
+        if(shortAverage == longAverage){
+            if(buying){
+                //send an order here
+                Order o = new Order(true, UUID.randomUUID().toString(), priceGetter.getStockPrice(stockName),
+                        volume, stockName, new Date(),  "");
+                messageSender.sendMessage("queue/OrderBroker",o);
+            }
+        }
     }
 
 
