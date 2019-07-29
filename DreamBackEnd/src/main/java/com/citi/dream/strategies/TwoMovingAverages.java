@@ -1,6 +1,8 @@
 package com.citi.dream.strategies;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -84,9 +86,10 @@ public class TwoMovingAverages implements Strategy{
         this.cutOffPercentage = cutOffPercentage;
     }
 
-    public void calculateAverage(){
-        priceGetter.getStockPriceList(stockName, shortTime);
-        priceGetter.getStockPriceList(stockName, longTime);
+    public double calculateAverage(String stockName, int period) throws JSONException {
+
+//        priceGetter.getStockPriceList(stockName, longTime);
+        return 1.0;
     }
 
     @Scheduled(fixedRate = 1000)

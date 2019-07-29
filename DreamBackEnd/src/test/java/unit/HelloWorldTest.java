@@ -1,6 +1,7 @@
 package unit;
 
 import com.citi.dream.strategies.PriceGetter;
+import com.citi.dream.strategies.TwoMovingAverages;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,10 +24,25 @@ public class HelloWorldTest {
 
         String stockName = "msft";
         int numOfValues = 20;
+
+        double[] priceArray = new double[numOfValues];
         PriceGetter pg = new PriceGetter();
         JSONArray result = pg.getStockPriceList(stockName, numOfValues);
-        
-        System.out.println(result);
+        for(int i=0; i<numOfValues; i++) {
+            priceArray[i] = Double.parseDouble(result.getJSONObject(i).getString("price"));
+//            System.out.println(result.getJSONObject(i).getString("price"));
+
+        }
+        for (int i=0; i<numOfValues; i++) {
+            System.out.println(priceArray[i]);
+        }
+    }
+
+
+    @Test
+    public void testIfCanGetPriceAverage()throws JSONException{
+
+
 
     }
 }
