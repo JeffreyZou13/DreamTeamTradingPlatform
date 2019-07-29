@@ -16,10 +16,6 @@ public class PriceGetter {
     JSONObject stock;
     JSONArray stocklist;
 
-    public PriceGetter(JSONObject stock, JSONArray stocklist) {
-        this.stock = stock;
-        this.stocklist = stocklist;
-    }
 
     public JSONObject getStock() {
         return stock;
