@@ -22,20 +22,6 @@ export class StockBoxComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML = obj;
   }
 
-  addModule(obj){
-    // var copy = document.getElementById("module1");
-    // var clone = copy.cloneNode(true);
-    // document.getElementById("top-level").appendChild(clone);
-
-        // $("#bt3").click(
-        //     function () {
-        //       console.log('this was fired')
-                
-        //     }
-        // )
-
-  }
-
   exitModule(obj){
     (<HTMLInputElement>document.getElementById("module1")).remove();
     //WILL HAVE TO ADD LOGIC TO EXIT TRADE HERE, ALSO WITH ALERT
@@ -50,7 +36,18 @@ export class StockBoxComponent implements OnInit {
         $("#bt3").click(
             function () {
                 stratCounter++;
-                var markup = `<div id="stratBox${stratCounter}" class="stratBox" > <button id="redButton${stratCounter}" class="redButtonClass">red button</button> <input type="text" id="redText${stratCounter}" class="redTextClass"  value=""/>  </div>`;
+                var stockName = document.getElementById("stockSelector").value;
+                var stockQuantity = document.getElementById("quantSelector").value;
+                var strat = document.getElementById("strategySelector").innerHTML;
+
+                console.log(strat)
+
+                var markup = `<div id="stratBox${stratCounter}" class="stratBox" > 
+                <button id="redButton${stratCounter}" class="redButtonClass">${stockName}</button> 
+                <div> </div>
+                <button type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
+                <input type="text" id="redText${stratCounter}" class="redTextClass" value=""/>  </div>`;
+
                 $("body").append(markup);
 
                 $(".redButtonClass").click(

@@ -10,7 +10,7 @@
           </div>
           <div class="floaty">
             <label for="stockSelector">Quantity:</label>
-            <input type="email" class="form-control" id="stockSelector">
+            <input type="email" class="form-control" id="quantSelector">
           </div>
           <!-- <div style= "position:absolute; right:0"> -->
             <!-- <button  (click)="exitModule()" type="button" class="btn btn-danger">X</button> -->
@@ -51,14 +51,25 @@
               </div>
         </div>
         <button type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
-        <!-- <div class="inputBox">
-          <button type="button" class="btn btn-success">Start</button>
-          <button type="button" class="btn btn-warning">Pause</button>
-          <button type="button" class="btn btn-danger">End</button>
-        </div> -->
       </div>
     </div>
   </div>
 </div>
 
+<div class = "strategyProcess floaty">
+  <div class="col">
+    <div class = "row">
+      Stock: MSN
+      <br>
+      Strategy: Bollinger Bands
+      <br>
+      Time Frames: 1 to 2
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-success" id="bt3">Restart</button>
+      <button type="button" class="btn btn-warning" id="bt3">Pause</button>
+      <button type="button" class="btn btn-danger" id="bt3">End</button>
+    </div>
+  </div>
+</div>
 
