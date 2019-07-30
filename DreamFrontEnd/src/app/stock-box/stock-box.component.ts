@@ -33,12 +33,21 @@ export class StockBoxComponent implements OnInit {
 
   ngOnInit() {
     var stratCounter = 0;
+    var addEles = false;
         $("#bt3").click(
             function () {
                 stratCounter++;
                 var stockName = document.getElementById("stockSelector").value;
                 var stockQuantity = document.getElementById("quantSelector").value;
                 var strat = document.getElementById("strategySelector").innerHTML;
+
+
+                if(stockName == "" || stockQuantity == "" 
+                  || strat == "Select Strategy" ){
+                  alert("All fields are required")
+                }else{
+                  addEles = true;
+                }
 
                 var markup = 
                 `<div id="strat${stratCounter}"class = "floaty style="width=30%">
@@ -51,6 +60,8 @@ export class StockBoxComponent implements OnInit {
                       Strategy: ${strat}
                       <br>
                       Time Frames: 1 to 2
+                      <br>
+                      Status
                     </div>
                     <div class="row">
                       <button type="button" class="btn btn-success" id="bt3">Restart</button>
@@ -60,16 +71,18 @@ export class StockBoxComponent implements OnInit {
                   </div>
                 </div>`
 
-                $("body").append(markup);
+                if(addEles){
+                  $("body").append(markup);
 
-                $(".btn-danger").click(
-                    function () {
-                        var id = $(this).attr("id");
-                        console.log(id)
-                        var remove="strat" + id;
-                        (<HTMLInputElement>document.getElementById(remove)).remove();
-                    }
-                )
+                  $(".btn-danger").click(
+                      function () {
+                          var id = $(this).attr("id");
+                          console.log(id)
+                          var remove="strat" + id;
+                          (<HTMLInputElement>document.getElementById(remove)).remove();
+                      }
+                  )
+                }
             }
         )
     
