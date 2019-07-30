@@ -1,6 +1,7 @@
 package com.citi.dream.strategies;
 
 import com.citi.dream.jms.MessageSender;
+import com.citi.dream.repos.TwoMovingAveragesRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
@@ -17,6 +18,8 @@ public class StrategyManager {
     PriceGetter priceGetter;
     @Autowired
     MessageSender messageSender;
+    @Autowired
+    TwoMovingAveragesRepository twoMovingAveragesRepository;
 
     private Logger logger = LogManager.getLogger(this.getClass());
     private HashMap<String, Strategy> strategies = new HashMap<>();
@@ -32,7 +35,8 @@ public class StrategyManager {
     public Strategy createStrategy(String type, int longTime, int shortTime, String stockName, int volume, String strategyID, double cutOffPercentage) {
         if (type.equals("two moving averages")) {
             logger.info("Creating a two moving averages strategy");
-            Strategy newStrategy = new TwoMovingAverages(type, longTime, shortTime, stockName, volume, strategyID, cutOffPercentage, priceGetter, messageSender);
+            TwoMovingAverages newStrategy = new TwoMovingAverages(type, longTime, shortTime, stockName, volume, strategyID, cutOffPercentage, priceGetter, messageSender);
+            twoMovingAveragesRepository.save(newStrategy);
             strategies.put(strategyID, newStrategy);
             return newStrategy;
         }
@@ -40,6 +44,7 @@ public class StrategyManager {
     }
 
     public Strategy deleteStrategy(String strategyID) {
+        twoMovingAveragesRepository.deleteById(strategyID);
         return strategies.remove(strategyID);
     }
 

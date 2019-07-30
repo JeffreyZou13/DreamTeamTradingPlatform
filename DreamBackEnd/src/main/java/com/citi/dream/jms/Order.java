@@ -29,7 +29,7 @@ public class Order implements Serializable {
     @Column(name="price") private double price;
     @Column(name="size") private int size;
     @Column(name="stock") private String stock;
-    @Column(name="whenAsDate") private Date whenAsDate;
+    @Column(name="when_as_date") private Date whenAsDate;
     @Column(name="response") private String response;
     @Column(name="strategyID") private String strategyID;
 
@@ -54,8 +54,6 @@ public class Order implements Serializable {
 
     public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate,
                  String response, String strategyID) {
-
-
         this.id = id;
         this.buy = buy;
         this.price = price;
@@ -66,6 +64,8 @@ public class Order implements Serializable {
         this.strategyID = strategyID;
 
     }
+
+    public Order() {} // Need this for JPA
 
     public boolean isBuy() {
         return buy;

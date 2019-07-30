@@ -26,11 +26,11 @@ public class TwoMovingAverages implements Strategy{
     private String strategyID;
 
     @Column(name="type") private String type; //two moving averages
-    @Column(name="longTime")private int longTime;
-    @Column(name="shortTime")private int shortTime;
-    @Column(name="stockName")private String stockName;
+    @Column(name="long_time")private int longTime;
+    @Column(name="short_time")private int shortTime;
+    @Column(name="stock_name")private String stockName;
     @Column(name="volume")private int volume;
-    @Column(name="cutOffPercentage")private double cutOffPercentage; //the cutoff that stops the
+    @Column(name="cut_off_percentage") private double cutOffPercentage; //the cutoff that stops the
     // strategy
     @Column(name="action")private String action; //buy or sell
     @Column(name="buying")private boolean buying; //true if buying, false if selling
@@ -166,6 +166,8 @@ public class TwoMovingAverages implements Strategy{
         this.priceGetter = priceGetter;
         this.messageSender = messageSender;
     }
+
+    public TwoMovingAverages() {} // Need it for JPA
 
     public double calculateAverage(int period) throws JSONException {
 
