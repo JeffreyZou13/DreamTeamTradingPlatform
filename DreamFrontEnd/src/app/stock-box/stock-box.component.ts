@@ -42,12 +42,6 @@ export class StockBoxComponent implements OnInit {
                 var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
                 var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
 
-                    // private String type;
-                    // private String stock;
-                    // private int shortPeriod;
-                    // private int longPeriod;
-                    // private int size;
-
                 var postObj = {
                   "type":"two moving averages",
                   "stock": stockName,
@@ -64,29 +58,25 @@ export class StockBoxComponent implements OnInit {
                 }
 
                 var markup =
-                `<div id="strat${stratCounter}"class = "floaty style="width=30%">
-                  <div class="col">
-                    <div class = "row">
-                      Stock: ${stockName}
-                      <br>
-                      Quantity: ${stockQuantity}
-                      <br>
-                      Strategy: ${strat}
-                      <br>
-                      Time Frames: 1 to 2
-                      <br>
-                      Status
-                    </div>
-                    <div class="row">
-                      <button type="button" class="btn btn-success" id="bt3">Restart</button>
-                      <button type="button" class="btn btn-warning" id="bt3">Pause</button>
-                      <button type="button" id="${stratCounter}" class="btn btn-danger" id="bt3">End</button>
-                    </div>
-                  </div>
-                </div>`
+                `<tbody>
+                  <tr>
+                    <td>${stockName}</td>
+                    <td>${stockQuantity}</td>
+                    <td>${strat}</td>
+                    <td>1</td>
+                    <td>good</td>
+                    <td>
+                      <button type="button" class="btn btn-success" style="margin:0px" id="bt3">Start</button>
+                      <button type="button" class="btn btn-warning" style="margin:0px" id="bt3">Pause</button>
+                      <button type="button" class="btn btn-danger" style="margin:0px" id="bt3">Exit</button>
+                    </td>
+                  </tr>
+                </tbody>`
 
                 if(addEles){
-                  $("body").append(markup);
+                  console.log("ehehehe")
+                  document.getElementById("t1").style["display"] = "";
+                  $("#t1").append(markup);
 
                   $(".btn-danger").click(
                       function () {
@@ -100,7 +90,7 @@ export class StockBoxComponent implements OnInit {
 
                 $.ajax({
                   type: "POST",
-                  url: 'http://localhost:8081/strategy/start',
+                  url: 'http://localhost:8080/strategy/start',
                   contentType:"application/json",
                   data: JSON.stringify(postObj),
                   success: function(response) {
