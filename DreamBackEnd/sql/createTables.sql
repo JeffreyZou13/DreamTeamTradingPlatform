@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS orders (
     stock VARCHAR(4),
     whenAsDate DATE,
     response VARCHAR(16),
+    strategyID VARCHAR(36),
     two_avg_id VARCHAR(36) NOT NULL,
     FOREIGN KEY (two_avg_id) REFERENCES two_moving_averages(strategyID)
 );
