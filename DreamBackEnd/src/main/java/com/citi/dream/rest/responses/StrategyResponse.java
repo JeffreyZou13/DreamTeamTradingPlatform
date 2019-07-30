@@ -2,7 +2,7 @@ package com.citi.dream.rest.responses;
 
 public class StrategyResponse {
     private String result;
-    private int id;
+    private String id;
 
     public String getResult() {
         return result;
@@ -12,11 +12,11 @@ public class StrategyResponse {
         this.result = result;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }
