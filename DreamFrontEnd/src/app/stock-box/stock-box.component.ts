@@ -38,10 +38,23 @@ export class StockBoxComponent implements OnInit {
         $("#bt3").click(
             function () {
                 stratCounter++;
-                var stockName = document.getElementById("stockSelector").value;
-                var stockQuantity = document.getElementById("quantSelector").value;
-                var strat = document.getElementById("strategySelector").innerHTML;
+                var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
+                var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
+                var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
 
+                    // private String type;
+                    // private String stock;
+                    // private int shortPeriod;
+                    // private int longPeriod;
+                    // private int size;
+
+                var postObj = {
+                  "type":"two moving averages", 
+                  "stock": stockName,
+                  "shortPeriod": 1,
+                  "longPeriod":2,
+                  "size":stockQuantity
+                }
 
                 if(stockName == "" || stockQuantity == "" 
                   || strat == "Select Strategy" ){
@@ -84,6 +97,15 @@ export class StockBoxComponent implements OnInit {
                       }
                   )
                 }
+
+                $.ajax({
+                  type: "POST",
+                  url: '/strategy/start',
+                  data: postObj,
+                  success: function(response) {
+                    console.log("yayy made it here")
+                  }
+              });
             }
         )
     
