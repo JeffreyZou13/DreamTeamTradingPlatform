@@ -1,26 +1,70 @@
 package com.citi.dream.jms;
 
+import com.citi.dream.strategies.Strategy;
+import com.citi.dream.strategies.TwoMovingAverages;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+
+@Entity
+@Table(name="orders")
+
+//@NamedQueries(
+//        {
+//                @NamedQuery(name="orders.getAll",
+//                        query="select order from Orders",
+//                        hints = {@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+//        })
+
+
 public class Order implements Serializable {
-    private boolean buy;
+
+    @Id
+    @Column(name="orderID")
     private String id;
-    private double price;
-    private int size;
-    private String stock;
-    private Date whenAsDate;
-    private String response;
+
+    @Column(name="buy") private boolean buy;
+    @Column(name="price") private double price;
+    @Column(name="size") private int size;
+    @Column(name="stock") private String stock;
+    @Column(name="whenAsDate") private Date whenAsDate;
+    @Column(name="response") private String response;
+    @Column(name="strategyID") private String strategyID;
+
+    public TwoMovingAverages getTwoMovingAverages() {
+        return twoMovingAverages;
+    }
+
+    public void setTwoMovingAverages(TwoMovingAverages twoMovingAverages) {
+        this.twoMovingAverages = twoMovingAverages;
+    }
+
+    @JoinColumn (name="strategy_from_strat", referencedColumnName ="strategyID", nullable = false)
+    @ManyToOne
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private TwoMovingAverages twoMovingAverages;
 
 
-    public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate, String response) {
-        this.buy = buy;
+//    @JoinColumn (name="cd_id", referencedColumnName="id", nullable = false)
+//    @ManyToOne
+//    @com.fasterxml.jackson.annotation.JsonIgnore
+//    private CompactDisc disc;
+
+    public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate,
+                 String response, String strategyID) {
+
+
         this.id = id;
+        this.buy = buy;
         this.price = price;
         this.size = size;
         this.stock = stock;
         this.whenAsDate = whenAsDate;
         this.response = response;
+        this.strategyID = strategyID;
+
     }
 
     public boolean isBuy() {
@@ -79,6 +123,14 @@ public class Order implements Serializable {
         this.response = response;
     }
 
+    public String getStrategyID() {
+        return strategyID;
+    }
+
+    public void setStrategyID(String strategyID) {
+        this.strategyID = strategyID;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -89,6 +141,7 @@ public class Order implements Serializable {
                 ", stock='" + stock + '\'' +
                 ", whenAsDate=" + whenAsDate +
                 ", response='" + response + '\'' +
+                ", strategyID='" + strategyID + '\'' +
                 '}';
     }
 }
