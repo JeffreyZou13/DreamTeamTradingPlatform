@@ -6,6 +6,7 @@ public class StrategyForm {
     private int shortPeriod;
     private int longPeriod;
     private int size;
+    private String id; // For pause and delete
 
     public String getType() {
         return type;
@@ -45,5 +46,13 @@ public class StrategyForm {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
