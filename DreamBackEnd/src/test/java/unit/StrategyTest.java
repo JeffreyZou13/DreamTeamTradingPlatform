@@ -29,10 +29,10 @@ public class StrategyTest {
     @Autowired
     private StrategyManager strategyManager;
 
-    @MockBean
+    @Autowired
     private PriceGetter priceGetter;
 
-    @MockBean
+    @Autowired
     private MessageSender messageSender;
 
     @Test
@@ -68,6 +68,8 @@ public class StrategyTest {
     public void testIfManagerCanCreateStrategy() {
         Strategy strategy = strategyManager.createStrategy("two moving averages", 5, 1, "HON", 100, "aa-bb-cc-dd", 0.01);
         ArrayList<Strategy> newStrategies = strategyManager.getStrategies();
+        System.out.println("hi i am here");
+        System.out.println(newStrategies);
         assert(newStrategies.size() == 1);
     }
 
@@ -75,13 +77,6 @@ public class StrategyTest {
     @Test
     public void testIfICanCalculateAverage()throws JSONException{
 
-//        this.type = type;
-//        this.longTime = longTime;
-//        this.shortTime = shortTime;
-//        this.stockName = stockName;
-//        this.volume = volume;
-//        this.strategyID = strategyID;
-//        this.cutOffPercentage = cutOffPercentage;
 
         TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
                 100, "aa-bb-cc-dd",.01, priceGetter, messageSender);
