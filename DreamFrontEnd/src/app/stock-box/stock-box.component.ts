@@ -33,72 +33,80 @@ export class StockBoxComponent implements OnInit {
 
 
   ngOnInit() {
+
+    $("#bt3").click(
+      function () {
+      }
+
+    );
+
     var stratCounter = 0;
     var addEles = false;
-        $("#bt3").click(
-            function () {
-                stratCounter++;
-                var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
-                var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
-                var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
+    $("#bt3").click(
+      function () {
+          stratCounter++;
+          var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
+          var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
+          var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
+          var stratId = "strat" + stratCounter;
 
-                var postObj = {
-                  "type":"two moving averages",
-                  "stock": stockName,
-                  "shortPeriod": 1,
-                  "longPeriod":2,
-                  "size":stockQuantity
+          var postObj = {
+            "type":"two moving averages",
+            "stock": stockName,
+            "shortPeriod": 1,
+            "longPeriod":2,
+            "size":stockQuantity
+          }
+
+          if(stockName == "" || stockQuantity == ""
+            || strat == "Select Strategy" ){
+            alert("All fields are required")
+          }else{
+            addEles = true;
+          }
+
+          var markup =
+          `<tbody id=${stratId}>
+            <tr>
+              <td>${stockName}</td>
+              <td>${stockQuantity}</td>
+              <td>${strat}</td>
+              <td>1</td>
+              <td>good</td>
+              <td>
+                <button type="button" class="btn btn-success" style="margin:0px" id="bt3">Start</button>
+                <button type="button" class="btn btn-warning" style="margin:0px" id="bt3">Pause</button>
+                <button type="button" class="btn btn-danger" style="margin:0px" id=${stratCounter}>Exit</button>
+              </td>
+            </tr>
+          </tbody>`
+
+          if(addEles){
+            console.log("ehehehe")
+            document.getElementById("t1").style["display"] = "";
+            $("#t1").append(markup);
+
+            $(".btn-danger").click(
+                function () {
+                    var id = $(this).attr("id");
+                    var remove;
+                    remove = "#strat" + id;
+                    $(remove).remove();
                 }
+            )
+          }
 
-                if(stockName == "" || stockQuantity == ""
-                  || strat == "Select Strategy" ){
-                  alert("All fields are required")
-                }else{
-                  addEles = true;
-                }
-
-                var markup =
-                `<tbody>
-                  <tr>
-                    <td>${stockName}</td>
-                    <td>${stockQuantity}</td>
-                    <td>${strat}</td>
-                    <td>1</td>
-                    <td>good</td>
-                    <td>
-                      <button type="button" class="btn btn-success" style="margin:0px" id="bt3">Start</button>
-                      <button type="button" class="btn btn-warning" style="margin:0px" id="bt3">Pause</button>
-                      <button type="button" class="btn btn-danger" style="margin:0px" id="bt3">Exit</button>
-                    </td>
-                  </tr>
-                </tbody>`
-
-                if(addEles){
-                  console.log("ehehehe")
-                  document.getElementById("t1").style["display"] = "";
-                  $("#t1").append(markup);
-
-                  $(".btn-danger").click(
-                      function () {
-                          var id = $(this).attr("id");
-                          var remove;
-                          remove = "#strat" + id;
-                          $(remove).remove();
-                      }
-                  )
-                }
-
-                $.ajax({
-                  type: "POST",
-                  url: 'http://localhost:8080/strategy/start',
-                  contentType:"application/json",
-                  data: JSON.stringify(postObj),
-                  success: function(response) {
-                    console.log("yayy made it here")
-                  }
-              });
+          $.ajax({
+            type: "POST",
+            url: 'http://localhost:8080/strategy/start',
+            contentType:"application/json",
+            data: JSON.stringify(postObj),
+            success: function(response) {
+              console.log("yayy made it here")
             }
-        )
+        });
+      }
+    )
 
   }
 
