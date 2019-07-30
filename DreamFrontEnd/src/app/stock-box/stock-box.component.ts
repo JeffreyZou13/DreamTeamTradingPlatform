@@ -31,6 +31,7 @@ export class StockBoxComponent implements OnInit {
     
   }
 
+
   ngOnInit() {
     var stratCounter = 0;
     var addEles = false;
@@ -77,9 +78,9 @@ export class StockBoxComponent implements OnInit {
                   $(".btn-danger").click(
                       function () {
                           var id = $(this).attr("id");
-                          console.log(id)
-                          var remove="strat" + id;
-                          (<HTMLInputElement>document.getElementById(remove)).remove();
+                          var remove;
+                          remove = "#strat" + id;
+                          $(remove).remove();
                       }
                   )
                 }
