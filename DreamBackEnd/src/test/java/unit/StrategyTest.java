@@ -29,10 +29,10 @@ public class StrategyTest {
     @Autowired
     private StrategyManager strategyManager;
 
-    @MockBean
+    @Autowired
     private PriceGetter priceGetter;
 
-    @MockBean
+    @Autowired
     private MessageSender messageSender;
 
     @Test
@@ -52,8 +52,7 @@ public class StrategyTest {
         int numOfValues = 20;
 
         double[] priceArray = new double[numOfValues];
-        PriceGetter pg = new PriceGetter();
-        JSONArray result = pg.getStockPriceList(stockName, numOfValues);
+        JSONArray result = priceGetter.getStockPriceList(stockName, numOfValues);
         for(int i=0; i<numOfValues; i++) {
             priceArray[i] = Double.parseDouble(result.getJSONObject(i).getString("price"));
 //            System.out.println(result.getJSONObject(i).getString("price"));
@@ -68,6 +67,7 @@ public class StrategyTest {
     public void testIfManagerCanCreateStrategy() {
         Strategy strategy = strategyManager.createStrategy("two moving averages", 5, 1, "HON", 100, "aa-bb-cc-dd", 0.01);
         ArrayList<Strategy> newStrategies = strategyManager.getStrategies();
+        System.out.println(newStrategies);
         assert(newStrategies.size() == 1);
     }
 
@@ -90,7 +90,7 @@ public class StrategyTest {
 
     }
 
-    @Repeat(value = 10)
+//    @Repeat(value = 10)
     @Test
     public void testIfICanPerformTwoMovingAverages() throws JSONException {
         TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
