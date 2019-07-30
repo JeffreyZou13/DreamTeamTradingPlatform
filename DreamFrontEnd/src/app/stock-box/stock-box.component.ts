@@ -18,8 +18,8 @@ export class StockBoxComponent implements OnInit {
 
   stockboxes: Array<StockBoxComponent> = [];
 
-  changeLabel(obj) {
-    (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML = obj;
+  changeLabel(obj1 ,obj2) {
+    (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
   }
 
   exitModule(obj){

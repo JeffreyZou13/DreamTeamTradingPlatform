@@ -12,9 +12,6 @@
             <label for="stockSelector">Quantity:</label>
             <input type="email" class="form-control" id="quantSelector">
           </div>
-          <!-- <div style= "position:absolute; right:0"> -->
-            <!-- <button  (click)="exitModule()" type="button" class="btn btn-danger">X</button> -->
-          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -24,9 +21,9 @@
         <label for="strategySelector">Strategy: </label>
         <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Select Strategy</button>
           <div ngbDropdownMenu aria-labelledby="strategySelector">
-            <button (click)="changeLabel('Two Moving Averages')" ngbDropdownItem>Two Moving Averages</button>
-            <button (click)="changeLabel('Bollinger Bands')" ngbDropdownItem>Bollinger Bands</button>
-            <button (click)="changeLabel('Price Breakout')"ngbDropdownItem>Price Breakout</button>
+            <button (click)="changeLabel('strategySelector', 'Two Moving Averages')" ngbDropdownItem>Two Moving Averages</button>
+            <button (click)="changeLabel('strategySelector', 'Bollinger Bands')" ngbDropdownItem>Bollinger Bands</button>
+            <button (click)="changeLabel('strategySelector','Price Breakout')"ngbDropdownItem>Price Breakout</button>
           </div>
         </div>
       </div>
@@ -35,19 +32,19 @@
       <div class="center">
         <div ngbDropdown class="d-inline-block">
             <label>Time Frames: </label>
-            <button class="btn btn-outline-primary" id="strategySelector" id="bt1" ngbDropdownToggle>Short Time</button>
-              <div ngbDropdownMenu aria-labelledby="strategySelector">
-                <button ngbDropdownItem>1 min</button>
-                <button ngbDropdownItem>2 min</button>
-                <button ngbDropdownItem>3 min</button>
+            <button class="btn btn-outline-primary" id="shortSelector" ngbDropdownToggle>Short Time</button>
+              <div ngbDropdownMenu aria-labelledby="shortSelector">
+                <button (click)="changeLabel('shortSelector','1 s')" ngbDropdownItem>1 s</button>
+                <button (click)="changeLabel('shortSelector','2 s')" ngbDropdownItem>2 s</button>
+                <button (click)="changeLabel('shortSelector','3 s')" ngbDropdownItem>3 s</button>
               </div>
         </div>
         <div ngbDropdown class="d-inline-block">
-            <button class="btn btn-outline-primary smooth-scroll" id="strategySelector"id="bt2" ngbDropdownToggle>Long Time</button>
+            <button class="btn btn-outline-primary smooth-scroll" id="longSelector" ngbDropdownToggle>Long Time</button>
               <div ngbDropdownMenu aria-labelledby="strategySelector">
-                <button ngbDropdownItem>1 s</button>
-                <button ngbDropdownItem>2 s</button>
-                <button ngbDropdownItem>3 s</button>
+                <button (click)="changeLabel('longSelector','1 s')" ngbDropdownItem>1 s</button>
+                <button (click)="changeLabel('longSelector', '2 s')" ngbDropdownItem>2 s</button>
+                <button (click)="changeLabel('longSelector','3 s')" ngbDropdownItem>3 s</button>
               </div>
         </div>
         <button type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
@@ -55,22 +52,3 @@
     </div>
   </div>
 </div>
-<!-- <div class = "strategyProcess floaty">
-                  <div class="col">
-                    <div class = "row">
-                      Stock: stockName
-                      <br>
-                      Quantity: stockQuantity
-                      <br>
-                      Strategy: strat
-                      <br>
-                      Time Frames: 1 to 2
-                    </div>
-                    <div class="row">
-                      <button type="button" class="btn btn-success" id="bt3">Restart</button>
-                      <button type="button" class="btn btn-warning" id="bt3">Pause</button>
-                      <button type="button" class="btn btn-danger" id="bt3">End</button>
-                    </div>
-                  </div>
-                </div>
- -->
