@@ -22,7 +22,7 @@ import java.util.UUID;
 public class TwoMovingAverages implements Strategy{
 
     @Id
-    @Column(name= "StrategyID")
+    @Column(name= "strategyID")
     private String strategyID;
 
     @Column(name="type") private String type; //two moving averages
@@ -38,7 +38,7 @@ public class TwoMovingAverages implements Strategy{
     @Column(name="delta") private double delta = 0.02;
 
     @OneToMany(mappedBy="twoMovingAverages", cascade={CascadeType.MERGE, CascadeType.PERSIST})
-    private List<Order> orderList = new ArrayList<Order>();
+    private List<Order> orderList = new ArrayList<>();
 
     @Transient
     PriceGetter priceGetter;

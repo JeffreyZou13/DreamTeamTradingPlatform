@@ -41,7 +41,7 @@ public class Order implements Serializable {
         this.twoMovingAverages = twoMovingAverages;
     }
 
-    @JoinColumn (name="strategy_from_strat", referencedColumnName ="strategyID", nullable = false)
+    @JoinColumn (name="two_avg_id", referencedColumnName ="strategyID", nullable = false)
     @ManyToOne
     @com.fasterxml.jackson.annotation.JsonIgnore
     private TwoMovingAverages twoMovingAverages;
