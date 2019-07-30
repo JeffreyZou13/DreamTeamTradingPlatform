@@ -122,7 +122,7 @@ public class TwoMovingAverages implements Strategy{
 
     public double calculateAverage(int period) throws JSONException {
 
-        JSONArray result = priceGetter.getStockPriceList(stockName, period);
+        JSONArray result = priceGetter.getStockData().get(this.stockName);
         System.out.println("result is:::");
         System.out.println(result);
         double sum = 0;
@@ -137,7 +137,8 @@ public class TwoMovingAverages implements Strategy{
 
 
     public void performStrategy() throws JSONException {
-
+        this.priceGetter.setStockName(this.stockName);
+        this.priceGetter.setNumOfStocks(this.volume);
         double shortAverage = calculateAverage(shortTime);
         double longAverage = calculateAverage(longTime);
         Order o;
@@ -154,7 +155,9 @@ public class TwoMovingAverages implements Strategy{
         }
 
         if(Math.abs(longAverage - shortAverage) < delta) {
-            o = new Order(buying, UUID.randomUUID().toString(), priceGetter.getStockPrice(stockName),
+            JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
+            double currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
+            o = new Order(buying, UUID.randomUUID().toString(), currentPrice,
                     volume, stockName, new Date(), "");
             System.out.println(o);
             messageSender.sendMessage("queue/OrderBroker", o);
