@@ -34,7 +34,7 @@ public class StrategyController {
         String strategyId = UUID.randomUUID().toString();
         strategyManager.createStrategy(strategy.getType(), strategy.getLongPeriod(), strategy.getShortPeriod(),
                 strategy.getStock(), strategy.getSize(), strategyId, 0.01);
-        resp.setResult("successfully started a new strategy of type " + strategy.getType());
+        resp.setResult("successfully started a new strategy of type " + strategy.getType() + " with id " + strategyId);
         resp.setId(strategyId);
         return resp;
     }
@@ -44,7 +44,8 @@ public class StrategyController {
     public StrategyResponse pauseStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered pauseStrategy");
         StrategyResponse resp = new StrategyResponse();
-        resp.setResult("successfully paused strategy of type " + strategy.getType());
+        resp.setResult("successfully paused strategy of type " + strategy.getType() + " with id " + strategy.getId());
+        resp.setId(strategy.getId());
         return resp;
     }
 
@@ -53,7 +54,8 @@ public class StrategyController {
     public StrategyResponse stopStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered stopStrategy");
         StrategyResponse resp = new StrategyResponse();
-        resp.setResult("successfully stopped strategy of type " + strategy.getType());
+        strategyManager.deleteStrategy(strategy.getId());
+        resp.setResult("successfully stopped strategy of type " + strategy.getType() + " with id " + strategy.getId());
         return resp;
     }
 }

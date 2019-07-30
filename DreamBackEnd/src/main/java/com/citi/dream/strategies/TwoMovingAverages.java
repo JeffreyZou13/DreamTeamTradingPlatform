@@ -127,7 +127,7 @@ public class TwoMovingAverages implements Strategy{
         System.out.println(result);
         double sum = 0;
         if (result != null) {
-            for(int i = 0; i < period; i++) {
+            for(int i = 0; i < period && i < result.length(); i++) {
                 sum += Double.parseDouble(result.getJSONObject(i).getString("price"));
             }
         }
@@ -156,12 +156,14 @@ public class TwoMovingAverages implements Strategy{
 
         if(Math.abs(longAverage - shortAverage) < delta) {
             JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
-            double currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
-            o = new Order(buying, UUID.randomUUID().toString(), currentPrice,
-                    volume, stockName, new Date(), "");
-            System.out.println(o);
-            messageSender.sendMessage("queue/OrderBroker", o);
-            System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
+            if (currentStockPrice.length() > 0) {
+                double currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
+                o = new Order(buying, UUID.randomUUID().toString(), currentPrice,
+                        volume, stockName, new Date(), "");
+                System.out.println(o);
+                messageSender.sendMessage("queue/OrderBroker", o);
+                System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
+            }
         }
     }
 }
