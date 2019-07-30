@@ -28,7 +28,7 @@ export class StockBoxComponent implements OnInit {
   }
 
   constructor() {
-    
+
   }
 
 
@@ -49,21 +49,21 @@ export class StockBoxComponent implements OnInit {
                     // private int size;
 
                 var postObj = {
-                  "type":"two moving averages", 
+                  "type":"two moving averages",
                   "stock": stockName,
                   "shortPeriod": 1,
                   "longPeriod":2,
                   "size":stockQuantity
                 }
 
-                if(stockName == "" || stockQuantity == "" 
+                if(stockName == "" || stockQuantity == ""
                   || strat == "Select Strategy" ){
                   alert("All fields are required")
                 }else{
                   addEles = true;
                 }
 
-                var markup = 
+                var markup =
                 `<div id="strat${stratCounter}"class = "floaty style="width=30%">
                   <div class="col">
                     <div class = "row">
@@ -100,15 +100,16 @@ export class StockBoxComponent implements OnInit {
 
                 $.ajax({
                   type: "POST",
-                  url: '/strategy/start',
-                  data: postObj,
+                  url: 'http://localhost:8081/strategy/start',
+                  contentType:"application/json",
+                  data: JSON.stringify(postObj),
                   success: function(response) {
                     console.log("yayy made it here")
                   }
               });
             }
         )
-    
+
   }
 
 

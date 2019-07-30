@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/strategy")
-@CrossOrigin
+@CrossOrigin(origins="http://localhost:4200")
 public class StrategyController {
 
     @Autowired
@@ -25,7 +25,7 @@ public class StrategyController {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     // Start up a new strategy
-    @RequestMapping(method = RequestMethod.POST, value="/start")
+    @RequestMapping(method = RequestMethod.POST, value="/start", consumes="application/json")
     public StrategyResponse startStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered startStrategy");
         StrategyResponse resp = new StrategyResponse();
