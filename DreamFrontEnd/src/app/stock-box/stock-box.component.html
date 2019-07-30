@@ -6,79 +6,83 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active" id="menu1">
+      <li class="nav-item active" id="menu1" 
+      (click)="showTrades()">
         <a class="nav-link" href="#">Active Trades</a>
       </li>
-      <li class="nav-item" id=menu2>
+      <li class="nav-item" id=menu2 (click)="hideTrades()">
         <a class="nav-link" href="#">Trade History</a>
       </li>
     </ul>
   </div>
 </nav>
-
 <br><br>
-<div id="module1" style="width: 50%;margin: 0 auto;">
-  <div class="col" id="color-box">
-    <div class="row">
-      <div class="center">
-        <div class="form-group">
-          <div class="floaty">
-            <label for="stockSelector">Stock:</label>
-            <input type="email" class="form-control" id="stockSelector">
-          </div>
-          <div class="floaty">
-            <label for="stockSelector">Quantity:</label>
-            <input type="email" class="form-control" id="quantSelector">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="center">
-        <div ngbDropdown class="d-inline-block">
-        <label for="strategySelector">Strategy: </label>
-        <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Select Strategy</button>
-          <div ngbDropdownMenu aria-labelledby="strategySelector">
-            <button (click)="changeLabel('strategySelector', 'Two Moving Averages')" ngbDropdownItem>Two Moving Averages</button>
-            <button (click)="changeLabel('strategySelector', 'Bollinger Bands')" ngbDropdownItem>Bollinger Bands</button>
-            <button (click)="changeLabel('strategySelector','Price Breakout')"ngbDropdownItem>Price Breakout</button>
+<div *ngIf="showTradesPage"> 
+  <div id="module1" style="width: 50%;margin: 0 auto;">
+    <div class="col" id="color-box">
+      <div class="row">
+        <div class="center">
+          <div class="form-group">
+            <div class="floaty">
+              <label for="stockSelector">Stock:</label>
+              <input type="email" class="form-control" id="stockSelector">
+            </div>
+            <div class="floaty">
+              <label for="stockSelector">Quantity:</label>
+              <input type="email" class="form-control" id="quantSelector">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="center">
-        <div ngbDropdown class="d-inline-block">
-            <label>Time Frames: </label>
-            <button class="btn btn-outline-primary" id="shortSelector" ngbDropdownToggle>Short Time</button>
-              <div ngbDropdownMenu aria-labelledby="shortSelector">
-                <button (click)="changeLabel('shortSelector','1 s')" ngbDropdownItem>1 s</button>
-                <button (click)="changeLabel('shortSelector','2 s')" ngbDropdownItem>2 s</button>
-                <button (click)="changeLabel('shortSelector','3 s')" ngbDropdownItem>3 s</button>
-              </div>
+      <div class="row">
+        <div class="center">
+          <div ngbDropdown class="d-inline-block">
+          <label for="strategySelector">Strategy: </label>
+          <button class="btn btn-outline-primary" id="strategySelector" ngbDropdownToggle>Select Strategy</button>
+            <div ngbDropdownMenu aria-labelledby="strategySelector">
+              <button (click)="changeLabel('strategySelector', 'Two Moving Averages')" ngbDropdownItem>Two Moving Averages</button>
+              <button (click)="changeLabel('strategySelector', 'Bollinger Bands')" ngbDropdownItem>Bollinger Bands</button>
+              <button (click)="changeLabel('strategySelector','Price Breakout')"ngbDropdownItem>Price Breakout</button>
+            </div>
+          </div>
         </div>
-        <div ngbDropdown class="d-inline-block">
-            <button class="btn btn-outline-primary smooth-scroll" id="longSelector" ngbDropdownToggle>Long Time</button>
-              <div ngbDropdownMenu aria-labelledby="strategySelector">
-                <button (click)="changeLabel('longSelector','1 s')" ngbDropdownItem>1 s</button>
-                <button (click)="changeLabel('longSelector', '2 s')" ngbDropdownItem>2 s</button>
-                <button (click)="changeLabel('longSelector','3 s')" ngbDropdownItem>3 s</button>
-              </div>
+      </div>
+      <div class="row">
+        <div class="center">
+          <div ngbDropdown class="d-inline-block">
+              <label>Time Frames: </label>
+              <button class="btn btn-outline-primary" id="shortSelector" ngbDropdownToggle>Short Time</button>
+                <div ngbDropdownMenu aria-labelledby="shortSelector">
+                  <button (click)="changeLabel('shortSelector','1 s')" ngbDropdownItem>1 s</button>
+                  <button (click)="changeLabel('shortSelector','2 s')" ngbDropdownItem>2 s</button>
+                  <button (click)="changeLabel('shortSelector','3 s')" ngbDropdownItem>3 s</button>
+                </div>
+          </div>
+          <div ngbDropdown class="d-inline-block">
+              <button class="btn btn-outline-primary smooth-scroll" id="longSelector" ngbDropdownToggle>Long Time</button>
+                <div ngbDropdownMenu aria-labelledby="strategySelector">
+                  <button (click)="changeLabel('longSelector','1 s')" ngbDropdownItem>1 s</button>
+                  <button (click)="changeLabel('longSelector', '2 s')" ngbDropdownItem>2 s</button>
+                  <button (click)="changeLabel('longSelector','3 s')" ngbDropdownItem>3 s</button>
+                </div>
+          </div>
+          <button (click)="buttonThreeClick()"type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
         </div>
-        <button type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
       </div>
     </div>
   </div>
+  <br><br>
+  <table class="table" id="t1" style="display:block">
+    <thead>
+      <tr>
+        <th scope="col">Stock</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Strategy</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Status</th>
+        <th scope="col">Modify Trade</th>
+      </tr>
+    </thead>
+  </table>
 </div>
-<br><br>
-<table class="table" id="t1" style="display:none">
-  <thead>
-    <tr>
-      <th scope="col">Stock</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Strategy</th>
-      <th scope="col">Duration</th>
-      <th scope="col">Status</th>
-      <th scope="col">Modify Trade</th>
-    </tr>
-  </thead>
+
