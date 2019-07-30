@@ -26,6 +26,7 @@ public class TwoMovingAverages implements Strategy{
     private boolean buying; //true if buying, false if selling
     private PriceGetter priceGetter;
     private MessageSender messageSender;
+    private double delta = 0.02;
 
     public String getType() {
         return type;
@@ -120,8 +121,10 @@ public class TwoMovingAverages implements Strategy{
     }
 
     public double calculateAverage(int period) throws JSONException {
-        JSONArray result = priceGetter.getStockPriceList(stockName, period);
 
+        JSONArray result = priceGetter.getStockPriceList(stockName, period);
+        System.out.println("result is:::");
+        System.out.println(result);
         double sum = 0;
         if (result != null) {
             for(int i = 0; i < period; i++) {
@@ -129,9 +132,6 @@ public class TwoMovingAverages implements Strategy{
             }
         }
 
-        //this is for testing purposes:
-//        return Math.round(sum/period) / 10.0;
-        
         return sum/period;
     }
 
@@ -142,23 +142,23 @@ public class TwoMovingAverages implements Strategy{
         double longAverage = calculateAverage(longTime);
         Order o;
 
+        System.out.println("-------------------------------");
         System.out.println("long average: " +  longAverage);
         System.out.println("short average: " + shortAverage);
+        System.out.println("-------------------------------");
 
         if(shortAverage > longAverage) {
-            System.out.println("we're flipping to false");
             buying = false;
-        }else if(shortAverage < longAverage){
-            System.out.println("we're flipping to true");
+        }else{  //if shortAverage < longAverage
             buying = true;
-        }else { //if they're equal
+        }
+
+        if(Math.abs(longAverage - shortAverage) < delta) {
             o = new Order(buying, UUID.randomUUID().toString(), priceGetter.getStockPrice(stockName),
                     volume, stockName, new Date(), "");
             System.out.println(o);
             messageSender.sendMessage("queue/OrderBroker", o);
             System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
         }
-
-        System.out.println("buying??? " +  buying);
     }
 }
