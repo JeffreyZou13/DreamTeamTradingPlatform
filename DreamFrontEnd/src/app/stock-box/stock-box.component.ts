@@ -18,8 +18,8 @@ export class StockBoxComponent implements OnInit {
 
   stockboxes: Array<StockBoxComponent> = [];
 
-  changeLabel(obj) {
-    (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML = obj;
+  changeLabel(obj1 ,obj2) {
+    (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
   }
 
   exitModule(obj){
@@ -31,14 +31,37 @@ export class StockBoxComponent implements OnInit {
     
   }
 
+
   ngOnInit() {
     var stratCounter = 0;
+    var addEles = false;
         $("#bt3").click(
             function () {
                 stratCounter++;
-                var stockName = document.getElementById("stockSelector").value;
-                var stockQuantity = document.getElementById("quantSelector").value;
-                var strat = document.getElementById("strategySelector").innerHTML;
+                var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
+                var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
+                var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
+
+                    // private String type;
+                    // private String stock;
+                    // private int shortPeriod;
+                    // private int longPeriod;
+                    // private int size;
+
+                var postObj = {
+                  "type":"two moving averages", 
+                  "stock": stockName,
+                  "shortPeriod": 1,
+                  "longPeriod":2,
+                  "size":stockQuantity
+                }
+
+                if(stockName == "" || stockQuantity == "" 
+                  || strat == "Select Strategy" ){
+                  alert("All fields are required")
+                }else{
+                  addEles = true;
+                }
 
                 var markup = 
                 `<div id="strat${stratCounter}"class = "floaty style="width=30%">
@@ -51,6 +74,8 @@ export class StockBoxComponent implements OnInit {
                       Strategy: ${strat}
                       <br>
                       Time Frames: 1 to 2
+                      <br>
+                      Status
                     </div>
                     <div class="row">
                       <button type="button" class="btn btn-success" id="bt3">Restart</button>
@@ -60,16 +85,27 @@ export class StockBoxComponent implements OnInit {
                   </div>
                 </div>`
 
-                $("body").append(markup);
+                if(addEles){
+                  $("body").append(markup);
 
-                $(".btn-danger").click(
-                    function () {
-                        var id = $(this).attr("id");
-                        console.log(id)
-                        var remove="strat" + id;
-                        (<HTMLInputElement>document.getElementById(remove)).remove();
-                    }
-                )
+                  $(".btn-danger").click(
+                      function () {
+                          var id = $(this).attr("id");
+                          var remove;
+                          remove = "#strat" + id;
+                          $(remove).remove();
+                      }
+                  )
+                }
+
+                $.ajax({
+                  type: "POST",
+                  url: '/strategy/start',
+                  data: postObj,
+                  success: function(response) {
+                    console.log("yayy made it here")
+                  }
+              });
             }
         )
     
