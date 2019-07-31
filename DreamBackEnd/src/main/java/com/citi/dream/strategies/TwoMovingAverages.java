@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Entity
 @Table(name="two_moving_averages")
 
-public class TwoMovingAverages implements Strategy{
+public class TwoMovingAverages implements Strategy, Serializable {
 
     @Id
     @Column(name= "strategyID")
@@ -38,12 +39,12 @@ public class TwoMovingAverages implements Strategy{
     @Column(name="delta") private double delta = 0.02;
 
     @OneToMany(mappedBy="twoMovingAverages", cascade={CascadeType.MERGE, CascadeType.PERSIST})
-    private List<Order> orderList = new ArrayList<>();
+    private transient List<Order> orderList = new ArrayList<>();
 
     @Transient
-    PriceGetter priceGetter;
+    private transient PriceGetter priceGetter;
     @Transient
-    private MessageSender messageSender;
+    private transient MessageSender messageSender;
 
     public void addOrder(Order o) {
         orderList.add(o);
@@ -205,7 +206,7 @@ public class TwoMovingAverages implements Strategy{
 
         if(Math.abs(longAverage - shortAverage) < delta) {
             JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
-            if (currentStockPrice.length() > 0) {
+            if (currentStockPrice != null && currentStockPrice.length() > 0) {
                 double currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
                 o = new Order(buying, UUID.randomUUID().toString(), currentPrice,
                         volume, stockName, new Date(), "", strategyID);

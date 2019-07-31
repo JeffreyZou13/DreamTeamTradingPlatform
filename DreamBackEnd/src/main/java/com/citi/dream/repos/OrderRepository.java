@@ -1,10 +1,9 @@
 package com.citi.dream.repos;
 
-import com.citi.dream.strategies.TwoMovingAverages;
+import com.citi.dream.jms.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TwoMovingAveragesRepository extends JpaRepository<TwoMovingAverages, String> {
-
+public interface OrderRepository extends JpaRepository<Order, String> {
 }
