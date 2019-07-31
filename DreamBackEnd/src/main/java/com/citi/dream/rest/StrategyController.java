@@ -17,9 +17,6 @@ import java.util.UUID;
 public class StrategyController {
 
     @Autowired
-    ConfigurableApplicationContext context;
-
-    @Autowired
     StrategyManager strategyManager;
 
     private Logger logger = LogManager.getLogger(this.getClass());
