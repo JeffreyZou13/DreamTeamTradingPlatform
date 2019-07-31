@@ -16,7 +16,6 @@ declare let $: any;
 })
 
 export class StockBoxComponent implements OnInit {
-  showTradesPage:boolean = true;
   stratCounter:number = 0;
   addEles:boolean = false;
 
@@ -30,23 +29,6 @@ export class StockBoxComponent implements OnInit {
     //WILL HAVE TO ADD LOGIC TO EXIT TRADE HERE, ALSO WITH ALERT
   }
 
-  hideTrades(){
-    this.showTradesPage = false;
-    document.getElementById("allTrades").style.display = "none";
-    document.getElementById("menu2").classList.add("active");
-    document.getElementById("menu1").classList.remove("active");
-  }
-
-  showTrades(){
-    this.showTradesPage = true;
-    document.getElementById("allTrades").style.display = "";
-    document.getElementById("menu2").classList.remove("active");
-    document.getElementById("menu1").classList.add("active")
-  }
-
-  toggleTradePage(){
-    this.showTradesPage = !this.showTradesPage;
-  }
 
   stockClick(){
     console.log('here');
@@ -168,8 +150,5 @@ export class StockBoxComponent implements OnInit {
     $('#stockSelector').autocomplete({
       source: store1
     })
-
   }
-
-
 }

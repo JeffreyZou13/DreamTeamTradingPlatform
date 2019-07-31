@@ -1,21 +1,4 @@
 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-  <a class="navbar-brand" href="#">DreamTeam Trading Platform</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active" id="menu1" 
-      (click)="showTrades()">
-        <a class="nav-link" href="#">Active Trades</a>
-      </li>
-      <li class="nav-item" id=menu2 (click)="hideTrades()">
-        <a class="nav-link" href="#">Trade History</a>
-      </li>
-    </ul>
-  </div>
-</nav>
 <br><br>
 <div id="allTrades" display=""> 
   <div id="module1" style="width: 50%;margin: 0 auto;">
@@ -53,17 +36,17 @@
               <label>Time Frames: </label>
               <button class="btn btn-outline-primary" id="shortSelector" ngbDropdownToggle>Short Time</button>
                 <div ngbDropdownMenu aria-labelledby="shortSelector">
-                  <button (click)="changeLabel('shortSelector','1 s')" ngbDropdownItem>1 </button>
-                  <button (click)="changeLabel('shortSelector','2 s')" ngbDropdownItem>2</button>
-                  <button (click)="changeLabel('shortSelector','3 s')" ngbDropdownItem>3</button>
+                  <button (click)="changeLabel('shortSelector','1 s')" ngbDropdownItem>1 s</button>
+                  <button (click)="changeLabel('shortSelector','2 s')" ngbDropdownItem>2 s</button>
+                  <button (click)="changeLabel('shortSelector','3 s')" ngbDropdownItem>3 s</button>
                 </div>
           </div>
           <div ngbDropdown class="d-inline-block">
               <button class="btn btn-outline-primary smooth-scroll" id="longSelector" ngbDropdownToggle>Long Time</button>
                 <div ngbDropdownMenu aria-labelledby="strategySelector">
-                  <button (click)="changeLabel('longSelector','1 s')" ngbDropdownItem>1</button>
-                  <button (click)="changeLabel('longSelector', '2 s')" ngbDropdownItem>2</button>
-                  <button (click)="changeLabel('longSelector','3 s')" ngbDropdownItem>3</button>
+                  <button (click)="changeLabel('longSelector','1 s')" ngbDropdownItem>1 s</button>
+                  <button (click)="changeLabel('longSelector', '2 s')" ngbDropdownItem>2 s</button>
+                  <button (click)="changeLabel('longSelector','3 s')" ngbDropdownItem>3 s</button>
                 </div>
           </div>
           <button (click)="buttonThreeClick()"type="button" class="btn btn-success" id="bt3">Initiate Strategy</button>
