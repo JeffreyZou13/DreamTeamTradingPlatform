@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS two_moving_averages (
     stock_name VARCHAR(4),
     volume INTEGER,
     cut_off_percentage DECIMAL(3,2),
-    `action` VARCHAR(4),
     buying BOOLEAN,
-    delta DECIMAL(3,2)
+    delta DECIMAL(3,2),
+    profit DECIMAL(9,4)
 );
 
 CREATE TABLE IF NOT EXISTS orders (
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS orders (
     price DECIMAL(9,4),
     size INTEGER,
     stock VARCHAR(4),
-    when_as_date DATE,
+    when_as_date DATETIME(2),
     response VARCHAR(16),
     strategyID VARCHAR(36),
     two_avg_id VARCHAR(36) NOT NULL,

@@ -43,6 +43,12 @@ public class StrategyManager {
         return null;
     }
 
+    // Stopping strategy
+    public Strategy stopStrategy(String strategyID) {
+        // Remove it from the running strategies and update it to active
+        return strategies.remove(strategyID);
+    }
+
     public Strategy deleteStrategy(String strategyID) {
         twoMovingAveragesRepository.deleteById(strategyID);
         return strategies.remove(strategyID);

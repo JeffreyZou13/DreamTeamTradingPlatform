@@ -51,7 +51,7 @@ public class StrategyController {
     public StrategyResponse stopStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered stopStrategy");
         StrategyResponse resp = new StrategyResponse();
-        strategyManager.deleteStrategy(strategy.getId());
+        strategyManager.stopStrategy(strategy.getId());
         resp.setResult("successfully stopped strategy of type " + strategy.getType() + " with id " + strategy.getId());
         return resp;
     }
