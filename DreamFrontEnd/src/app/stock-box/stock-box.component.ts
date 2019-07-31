@@ -58,6 +58,9 @@ export class StockBoxComponent implements OnInit {
     var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
     var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
     var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
+    var shortVal = (<HTMLInputElement>document.getElementById("shortSelector")).value;
+    var longVal = (<HTMLInputElement>document.getElementById("longSelector")).value;
+
     var stratId = "strat" + this.stratCounter;
     var yId = "y" + this.stratCounter;
     var gId = "g" + this.stratCounter;
@@ -65,8 +68,8 @@ export class StockBoxComponent implements OnInit {
     var postObj = {
       "type":"two moving averages",
       "stock": stockName,
-      "shortPeriod": 1,
-      "longPeriod":2,
+      "shortPeriod": shortVal,
+      "longPeriod": longVal,
       "size":stockQuantity
     }
 
@@ -133,7 +136,7 @@ export class StockBoxComponent implements OnInit {
       contentType:"application/json",
       data: JSON.stringify(postObj),
       success: function(response) {
-        console.log("yayy made it here")
+        console.log("Posted a new trade")
       }
     });
 
@@ -145,7 +148,6 @@ export class StockBoxComponent implements OnInit {
 
   ngOnInit() {
     var store1;
-
       $.ajax({
       type: "GET",
       async: false,
