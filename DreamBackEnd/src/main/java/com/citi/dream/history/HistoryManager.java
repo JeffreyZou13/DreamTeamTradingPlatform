@@ -40,4 +40,8 @@ public class HistoryManager {
     public List<Order> getOrdersByStrategyID(String id) {
         return orderRepository.findByStrategyID(id);
     }
+
+    public List<Order> getOrdersPnlByStrategyType(String type) {
+        return null;
+    }
 }
