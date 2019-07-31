@@ -1,7 +1,9 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import * as $ from 'jquery';
-// import * as angular from "angular";
+import { HttpClient } from '@angular/common/http';
+import { map } from "rxjs/operators"; 
+declare let $: any;
+
 
 @Component({
   selector: 'app-stock-box',
@@ -10,13 +12,14 @@ import * as $ from 'jquery';
 })
 
 @NgModule({
-    imports: [NgbModule]
+    imports: [NgbModule,HttpClient]
 })
 
 export class StockBoxComponent implements OnInit {
   showTradesPage:boolean = true;
   stratCounter:number = 0;
   addEles:boolean = false;
+
 
   changeLabel(obj1 ,obj2) {
     (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
@@ -45,12 +48,19 @@ export class StockBoxComponent implements OnInit {
     this.showTradesPage = !this.showTradesPage;
   }
 
+  stockClick(){
+    console.log('here');
+  }
+
   buttonThreeClick(){
 
     this.stratCounter++;
     var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
     var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
     var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
+    var shortVal = (<HTMLInputElement>document.getElementById("shortSelector")).value;
+    var longVal = (<HTMLInputElement>document.getElementById("longSelector")).value;
+
     var stratId = "strat" + this.stratCounter;
     var yId = "y" + this.stratCounter;
     var gId = "g" + this.stratCounter;
@@ -58,8 +68,8 @@ export class StockBoxComponent implements OnInit {
     var postObj = {
       "type":"two moving averages",
       "stock": stockName,
-      "shortPeriod": 1,
-      "longPeriod":2,
+      "shortPeriod": shortVal,
+      "longPeriod": longVal,
       "size":stockQuantity
     }
 
@@ -126,17 +136,36 @@ export class StockBoxComponent implements OnInit {
       contentType:"application/json",
       data: JSON.stringify(postObj),
       success: function(response) {
-        console.log("yayy made it here")
+        console.log("Posted a new trade")
       }
     });
 
   }
 
-  constructor() {
-
+  constructor(private http: HttpClient) {
+    
   }
 
   ngOnInit() {
+    var store1;
+      $.ajax({
+      type: "GET",
+      async: false,
+      url: 'http://nyc31.conygre.com:31/Stock/getSymbolList',
+      contentType:"application/json",
+      success: function(response) {
+        var store = []; 
+        for (const key of Object.keys(response)) {
+          store.push(response[key].symbol.toUpperCase());
+        }
+        store1 = store;
+        console.log(store1)
+      }
+    });
+
+    $('#stockSelector').autocomplete({
+      source: store1
+    })
 
   }
 

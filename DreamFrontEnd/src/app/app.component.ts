@@ -1,6 +1,8 @@
 import { Component, NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+declare let $: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,9 +10,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 })
 
 @NgModule({
-  imports: [NgbModule]
+	declarations: [AppComponent],
+  imports: [NgbModule],
+  bootstrap: [AppComponent]
 })
 
 export class AppComponent {
   title = 'DreamFrontEnd';
+
+  ngOnInit(){
+  }
 }
