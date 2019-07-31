@@ -32,6 +32,16 @@ public class Order implements Serializable {
     @Column(name="when_as_date") private Date whenAsDate;
     @Column(name="response") private String response;
     @Column(name="strategyID") private String strategyID;
+    @Column(name="strategy_type") private String strategyType;
+
+
+    public String getStrategyType() {
+        return strategyType;
+    }
+
+    public void setStrategyType(String strategyType) {
+        this.strategyType = strategyType;
+    }
 
     public TwoMovingAverages getTwoMovingAverages() {
         return twoMovingAverages;

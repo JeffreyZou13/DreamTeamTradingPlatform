@@ -32,11 +32,13 @@ public class TwoMovingAverages implements Strategy, Serializable {
     @Column(name="stock_name")private String stockName;
     @Column(name="volume")private int volume;
     @Column(name="cut_off_percentage") private double cutOffPercentage; //the cutoff that stops the
-    // strategy
-    @Column(name="action")private String action; //buy or sell
     @Column(name="buying")private boolean buying; //true if buying, false if selling
 
     @Column(name="delta") private double delta = 0.02;
+    @Transient private boolean openPosition = false;
+    @Transient private double executedOrderPrice = -1;
+
+    @Column(name="profit") private double profit;
 
     @OneToMany(mappedBy="twoMovingAverages", cascade={CascadeType.MERGE, CascadeType.PERSIST})
     private transient List<Order> orderList = new ArrayList<>();
@@ -51,6 +53,14 @@ public class TwoMovingAverages implements Strategy, Serializable {
         o.setTwoMovingAverages(this);
     }
 
+
+    public double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(double profit) {
+        this.profit = profit;
+    }
 
     public String getType() {
         return type;
@@ -106,14 +116,6 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
     public void setCutOffPercentage(double cutOffPercentage) {
         this.cutOffPercentage = cutOffPercentage;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
     }
 
     public PriceGetter getPriceGetter() {
@@ -173,8 +175,8 @@ public class TwoMovingAverages implements Strategy, Serializable {
     public double calculateAverage(int period) throws JSONException {
 
         JSONArray result = priceGetter.getStockData().get(this.stockName);
-        System.out.println("result is:::");
-        System.out.println(result);
+//        System.out.println("result is:::");
+//        System.out.println(result);
         double sum = 0;
         if (result != null) {
             for(int i = 0; i < period && i < result.length(); i++) {
@@ -186,34 +188,118 @@ public class TwoMovingAverages implements Strategy, Serializable {
     }
 
 
+
+
     public void performStrategy() throws JSONException {
         this.priceGetter.setStockName(this.stockName);
         this.priceGetter.setNumOfStocks(this.volume);
         double shortAverage = calculateAverage(shortTime);
         double longAverage = calculateAverage(longTime);
+        double currentPrice = -1.0;
+        double lastTwoTradeProfit = 0;
         Order o;
 
+
         System.out.println("-------------------------------");
-        System.out.println("long average: " +  longAverage);
+        System.out.println("long average: " + longAverage);
         System.out.println("short average: " + shortAverage);
         System.out.println("-------------------------------");
 
-        if(shortAverage > longAverage) {
+        if (shortAverage > longAverage) {
             buying = false;
-        }else{  //if shortAverage < longAverage
+        } else {  //if shortAverage < longAverage
             buying = true;
         }
 
-        if(Math.abs(longAverage - shortAverage) < delta) {
-            JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
-            if (currentStockPrice != null && currentStockPrice.length() > 0) {
-                double currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
-                o = new Order(buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID);
-                addOrder(o);
-                System.out.println(o);
-                messageSender.sendMessage("queue/OrderBroker", o);
-                System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
+        JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
+        if (currentStockPrice != null && currentStockPrice.length() > 0) {
+            currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
+        }
+
+
+        System.out.println("current price");
+        System.out.println(currentPrice);
+        System.out.println("buying");
+        System.out.println(buying);
+        System.out.println("execPrice");
+        System.out.println(executedOrderPrice);
+        System.out.println("cutoffPercentage");
+        System.out.println(cutOffPercentage);
+        System.out.println("targetPrice");
+        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
+        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
+        System.out.println(targetPrice1);
+        System.out.println(targetPrice2);
+        System.out.println("currentPrice");
+        System.out.println(currentPrice);
+        System.out.println("lastTwoTradeProfit");
+        System.out.println(lastTwoTradeProfit);
+        System.out.println("profit");
+        System.out.println(profit);
+
+
+
+
+        //if currently is closed position, we can open a position
+        if (openPosition == false && Math.abs(longAverage - shortAverage) < delta && currentPrice != -1) {
+            openPosition = true;
+            executedOrderPrice = currentPrice;
+            o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
+                    volume, stockName, new Date(), "", strategyID);
+            addOrder(o);
+            System.out.println(o);
+            messageSender.sendMessage("queue/OrderBroker", o);
+            System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
+        } else if (openPosition) {
+            //trigger exit position
+            if (buying) {
+                //after we bought now we are selling
+                if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
+                    o = new Order(!buying, UUID.randomUUID().toString(), executedOrderPrice,
+                           volume, stockName, new Date(), "", strategyID);
+                    addOrder(o);
+                    System.out.println(o);
+                    messageSender.sendMessage("queue/OrderBroker", o);
+                    System.out.println("SOLD TO RECOVER POSITION");
+                    openPosition = !openPosition;
+
+                    lastTwoTradeProfit =
+                            (double) (executedOrderPrice - currentPrice ) * volume;
+                    profit += lastTwoTradeProfit;
+                    System.out.println("------------------------");
+                    System.out.println("lastTwoTradeProfit: ");
+                    System.out.println(lastTwoTradeProfit);
+                    System.out.println("persisted profit: ");
+                    System.out.println(profit);
+                    System.out.println("------------------------");
+
+
+                }
+            } else {
+                //after we sold now we are buying
+                if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
+                    o = new Order(!buying, UUID.randomUUID().toString(), executedOrderPrice,
+                            volume, stockName, new Date(), "", strategyID);
+                    addOrder(o);
+                    System.out.println(o);
+                    messageSender.sendMessage("queue/OrderBroker", o);
+                    System.out.println("BOUGHT TO RECOVER POSITION");
+
+                    openPosition = !openPosition;
+
+                    lastTwoTradeProfit =
+                            (double) (executedOrderPrice - currentPrice ) * volume;
+                    profit += lastTwoTradeProfit;
+                    System.out.println("------------------------");
+                    System.out.println("lastTwoTradeProfit: ");
+                    System.out.println(lastTwoTradeProfit);
+                    System.out.println("persisted profit: ");
+                    System.out.println(profit);
+                    System.out.println("------------------------");
+
+
+
+                }
             }
         }
     }

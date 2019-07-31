@@ -30,7 +30,7 @@ public class StrategyController {
         // Generate an ID and create a new strategy
         String strategyId = UUID.randomUUID().toString();
         strategyManager.createStrategy(strategy.getType(), strategy.getLongPeriod(), strategy.getShortPeriod(),
-                strategy.getStock(), strategy.getSize(), strategyId, 0.01);
+                strategy.getStock(), strategy.getSize(), strategyId, 0.001);
         resp.setResult("successfully started a new strategy of type " + strategy.getType() + " with id " + strategyId);
         resp.setId(strategyId);
         return resp;

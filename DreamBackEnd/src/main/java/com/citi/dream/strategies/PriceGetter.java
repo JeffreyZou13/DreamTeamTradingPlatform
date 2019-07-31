@@ -26,6 +26,7 @@ public class PriceGetter {
     private int numOfStocks;
     private HashMap<String, JSONArray> stockData = new HashMap<>();
 
+
     public String getStockName() {
         return stockName;
     }
@@ -49,6 +50,7 @@ public class PriceGetter {
     public void setStockData(HashMap<String, JSONArray> stockData) {
         this.stockData = stockData;
     }
+
 //    public JSONObject getStock() {
 //        return stock;
 //    }
