@@ -1,7 +1,9 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import * as $ from 'jquery';
-// import * as angular from "angular";
+import { HttpClient } from '@angular/common/http';
+import { map } from "rxjs/operators"; 
+declare let $: any;
+
 
 @Component({
   selector: 'app-stock-box',
@@ -10,14 +12,14 @@ import * as $ from 'jquery';
 })
 
 @NgModule({
-    imports: [NgbModule]
+    imports: [NgbModule,HttpClient]
 })
 
 export class StockBoxComponent implements OnInit {
   showTradesPage:boolean = true;
   stratCounter:number = 0;
   addEles:boolean = false;
-  stockData:any; 
+
 
   changeLabel(obj1 ,obj2) {
     (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
@@ -48,20 +50,6 @@ export class StockBoxComponent implements OnInit {
 
   stockClick(){
     console.log('here');
-    $.ajax({
-      type: "GET",
-      url: 'http://nyc31.conygre.com:31/Stock/getSymbolListOrderedBySymbol',
-      contentType:"application/json",
-      success: function(response) {
-        var store = []; 
-        for (const key of Object.keys(response)) {
-          store.push(response[key].symbol.toUpperCase());
-        }
-        this.stockData = store;
-        console.log(this.stockData);
-      }
-    });
-
   }
 
   buttonThreeClick(){
@@ -151,11 +139,31 @@ export class StockBoxComponent implements OnInit {
 
   }
 
-  constructor() {
-
+  constructor(private http: HttpClient) {
+    
   }
 
   ngOnInit() {
+    var store1;
+
+      $.ajax({
+      type: "GET",
+      async: false,
+      url: 'http://nyc31.conygre.com:31/Stock/getSymbolList',
+      contentType:"application/json",
+      success: function(response) {
+        var store = []; 
+        for (const key of Object.keys(response)) {
+          store.push(response[key].symbol.toUpperCase());
+        }
+        store1 = store;
+        console.log(store1)
+      }
+    });
+
+    $('#stockSelector').autocomplete({
+      source: store1
+    })
 
   }
 
