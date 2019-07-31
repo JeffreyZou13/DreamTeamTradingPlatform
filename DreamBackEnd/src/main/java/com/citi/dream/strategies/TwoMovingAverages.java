@@ -10,23 +10,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-public class TwoMovingAverages implements Strategy{
+@Entity
+@Table(name="two_moving_averages")
 
-    private String type; //two moving averages
-    private int longTime;
-    private int shortTime;
-    private String stockName;
-    private int volume;
+public class TwoMovingAverages implements Strategy, Serializable {
+
+    @Id
+    @Column(name= "strategyID")
     private String strategyID;
-    private double cutOffPercentage; //the cutoff that stops the strategy
-    private String action; //buy or sell
-    private boolean buying; //true if buying, false if selling
-    private PriceGetter priceGetter;
-    private MessageSender messageSender;
-    private double delta = 0.02;
+
+    @Column(name="type") private String type; //two moving averages
+    @Column(name="long_time")private int longTime;
+    @Column(name="short_time")private int shortTime;
+    @Column(name="stock_name")private String stockName;
+    @Column(name="volume")private int volume;
+    @Column(name="cut_off_percentage") private double cutOffPercentage; //the cutoff that stops the
+    // strategy
+    @Column(name="action")private String action; //buy or sell
+    @Column(name="buying")private boolean buying; //true if buying, false if selling
+
+    @Column(name="delta") private double delta = 0.02;
+
+    @OneToMany(mappedBy="twoMovingAverages", cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    private transient List<Order> orderList = new ArrayList<>();
+
+    @Transient
+    private transient PriceGetter priceGetter;
+    @Transient
+    private transient MessageSender messageSender;
+
+    public void addOrder(Order o) {
+        orderList.add(o);
+        o.setTwoMovingAverages(this);
+    }
+
 
     public String getType() {
         return type;
@@ -108,6 +132,30 @@ public class TwoMovingAverages implements Strategy{
         this.buying = buying;
     }
 
+    public double getDelta() {
+        return delta;
+    }
+
+    public void setDelta(double delta) {
+        this.delta = delta;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
+    public MessageSender getMessageSender() {
+        return messageSender;
+    }
+
+    public void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
+    }
+
     public TwoMovingAverages(String type, int longTime, int shortTime, String stockName, int volume, String strategyID, double cutOffPercentage, PriceGetter priceGetter, MessageSender messageSender) {
         this.type = type;
         this.longTime = longTime;
@@ -119,6 +167,8 @@ public class TwoMovingAverages implements Strategy{
         this.priceGetter = priceGetter;
         this.messageSender = messageSender;
     }
+
+    public TwoMovingAverages() {} // Need it for JPA
 
     public double calculateAverage(int period) throws JSONException {
 
@@ -156,10 +206,11 @@ public class TwoMovingAverages implements Strategy{
 
         if(Math.abs(longAverage - shortAverage) < delta) {
             JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
-            if (currentStockPrice.length() > 0) {
+            if (currentStockPrice != null && currentStockPrice.length() > 0) {
                 double currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
                 o = new Order(buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "");
+                        volume, stockName, new Date(), "", strategyID);
+                addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
                 System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
