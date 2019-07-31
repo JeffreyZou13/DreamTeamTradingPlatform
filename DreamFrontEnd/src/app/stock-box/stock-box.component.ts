@@ -17,6 +17,7 @@ export class StockBoxComponent implements OnInit {
   showTradesPage:boolean = true;
   stratCounter:number = 0;
   addEles:boolean = false;
+  stockData:any; 
 
   changeLabel(obj1 ,obj2) {
     (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
@@ -43,6 +44,24 @@ export class StockBoxComponent implements OnInit {
 
   toggleTradePage(){
     this.showTradesPage = !this.showTradesPage;
+  }
+
+  stockClick(){
+    console.log('here');
+    $.ajax({
+      type: "GET",
+      url: 'http://nyc31.conygre.com:31/Stock/getSymbolListOrderedBySymbol',
+      contentType:"application/json",
+      success: function(response) {
+        var store = []; 
+        for (const key of Object.keys(response)) {
+          store.push(response[key].symbol.toUpperCase());
+        }
+        this.stockData = store;
+        console.log(this.stockData);
+      }
+    });
+
   }
 
   buttonThreeClick(){
