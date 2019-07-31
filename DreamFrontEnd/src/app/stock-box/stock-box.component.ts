@@ -58,18 +58,20 @@ export class StockBoxComponent implements OnInit {
     var stockName = (<HTMLInputElement>document.getElementById("stockSelector")).value;
     var stockQuantity = (<HTMLInputElement>document.getElementById("quantSelector")).value;
     var strat = (<HTMLInputElement>document.getElementById("strategySelector")).innerHTML;
-    var shortVal = (<HTMLInputElement>document.getElementById("shortSelector")).value;
-    var longVal = (<HTMLInputElement>document.getElementById("longSelector")).value;
+    var shortVal = (<HTMLInputElement>document.getElementById("shortSelector")).innerHTML;
+    var longVal = (<HTMLInputElement>document.getElementById("longSelector")).innerHTML;
 
     var stratId = "strat" + this.stratCounter;
     var yId = "y" + this.stratCounter;
     var gId = "g" + this.stratCounter;
 
+    console.log(shortVal)
+
     var postObj = {
       "type":"two moving averages",
       "stock": stockName,
-      "shortPeriod": shortVal,
-      "longPeriod": longVal,
+      "shortPeriod": 1,
+      "longPeriod": 3,
       "size":stockQuantity
     }
 

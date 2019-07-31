@@ -191,6 +191,10 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
 
     public void performStrategy() throws JSONException {
+        System.out.println("shortTime");
+        System.out.println(shortTime);
+        System.out.println("longTime");
+        System.out.println(longTime);
         this.priceGetter.setStockName(this.stockName);
         this.priceGetter.setNumOfStocks(this.volume);
         double shortAverage = calculateAverage(shortTime);
@@ -198,6 +202,9 @@ public class TwoMovingAverages implements Strategy, Serializable {
         double currentPrice = -1.0;
         double lastTwoTradeProfit = 0;
         Order o;
+
+
+
 
 
         System.out.println("-------------------------------");
