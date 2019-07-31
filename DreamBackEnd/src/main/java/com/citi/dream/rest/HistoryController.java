@@ -56,4 +56,14 @@ public class HistoryController {
         resp.setResult("successfully got all orders under strategy " + id);
         return resp;
     }
+
+    // View of orders by strategy type, sorted by time
+    @RequestMapping(method = RequestMethod.GET, value = "/orders/pnl/{type}")
+    public HistoryResponse getOrdersPnlByStrategyType(@PathVariable String type) {
+        logger.info("Getting orders by strategy type, sorted by time");
+        HistoryResponse resp = new HistoryResponse();
+        historyManager.getOrdersPnlByStrategyType(type);
+        // TODO
+        return resp;
+    }
 }
