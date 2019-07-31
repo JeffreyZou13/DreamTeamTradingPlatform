@@ -63,7 +63,7 @@ public class Order implements Serializable {
 //    private CompactDisc disc;
 
     public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate,
-                 String response, String strategyID) {
+                 String response, String strategyID, String strategyType) {
         this.id = id;
         this.buy = buy;
         this.price = price;
@@ -72,7 +72,7 @@ public class Order implements Serializable {
         this.whenAsDate = whenAsDate;
         this.response = response;
         this.strategyID = strategyID;
-
+        this.strategyType = strategyType;
     }
 
     public Order() {} // Need this for JPA
@@ -152,6 +152,7 @@ public class Order implements Serializable {
                 ", whenAsDate=" + whenAsDate +
                 ", response='" + response + '\'' +
                 ", strategyID='" + strategyID + '\'' +
+                ", strategyType='" + strategyType + '\'' +
                 '}';
     }
 }
