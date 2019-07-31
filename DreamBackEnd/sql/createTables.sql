@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS two_moving_averages (
     cut_off_percentage DECIMAL(3,2),
     `action` VARCHAR(4),
     buying BOOLEAN,
-    delta DECIMAL(3,2)
+    delta DECIMAL(3,2),
 );
 
 CREATE TABLE IF NOT EXISTS orders (
