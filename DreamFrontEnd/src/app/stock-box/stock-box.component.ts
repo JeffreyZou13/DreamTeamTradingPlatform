@@ -122,7 +122,7 @@ export class StockBoxComponent implements OnInit {
 
     $.ajax({
       type: "POST",
-      url: 'http://localhost:8080/strategy/start',
+      url: 'http://localhost:8081/strategy/start',
       contentType:"application/json",
       data: JSON.stringify(postObj),
       success: function(response) {
