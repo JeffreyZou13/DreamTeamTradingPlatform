@@ -5,6 +5,7 @@ public class StrategyForm {
     private String stock;
     private int shortPeriod;
     private int longPeriod;
+    private int durationTime; // For Bollinger
     private int size;
     private String id; // For pause and delete
 
@@ -38,6 +39,14 @@ public class StrategyForm {
 
     public void setLongPeriod(int longPeriod) {
         this.longPeriod = longPeriod;
+    }
+
+    public int getDurationTime() {
+        return durationTime;
+    }
+
+    public void setDurationTime(int durationTime) {
+        this.durationTime = durationTime;
     }
 
     public int getSize() {
