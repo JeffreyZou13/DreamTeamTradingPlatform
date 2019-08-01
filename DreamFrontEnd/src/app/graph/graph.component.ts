@@ -24,17 +24,16 @@ export class GraphComponent implements OnInit {
   }
 
   	ngOnInit() {
-//"12d4fd2b-7e58-4d89-9bc3-c2b3e2445836"
       $.ajax({
         type: "GET",
-        url: 'http://localhost:8081/history/orders/12d4fd2b-7e58-4d89-9bc3-c2b3e2445836',
+        url: 'http://localhost:8081/history/orders/abb5c2f5-9a81-4d0a-a1e0-48cc50892b66',
         contentType:"application/json",
         success: function(response) {
           console.log(response)
           let dataPoints = [];
         	let y = 0;
         	for ( var i = 0; i < response.orders.length; i++ ) {
-        		y += response.orders[i].profit
+        		y = response.orders[i].profit
         		dataPoints.push({ y: y});
         	}
 
