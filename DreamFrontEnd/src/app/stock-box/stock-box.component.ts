@@ -48,10 +48,10 @@ export class StockBoxComponent implements OnInit {
     var gId = "g" + this.stratCounter;
     var rId = "r" + this.stratCounter;
 
-    console.log(shortVal)
+    console.log(strat.toLowerCase())
 
     var newStrat = {
-      "type":"two moving averages",
+      "type":strat.toLowerCase(),
       "stock": stockName,
       "shortPeriod": 1,
       "longPeriod": 3,
@@ -176,13 +176,6 @@ export class StockBoxComponent implements OnInit {
       success: (response)=> {
         console.log(response)
         for (var i = 0; i < response.strategies["bollinger band"].length; i++){
-          // console.log("HIIIIII")
-          // this.stratCounter++;
-          // var stratId = "strat" + this.stratCounter;
-          // var yId = "y" + this.stratCounter;
-          // var gId = "g" + this.stratCounter;
-          // var rId = "r" + this.stratCounter;
-
           var backgroundColor;
 
           if(response.strategies["bollinger band"][i][6]  == "paused"){
