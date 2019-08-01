@@ -101,13 +101,17 @@ public class StrategyManager {
     public boolean stopStrategy(String strategyID) {
         // Remove it from the running strategies and update its state to stopped
         Strategy currentStrategy = twoMovingAveragesRepository.findById(strategyID).orElse(null);
+        if (currentStrategy == null) {
+            currentStrategy = bollingerBandRepository.findById(strategyID).orElse(null);
+        }
         if (currentStrategy != null) {
             logger.info("stopping strategy <" + strategyID + ">");
             currentStrategy.setState("stopped");
             if (currentStrategy.getType().equals("two moving averages")) {
                 twoMovingAveragesRepository.save((TwoMovingAverages) currentStrategy);
+            } else if (currentStrategy.getType().equals("bollinger band")) {
+                bollingerBandRepository.save((BollingerBand) currentStrategy);
             }
-            // TODO after bollinger is finished add condition
             strategies.remove(strategyID);
             return true;
         } else {
@@ -124,6 +128,8 @@ public class StrategyManager {
             Strategy currentStrategy = strategies.get(strategyID);
             if (currentStrategy.getType().equals("two moving averages")) {
                 twoMovingAveragesRepository.save((TwoMovingAverages) currentStrategy);
+            } else if (currentStrategy.getType().equals("bollinger band")) {
+                bollingerBandRepository.save((BollingerBand) currentStrategy);
             }
         }
     }
