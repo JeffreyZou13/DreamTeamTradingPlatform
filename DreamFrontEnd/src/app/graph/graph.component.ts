@@ -33,9 +33,14 @@ export class GraphComponent implements OnInit {
           console.log(response)
 
           for (var i = 0; i < response.strategies["bollinger band"].length; i++){
+            var x;
             var markup =
-            `<button ngbDropdownItem onclick="console.log('${response.strategies['bollinger band'][i][0]}')">${response.strategies["bollinger band"][i][0]}</button>`
+            `<button ngbDropdownItem onclick=
+            "document.getElementById('currentId').innerHTML = '${response.strategies['bollinger band'][i][0]}'">
+            ${response.strategies["bollinger band"][i][0]}
+            </button>`
             $("#performanceSelector2").append(markup);
+
           }
         }
       })
