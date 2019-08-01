@@ -1,7 +1,7 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
-import { map } from "rxjs/operators"; 
+import { map } from "rxjs/operators";
 declare let $: any;
 
 
@@ -34,6 +34,10 @@ export class StockBoxComponent implements OnInit {
     console.log('here');
   }
 
+  // pauseClick(){
+  //
+  // }
+
   buttonThreeClick(){
 
     this.stratCounter++;
@@ -49,7 +53,7 @@ export class StockBoxComponent implements OnInit {
 
     console.log(shortVal)
 
-    var postObj = {
+    var newStrat = {
       "type":"two moving averages",
       "stock": stockName,
       "shortPeriod": 1,
@@ -74,7 +78,7 @@ export class StockBoxComponent implements OnInit {
         <td>Running</td>
         <td>
           <button type="button" class="btn btn-success" style="margin:0px" id=${this.stratCounter}>Start</button>
-          <button type="button" class="btn btn-warning" style="margin:0px" id=${this.stratCounter}>Pause</button>
+          <button type="button" class="btn btn-warning" style="margin:0px" id=${yId}>Pause</button>
           <button type="button" class="btn btn-danger" style="margin:0px" id=${this.stratCounter}>Exit</button>
         </td>
       </tr>
@@ -94,15 +98,28 @@ export class StockBoxComponent implements OnInit {
         }
       )
 
+      //PAUSING A STRATEGY
       $(".btn-warning").click(
         function () {
-          console.log('he')
-          var id = $(this).attr("id");
-          var remove;
-          remove = "#strat" + id;
-          $(remove).css("background","#feffd4");
-        }
-      )
+          // var yId = $(this).attr("id");
+          var id =  ($(this).attr("id")).substring(2);
+          // var btn = "#strat" + id;
+          $("#strat" + id).css("background","#feffd4");
+          var pauseStrat = {
+            "id":id
+          }
+          $.ajax({
+            type: "POST",
+            url: 'http://localhost:8081/strategy/pause',
+            contentType:"application/json",
+            data: JSON.stringify(pauseStrat),
+            success: function(response) {
+              console.log(response)
+              console.log("Paused a trade")
+            }
+
+        });
+      })
 
       $(".btn-success").click(
         function () {
@@ -118,8 +135,12 @@ export class StockBoxComponent implements OnInit {
       type: "POST",
       url: 'http://localhost:8081/strategy/start',
       contentType:"application/json",
-      data: JSON.stringify(postObj),
+      data: JSON.stringify(newStrat),
       success: function(response) {
+        console.log(response)
+        var firstId = document.getElementById(stratId).id;
+        document.getElementById(stratId).id = "strat" + response.id;
+        document.getElementById(yId).id = "Y-" + response.id;
         console.log("Posted a new trade")
       }
     });
@@ -127,7 +148,7 @@ export class StockBoxComponent implements OnInit {
   }
 
   constructor(private http: HttpClient) {
-    
+
   }
 
   ngOnInit() {
@@ -138,7 +159,7 @@ export class StockBoxComponent implements OnInit {
       url: 'http://nyc31.conygre.com:31/Stock/getSymbolList',
       contentType:"application/json",
       success: function(response) {
-        var store = []; 
+        var store = [];
         for (const key of Object.keys(response)) {
           store.push(response[key].symbol.toUpperCase());
         }
