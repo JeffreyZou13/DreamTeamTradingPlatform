@@ -54,7 +54,7 @@ public class StrategyController {
     }
 
     // Resume a strategy
-    @RequestMapping(method = RequestMethod.POST, value="/pause")
+    @RequestMapping(method = RequestMethod.POST, value="/resume")
     public StrategyResponse resumeStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered resumeStrategy");
         StrategyResponse resp = new StrategyResponse();
