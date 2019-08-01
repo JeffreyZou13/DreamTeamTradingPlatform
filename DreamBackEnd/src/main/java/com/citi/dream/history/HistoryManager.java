@@ -32,6 +32,14 @@ public class HistoryManager {
         return strategies;
     }
 
+    public HashMap<String, List<? extends Strategy>> getNotStoppedStrategies() {
+        logger.info("Getting all not stopped strategies");
+        HashMap<String, List<? extends Strategy>> strategies = new HashMap<>();
+        strategies.put("two moving averages", twoMovingAveragesRepository.findAllNotStopped());
+        strategies.put("bollinger band", bollingerBandRepository.findAllNotStopped());
+        return strategies;
+    }
+
     public Strategy getStrategy(String id) {
         logger.info("Getting stategy with id <" + id + ">");
         Strategy strategy = twoMovingAveragesRepository.findById(id).orElse(null);

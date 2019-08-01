@@ -27,6 +27,16 @@ public class HistoryController {
         return resp;
     }
 
+    // All running/paused strategies
+    @RequestMapping(method = RequestMethod.GET, value = "/strategies/notstopped")
+    public HistoryResponse getNotStoppedStrategies() {
+        logger.info("Getting all not stopped strategies");
+        HistoryResponse resp = new HistoryResponse();
+        resp.setStrategies(historyManager.getNotStoppedStrategies());
+        resp.setResult("successfully got all not stopped strategies");
+        return resp;
+    }
+
     // Strategy by id
     @RequestMapping(method = RequestMethod.GET, value = "/strategy/{id}")
     public HistoryResponse getStrategy(@PathVariable String id) {
