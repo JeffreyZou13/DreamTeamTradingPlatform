@@ -8,14 +8,40 @@ declare let $:any;
   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent implements OnInit {
-
   history:any;
 
+  // doThis(){
+  //   console.log('HEY CMOND')
+  // }
+
+   doThis(){
+    console.log('i need help');
+  }
+
   constructor() {
+
 
   }
 
   	ngOnInit() {
+
+      $.ajax({
+        type: "GET",
+        url: 'http://localhost:8081/history/strategies/notstopped',
+        contentType: 'application/json',
+        success: (response)=> {
+          console.log(response)
+
+          for (var i = 0; i < response.strategies["bollinger band"].length; i++){
+            var markup =
+            `<button ngbDropdownItem onclick="console.log('${response.strategies['bollinger band'][i][0]}')">${response.strategies["bollinger band"][i][0]}</button>`
+            $("#performanceSelector2").append(markup);
+          }
+        }
+      })
+
+
+
       $.ajax({
         type: "GET",
         url: 'http://localhost:8081/history/orders/5e5f2c7f-7122-4a0b-9f7b-627798139204',
@@ -34,7 +60,7 @@ export class GraphComponent implements OnInit {
         		animationEnabled: true,
         		exportEnabled: true,
         		title: {
-        			text: "Performance Demo - 10000 DataPoints"
+        			text: "Two Moving Averages Example"
         		},
         		subtitles:[{
         			text: "Try Zooming and Panning"
@@ -45,7 +71,6 @@ export class GraphComponent implements OnInit {
         			dataPoints: dataPoints
         		}]
         	});
-
         	chart.render();
 
         }
