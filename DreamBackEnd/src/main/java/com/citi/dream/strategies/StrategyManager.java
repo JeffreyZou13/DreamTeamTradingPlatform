@@ -63,7 +63,7 @@ public class StrategyManager {
     // Pause strategy
     public boolean pauseStrategy(String strategyID) {
         // Set stategy's state to be paused
-        TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
+        Strategy currentStrategy = strategies.get(strategyID);
         if (currentStrategy != null && currentStrategy.getState().equals("running")) {
             logger.info("pausing strategy <" + strategyID + ">");
             currentStrategy.setState("paused");
@@ -76,7 +76,7 @@ public class StrategyManager {
 
     // Resume strategy
     public boolean resumeStrategy(String strategyID) {
-        TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
+        Strategy currentStrategy = strategies.get(strategyID);
         if (currentStrategy != null && currentStrategy.getState().equals("paused")) {
             logger.info("resuming strategy <" + strategyID + ">");
             currentStrategy.setState("running");
@@ -91,11 +91,14 @@ public class StrategyManager {
     // Stopping strategy
     public boolean stopStrategy(String strategyID) {
         // Remove it from the running strategies and update its state to stopped
-        TwoMovingAverages currentStrategy = twoMovingAveragesRepository.findById(strategyID).orElse(null);
+        Strategy currentStrategy = twoMovingAveragesRepository.findById(strategyID).orElse(null);
         if (currentStrategy != null) {
             logger.info("stopping strategy <" + strategyID + ">");
             currentStrategy.setState("stopped");
-            twoMovingAveragesRepository.save(currentStrategy);
+            if (currentStrategy.getType().equals("two moving averages")) {
+                twoMovingAveragesRepository.save((TwoMovingAverages) currentStrategy);
+            }
+            // TODO after bollinger is finished add condition
             strategies.remove(strategyID);
             return true;
         } else {
@@ -104,18 +107,26 @@ public class StrategyManager {
         }
     }
 
-    public Strategy deleteStrategy(String strategyID) {
-        twoMovingAveragesRepository.deleteById(strategyID);
-        return strategies.remove(strategyID);
+    // Save the strategies every so often
+    @Scheduled(fixedDelay = 5000, initialDelay = 2000)
+    public void updateStrategies() {
+        logger.info("updating all the strategies in to the DB");
+        for (String strategyID : strategies.keySet()) {
+            Strategy currentStrategy = strategies.get(strategyID);
+            if (currentStrategy.getType().equals("two moving averages")) {
+                twoMovingAveragesRepository.save((TwoMovingAverages) currentStrategy);
+            }
+        }
     }
 
     @Scheduled(fixedDelay = 1000)
     public void runStrategies() throws JSONException {
         logger.info("Running strategies");
         for (String strategyID : strategies.keySet()) {
-            TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
-            if (currentStrategy.getState().equals("running"))
-                strategies.get(strategyID).performStrategy();
+            Strategy currentStrategy = strategies.get(strategyID);
+            if (currentStrategy.getState().equals("running")) {
+                currentStrategy.performStrategy();
+            }
         }
     }
 }
