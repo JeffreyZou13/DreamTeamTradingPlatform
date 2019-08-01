@@ -34,9 +34,6 @@ export class StockBoxComponent implements OnInit {
     console.log('here');
   }
 
-  // pauseClick(){
-  //
-  // }
 
   buttonThreeClick(){
 
@@ -50,6 +47,7 @@ export class StockBoxComponent implements OnInit {
     var stratId = "strat" + this.stratCounter;
     var yId = "y" + this.stratCounter;
     var gId = "g" + this.stratCounter;
+    var rId = "r" + this.stratCounter;
 
     console.log(shortVal)
 
@@ -77,9 +75,9 @@ export class StockBoxComponent implements OnInit {
         <td>1</td>
         <td>Running</td>
         <td>
-          <button type="button" class="btn btn-success" style="margin:0px" id=${this.stratCounter}>Start</button>
+          <button type="button" class="btn btn-success" style="margin:0px" id=${gId}>Restart</button>
           <button type="button" class="btn btn-warning" style="margin:0px" id=${yId}>Pause</button>
-          <button type="button" class="btn btn-danger" style="margin:0px" id=${this.stratCounter}>Exit</button>
+          <button type="button" class="btn btn-danger" style="margin:0px" id=${rId}>Exit</button>
         </td>
       </tr>
     </tbody>`
@@ -88,22 +86,31 @@ export class StockBoxComponent implements OnInit {
     if(this.addEles){
       document.getElementById("t1").style["display"] = "";
       $("#t1").append(markup);
-
+    }
       $(".btn-danger").click(
         function () {
-          var id = $(this).attr("id");
-          var remove;
-          remove = "#strat" + id;
-          $(remove).remove();
-        }
-      )
+          var id = ($(this).attr("id")).substring(2);
+          console.log(id)
+          $('#strat'  + id).remove();
+          var endStrat = {
+            "id":id
+          }
+          $.ajax({
+            type: "POST",
+            url: 'http://localhost:8081/strategy/stop',
+            contentType:"application/json",
+            data: JSON.stringify(endStrat),
+            success: function(response) {
+              console.log(response)
+              console.log("Ended a trade")
+            }
+        })
+      })
 
       //PAUSING A STRATEGY
       $(".btn-warning").click(
         function () {
-          // var yId = $(this).attr("id");
           var id =  ($(this).attr("id")).substring(2);
-          // var btn = "#strat" + id;
           $("#strat" + id).css("background","#feffd4");
           var pauseStrat = {
             "id":id
@@ -115,21 +122,30 @@ export class StockBoxComponent implements OnInit {
             data: JSON.stringify(pauseStrat),
             success: function(response) {
               console.log(response)
-              console.log("Paused a trade")
+              console.log("Paused a strategy")
             }
-
         });
       })
 
+      // $(remove).css("background","#e1f5e6");
       $(".btn-success").click(
         function () {
-          var id = $(this).attr("id");
-          var remove;
-          remove = "#strat" + id;
-          $(remove).css("background","#e1f5e6");
-        }
-      )
-    }
+          var id =  ($(this).attr("id")).substring(2);
+          $("#strat" + id).css("background","#e1f5e6");
+          var resumeStrat = {
+            "id":id
+          }
+          $.ajax({
+            type: "POST",
+            url: 'http://localhost:8081/strategy/resume',
+            contentType:"application/json",
+            data: JSON.stringify(resumeStrat),
+            success: function(response) {
+              console.log(response)
+              console.log("Resume Strat")
+            }
+        });
+      })
 
     $.ajax({
       type: "POST",
@@ -141,7 +157,9 @@ export class StockBoxComponent implements OnInit {
         var firstId = document.getElementById(stratId).id;
         document.getElementById(stratId).id = "strat" + response.id;
         document.getElementById(yId).id = "Y-" + response.id;
-        console.log("Posted a new trade")
+        document.getElementById(rId).id = "R-" + response.id;
+        document.getElementById(gId).id = "G-" + response.id;
+        console.log("Posted a new strategy")
       }
     });
 
