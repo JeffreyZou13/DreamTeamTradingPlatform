@@ -19,7 +19,6 @@ export class StockBoxComponent implements OnInit {
   stratCounter:number = 0;
   addEles:boolean = false;
 
-
   changeLabel(obj1 ,obj2) {
     (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
   }
@@ -82,7 +81,6 @@ export class StockBoxComponent implements OnInit {
       </tr>
     </tbody>`
 
-
     if(this.addEles){
       document.getElementById("t1").style["display"] = "";
       $("#t1").append(markup);
@@ -90,7 +88,6 @@ export class StockBoxComponent implements OnInit {
       $(".btn-danger").click(
         function () {
           var id = ($(this).attr("id")).substring(2);
-          console.log(id)
           $('#strat'  + id).remove();
           var endStrat = {
             "id":id
@@ -101,7 +98,6 @@ export class StockBoxComponent implements OnInit {
             contentType:"application/json",
             data: JSON.stringify(endStrat),
             success: function(response) {
-              console.log(response)
               console.log("Ended a trade")
             }
         })
@@ -110,6 +106,7 @@ export class StockBoxComponent implements OnInit {
       //PAUSING A STRATEGY
       $(".btn-warning").click(
         function () {
+          console.log('i see@')
           var id =  ($(this).attr("id")).substring(2);
           $("#strat" + id).css("background","#feffd4");
           var pauseStrat = {
@@ -155,6 +152,9 @@ export class StockBoxComponent implements OnInit {
       success: function(response) {
         console.log(response)
         var firstId = document.getElementById(stratId).id;
+        $("#viewHistories").append(
+            `<button ngbDropdownItem>${response.id}</button>`
+        )
         document.getElementById(stratId).id = "strat" + response.id;
         document.getElementById(yId).id = "Y-" + response.id;
         document.getElementById(rId).id = "R-" + response.id;
@@ -166,10 +166,106 @@ export class StockBoxComponent implements OnInit {
   }
 
   constructor(private http: HttpClient) {
+    this.stratCounter  = 0
+    $.ajax({
+      type: "GET",
+      url: 'http://localhost:8081/history/strategies/notstopped',
+      contentType: 'application/json',
+      success: (response)=> {
+        console.log(response)
+        for (var i = 0; i < response.strategies["bollinger band"].length; i++){
+          console.log("HIIIIII")
+          this.stratCounter++;
+          var stratId = "strat" + this.stratCounter;
+          var yId = "y" + this.stratCounter;
+          var gId = "g" + this.stratCounter;
+          var rId = "r" + this.stratCounter;
+
+          var markup =
+          `<tbody id=${"strat"+response.strategies["bollinger band"][i][0]} style="background:#e1f5e6">
+            <tr>
+              <td>${response.strategies["bollinger band"][i][3]}</td>
+              <td>${response.strategies["bollinger band"][i][4]}</td>
+              <td>bollinger band</td>
+              <td>1</td>
+              <td>Running</td>
+              <td>
+                <button type="button" class="btn btn-success" style="margin:0px" id=${"G-"+response.strategies["bollinger band"][i][0]}>Restart</button>
+                <button type="button" class="btn btn-warning" style="margin:0px" id=${"Y-"+response.strategies["bollinger band"][i][0]}>Pause</button>
+                <button type="button" class="btn btn-danger" style="margin:0px" id=${"R-"+response.strategies["bollinger band"][i][0]}>Exit</button>
+              </td>
+            </tr>
+          </tbody>`
+
+          $("#t1").append(markup);
+          document.getElementById("t1").style["display"] = "";
+        }
+
+        //PAUSING A STRATEGY
+        $(".btn-warning").click(
+          function () {
+            console.log('i see@')
+            var id =  ($(this).attr("id")).substring(2);
+            $("#strat" + id).css("background","#feffd4");
+            var pauseStrat = {
+              "id":id
+            }
+            $.ajax({
+              type: "POST",
+              url: 'http://localhost:8081/strategy/pause',
+              contentType:"application/json",
+              data: JSON.stringify(pauseStrat),
+              success: function(response) {
+                console.log(response)
+                console.log("Paused a strategy")
+              }
+          });
+        })
+
+        // $(remove).css("background","#e1f5e6");
+        $(".btn-success").click(
+          function () {
+            var id =  ($(this).attr("id")).substring(2);
+            $("#strat" + id).css("background","#e1f5e6");
+            var resumeStrat = {
+              "id":id
+            }
+            $.ajax({
+              type: "POST",
+              url: 'http://localhost:8081/strategy/resume',
+              contentType:"application/json",
+              data: JSON.stringify(resumeStrat),
+              success: function(response) {
+                console.log(response)
+                console.log("Resume Strat")
+              }
+          });
+        })
+
+        $(".btn-danger").click(
+          function () {
+            var id = ($(this).attr("id")).substring(2);
+            $('#strat'  + id).remove();
+            var endStrat = {
+              "id":id
+            }
+            $.ajax({
+              type: "POST",
+              url: 'http://localhost:8081/strategy/stop',
+              contentType:"application/json",
+              data: JSON.stringify(endStrat),
+              success: function(response) {
+                console.log("Ended a trade")
+              }
+          })
+        })
+      }
+    })
 
   }
 
   ngOnInit() {
+
     var store1;
       $.ajax({
       type: "GET",
@@ -182,12 +278,14 @@ export class StockBoxComponent implements OnInit {
           store.push(response[key].symbol.toUpperCase());
         }
         store1 = store;
-        console.log(store1)
       }
     });
+
 
     $('#stockSelector').autocomplete({
       source: store1
     })
+
+
   }
 }
