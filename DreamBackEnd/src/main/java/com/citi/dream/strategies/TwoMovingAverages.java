@@ -290,7 +290,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
                     openPosition = !openPosition;
 
                     lastTwoTradeProfit =
-                            (double) (executedOrderPrice - currentPrice ) * volume;
+                            (double) (currentPrice - executedOrderPrice ) * volume;
                     profit += lastTwoTradeProfit;
                     System.out.println("------------------------");
                     System.out.println("lastTwoTradeProfit: ");
