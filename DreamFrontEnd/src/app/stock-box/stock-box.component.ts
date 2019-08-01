@@ -50,6 +50,7 @@ export class StockBoxComponent implements OnInit {
     var newStrat;
 
     if(strat  == "Two Moving Averages"){ //tma
+      console.log('I DID TMA')
       newStrat = {
         "type":strat.toLowerCase(),
         "stock": stockName,
@@ -57,6 +58,7 @@ export class StockBoxComponent implements OnInit {
         "longPeriod": longVal,
         "size":stockQuantity
       }
+      console.log(newStrat)
     }else{  //bollinger band
       newStrat = {
         "type":strat.toLowerCase(),
