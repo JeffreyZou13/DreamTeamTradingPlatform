@@ -44,7 +44,7 @@ public class StrategyController {
         StrategyResponse resp = new StrategyResponse();
         boolean paused = strategyManager.pauseStrategy(strategy.getId());
         if (paused) {
-            resp.setResult("successfully paused strategy of type " + strategy.getType() + " with id " + strategy.getId());
+            resp.setResult("successfully paused strategy <" + strategy.getId() + ">");
         } else {
             resp.setResult("failure: strategy not found");
         }
@@ -59,7 +59,7 @@ public class StrategyController {
         StrategyResponse resp = new StrategyResponse();
         boolean resumed = strategyManager.resumeStrategy(strategy.getId());
         if (resumed) {
-            resp.setResult("successfully resumed strategy of type " + strategy.getType() + " with id " + strategy.getId());
+            resp.setResult("successfully resumed stategy <" + strategy.getId() + ">");
         } else {
             resp.setResult("failure: strategy not found or is stopped");
         }
@@ -74,7 +74,7 @@ public class StrategyController {
         StrategyResponse resp = new StrategyResponse();
         boolean stopped = strategyManager.stopStrategy(strategy.getId());
         if (stopped) {
-            resp.setResult("successfully stopped strategy of type " + strategy.getType() + " with id " + strategy.getId());
+            resp.setResult("successfully stopped strategy <" + strategy.getId() + ">");
         } else {
             resp.setResult("failure: strategy not found");
         }
