@@ -22,23 +22,28 @@ public class HistoryManager {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     public List<? extends Strategy> getStrategies() {
+        logger.info("Getting all strategies");
         return twoMovingAveragesRepository.findAll();
     }
 
     public TwoMovingAverages getStrategy(String id) {
+        logger.info("Getting stategy with id <" + id + ">");
         return twoMovingAveragesRepository.findById(id).orElse(null);
     }
 
     public List<Order> getOrders() {
+        logger.info("Getting all orders");
         return orderRepository.findAll();
     }
 
     public Order getOrder(String id) {
+        logger.info("Getting order with id <" + id + ">");
         return orderRepository.findById(id).orElse(null);
     }
 
     public List<Order> getOrdersByStrategyID(String id) {
-        return orderRepository.findByStrategyID(id);
+        logger.info("Orders by strategy ID, sorted by time");
+        return orderRepository.findByStrategyIDOrderByWhenAsDate(id);
     }
 
     public List<Order> getOrdersPnlByStrategyType(String type) {

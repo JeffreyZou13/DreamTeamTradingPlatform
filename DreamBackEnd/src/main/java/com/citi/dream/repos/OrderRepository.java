@@ -11,4 +11,5 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     List<Order> findByStrategyID(String id);
     List<Order> findByStrategyTypeOrderByWhenAsDate(String type);
+    List<Order> findByStrategyIDOrderByWhenAsDate(String id);
 }
