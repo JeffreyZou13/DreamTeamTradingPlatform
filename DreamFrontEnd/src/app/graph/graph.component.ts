@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as CanvasJS from './canvasjs.min.js';
+declare let $:any;
 
 @Component({
   selector: 'app-graph',
@@ -24,6 +25,7 @@ export class GraphComponent implements OnInit {
 
   	ngOnInit() {
 //"12d4fd2b-7e58-4d89-9bc3-c2b3e2445836"
+      console.log('HERE');
       $.ajax({
         type: "GET",
         url: 'http://localhost:8081/history/orders/12d4fd2b-7e58-4d89-9bc3-c2b3e2445836',
@@ -57,6 +59,15 @@ export class GraphComponent implements OnInit {
         	chart.render();
 
         }
-      })
+      });
+
+      $.ajax({
+        type: "GET",
+        url: 'http://localhost:8081/history/strategies/notstopped',
+        contentType: 'application/json',
+        success: function(response) {
+          console.log(response);
+        }
+      });
     }
 }
