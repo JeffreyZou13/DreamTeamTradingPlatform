@@ -1,5 +1,9 @@
 package com.citi.dream.jms;
 
+
+import com.citi.dream.strategies.BollingerBand;
+import com.citi.dream.strategies.Strategy;
+
 import com.citi.dream.strategies.TwoMovingAverages;
 
 import javax.persistence.*;
@@ -50,6 +54,8 @@ public class Order implements Serializable {
         this.strategyType = strategyType;
     }
 
+
+//    ================================
     public TwoMovingAverages getTwoMovingAverages() {
         return twoMovingAverages;
     }
@@ -62,7 +68,21 @@ public class Order implements Serializable {
     @ManyToOne
     @com.fasterxml.jackson.annotation.JsonIgnore
     private TwoMovingAverages twoMovingAverages;
+//================================
 
+    public BollingerBand getBollingerBand() {
+        return bollingerBand;
+    }
+
+    public void setBollingerBand(BollingerBand bollingerBand) {
+        this.bollingerBand = bollingerBand;
+    }
+
+    @JoinColumn (name="bollinger_band_id", referencedColumnName ="strategyID", nullable = false)
+    @ManyToOne
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private BollingerBand bollingerBand;
+//    ===========================
 
 //    @JoinColumn (name="cd_id", referencedColumnName="id", nullable = false)
 //    @ManyToOne

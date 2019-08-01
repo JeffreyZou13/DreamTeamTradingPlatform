@@ -1,6 +1,7 @@
 package com.citi.dream.strategies;
 
 import com.citi.dream.jms.MessageSender;
+import com.citi.dream.repos.BollingerBandRepository;
 import com.citi.dream.repos.TwoMovingAveragesRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ public class StrategyManager {
     MessageSender messageSender;
     @Autowired
     TwoMovingAveragesRepository twoMovingAveragesRepository;
+    BollingerBandRepository bollingerBandRepository;
 
     private Logger logger = LogManager.getLogger(this.getClass());
     private HashMap<String, Strategy> strategies = new HashMap<>();
@@ -39,7 +41,16 @@ public class StrategyManager {
             twoMovingAveragesRepository.save(newStrategy);
             strategies.put(strategyID, newStrategy);
             return newStrategy;
+        } else if (type.equals("bollinger band")) {
+            logger.info("Creating a bollinger band strategy");
+            BollingerBand newStrategy = new BollingerBand(type, longTime, stockName, volume,
+                    strategyID, cutOffPercentage, priceGetter, messageSender);
+            bollingerBandRepository.save(newStrategy);
+            strategies.put(strategyID, newStrategy);
+            return newStrategy;
         }
+
+
         return null;
     }
 

@@ -158,7 +158,9 @@ public class TwoMovingAverages implements Strategy, Serializable {
         this.messageSender = messageSender;
     }
 
-    public TwoMovingAverages(String type, int longTime, int shortTime, String stockName, int volume, String strategyID, double cutOffPercentage, PriceGetter priceGetter, MessageSender messageSender) {
+    public TwoMovingAverages(String type, int longTime, int shortTime, String stockName, int volume,
+                             String strategyID, double cutOffPercentage, PriceGetter priceGetter,
+                             MessageSender messageSender) {
         this.type = type;
         this.longTime = longTime;
         this.shortTime = shortTime;
@@ -220,27 +222,27 @@ public class TwoMovingAverages implements Strategy, Serializable {
         }
 
 
-//        System.out.println("current price");
-//        System.out.println(currentPrice);
-//        System.out.println("buying");
-//        System.out.println(buying);
-//        System.out.println("openPosition");
-//        System.out.println(openPosition);
-//        System.out.println("execPrice");
-//        System.out.println(executedOrderPrice);
-//        System.out.println("cutoffPercentage");
-//        System.out.println(cutOffPercentage);
-//        System.out.println("targetPrice");
-//        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
-//        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
-//        System.out.println(targetPrice1);
-//        System.out.println(targetPrice2);
-//        System.out.println("currentPrice");
-//        System.out.println(currentPrice);
-//        System.out.println("lastTwoTradeProfit");
-//        System.out.println(lastTwoTradeProfit);
-//        System.out.println("profit");
-//        System.out.println(profit);
+        System.out.println("current price");
+        System.out.println(currentPrice);
+        System.out.println("buying");
+        System.out.println(buying);
+        System.out.println("openPosition");
+        System.out.println(openPosition);
+        System.out.println("execPrice");
+        System.out.println(executedOrderPrice);
+        System.out.println("cutoffPercentage");
+        System.out.println(cutOffPercentage);
+        System.out.println("targetPrice");
+        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
+        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
+        System.out.println(targetPrice1);
+        System.out.println(targetPrice2);
+        System.out.println("currentPrice");
+        System.out.println(currentPrice);
+        System.out.println("lastTwoTradeProfit");
+        System.out.println(lastTwoTradeProfit);
+        System.out.println("profit");
+        System.out.println(profit);
 
 
 

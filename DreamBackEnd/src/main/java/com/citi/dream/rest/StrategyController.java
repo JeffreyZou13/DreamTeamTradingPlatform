@@ -25,6 +25,7 @@ public class StrategyController {
     @RequestMapping(method = RequestMethod.POST, value="/start", consumes="application/json")
     public StrategyResponse startStrategy(@RequestBody StrategyForm strategy) {
         logger.info("Entered startStrategy");
+        logger.info(strategy.getType());
         StrategyResponse resp = new StrategyResponse();
 
         // Generate an ID and create a new strategy

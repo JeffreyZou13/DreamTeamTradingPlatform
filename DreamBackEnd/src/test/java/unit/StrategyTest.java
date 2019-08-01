@@ -2,10 +2,7 @@ package unit;
 
 import com.citi.Application;
 import com.citi.dream.jms.MessageSender;
-import com.citi.dream.strategies.PriceGetter;
-import com.citi.dream.strategies.Strategy;
-import com.citi.dream.strategies.StrategyManager;
-import com.citi.dream.strategies.TwoMovingAverages;
+import com.citi.dream.strategies.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,4 +89,26 @@ public class StrategyTest {
                 100, "aa-bb-cc-dd",.01, priceGetter, messageSender);
         ma.performStrategy();
     }
+
+
+//    ========
+//    Bollinger Band Tests
+
+//    public BollingerBand(String type, int durationTime, String stockName, int volume,
+//                         String strategyID, double cutOffPercentage, PriceGetter priceGetter,
+//                         MessageSender messageSender) {
+//    ========
+
+    @Test
+    public void testIfBBCanCalculateAverage()throws JSONException{
+
+
+        BollingerBand bb = new BollingerBand("Bollinger Band", 10,"msft",
+                100, "aa-bb-cc-dd",.01, priceGetter, messageSender);
+
+        System.out.print(bb.calculateAverage(5));
+
+    }
+
+
 }
