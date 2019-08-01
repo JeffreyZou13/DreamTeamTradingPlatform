@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -63,7 +64,13 @@ public class StrategyTest {
 
     @Test
     public void testIfManagerCanCreateStrategy() {
-        Strategy strategy = strategyManager.createStrategy("two moving averages", 5, 1, "HON", 100, "aa-bb-cc-dd", 0.01);
+        ArrayList<Integer> timeList = new ArrayList<>();
+        timeList.add(1);
+        timeList.add(3);
+        timeList.add(100);
+        Strategy strategy = strategyManager.createStrategy("two moving averages",
+                timeList,"HON",
+                100, "aa-bb-cc-dd", 0.01);
         HashMap<String, Strategy> newStrategies = strategyManager.getStrategies();
         System.out.println("hi i am here");
         System.out.println(newStrategies.keySet());

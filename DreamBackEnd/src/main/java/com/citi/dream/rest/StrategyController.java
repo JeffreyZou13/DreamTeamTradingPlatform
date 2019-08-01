@@ -26,21 +26,24 @@ public class StrategyController {
     // Start up a new strategy
     @RequestMapping(method = RequestMethod.POST, value="/start", consumes="application/json")
     public StrategyResponse startStrategy(@RequestBody StrategyForm strategy) {
-        logger.info("Entered startStrategy");
-        logger.info(strategy.getType());
-        StrategyResponse resp = new StrategyResponse();
-
-//        for testing bollinger band only,
+        //        for testing bollinger band only,
 //        please delete later after changing frontend input
         strategy.setType("bollinger band");
-//        ===============
-        // Generate an ID and create a new strategy
-        String strategyId = UUID.randomUUID().toString();
-
         ArrayList<Integer> timeList = new ArrayList<>();
         timeList.add(strategy.getLongPeriod());
         timeList.add(strategy.getShortPeriod());
-        timeList.add(strategy.getDurationTime());
+        timeList.add(10);
+//        ===============
+        logger.info("Entered startStrategy");
+        logger.info(strategy.getType());
+        logger.info(strategy.getStock());
+        StrategyResponse resp = new StrategyResponse();
+
+
+        // Generate an ID and create a new strategy
+        String strategyId = UUID.randomUUID().toString();
+
+
 
         strategyManager.createStrategy(strategy.getType(), timeList,
                 strategy.getStock(), strategy.getSize(), strategyId, 0.001);

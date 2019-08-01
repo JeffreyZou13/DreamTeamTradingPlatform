@@ -49,6 +49,7 @@ public class BollingerBand implements Strategy, Serializable {
         this.volume = volume;
         this.priceGetter = priceGetter;
         this.messageSender = messageSender;
+        this.state = "running";
     }
 
     public void addOrder(Order o) {
@@ -168,6 +169,16 @@ public class BollingerBand implements Strategy, Serializable {
         this.messageSender = messageSender;
     }
 
+    @Override
+    public String getState() {
+        return state;
+    }
+
+    @Override
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public BollingerBand() {
     } //Need it for JPA
 
@@ -189,6 +200,12 @@ public class BollingerBand implements Strategy, Serializable {
     }
 
     public void performStrategy() throws JSONException {
+        System.out.println("in boll perf strat");
+        System.out.println("durationTime");
+        System.out.println(durationTime);
+        this.priceGetter.setStockName(this.stockName);
+        this.priceGetter.setNumOfStocks(this.durationTime);
+
 
         double currentPrice = -1.0;
 
