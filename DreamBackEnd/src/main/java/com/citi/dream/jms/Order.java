@@ -1,6 +1,5 @@
 package com.citi.dream.jms;
 
-import com.citi.dream.strategies.Strategy;
 import com.citi.dream.strategies.TwoMovingAverages;
 
 import javax.persistence.*;
@@ -33,7 +32,15 @@ public class Order implements Serializable {
     @Column(name="response") private String response;
     @Column(name="strategyID") private String strategyID;
     @Column(name="strategy_type") private String strategyType;
+    @Column(name="profit") private double profit;
 
+    public double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(double profit) {
+        this.profit = profit;
+    }
 
     public String getStrategyType() {
         return strategyType;
@@ -73,6 +80,7 @@ public class Order implements Serializable {
         this.response = response;
         this.strategyID = strategyID;
         this.strategyType = strategyType;
+        this.profit = buy ? price * size * -1 : price * size;
     }
 
     public Order() {} // Need this for JPA
@@ -153,6 +161,7 @@ public class Order implements Serializable {
                 ", response='" + response + '\'' +
                 ", strategyID='" + strategyID + '\'' +
                 ", strategyType='" + strategyType + '\'' +
+                ", profit='" + profit + '\'' +
                 '}';
     }
 }

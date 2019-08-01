@@ -42,6 +42,7 @@ public class HistoryManager {
     }
 
     public List<Order> getOrdersPnlByStrategyType(String type) {
-        return null;
+        logger.info("Getting orders by strategy type <" + type + ">");
+        return orderRepository.findByStrategyTypeOrderByWhenAsDate(type);
     }
 }
