@@ -167,6 +167,8 @@ export class StockBoxComponent implements OnInit {
 
   constructor(private http: HttpClient) {
     this.stratCounter  = 0
+
+    //THIS IS FOR RELOADING THE PAGE
     $.ajax({
       type: "GET",
       url: 'http://localhost:8081/history/strategies/notstopped',
@@ -174,15 +176,23 @@ export class StockBoxComponent implements OnInit {
       success: (response)=> {
         console.log(response)
         for (var i = 0; i < response.strategies["bollinger band"].length; i++){
-          console.log("HIIIIII")
-          this.stratCounter++;
-          var stratId = "strat" + this.stratCounter;
-          var yId = "y" + this.stratCounter;
-          var gId = "g" + this.stratCounter;
-          var rId = "r" + this.stratCounter;
+          // console.log("HIIIIII")
+          // this.stratCounter++;
+          // var stratId = "strat" + this.stratCounter;
+          // var yId = "y" + this.stratCounter;
+          // var gId = "g" + this.stratCounter;
+          // var rId = "r" + this.stratCounter;
+
+          var backgroundColor;
+
+          if(response.strategies["bollinger band"][i][6]  == "paused"){
+            backgroundColor = "#feffd4";
+          }else{
+            backgroundColor = "#e1f5e6";
+          }
 
           var markup =
-          `<tbody id=${"strat"+response.strategies["bollinger band"][i][0]} style="background:#e1f5e6">
+          `<tbody id=${"strat"+response.strategies["bollinger band"][i][0]} style="background:${backgroundColor}">
             <tr>
               <td>${response.strategies["bollinger band"][i][3]}</td>
               <td>${response.strategies["bollinger band"][i][4]}</td>
@@ -281,11 +291,8 @@ export class StockBoxComponent implements OnInit {
       }
     });
 
-
     $('#stockSelector').autocomplete({
       source: store1
     })
-
-
   }
 }
