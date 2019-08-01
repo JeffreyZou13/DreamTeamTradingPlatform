@@ -230,6 +230,74 @@ public class BollingerBand implements Strategy, Serializable {
         return stddev;
     }
 
+    public void triggerExitStrategy(double currentPrice){
+        double lastTwoTradeProfit = 0;
+        Order o;
+        if (buying) {
+            //after we bought now we are selling
+            System.out.println("now we should sell");
+            if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
+
+                o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
+                        volume, stockName, new Date(), "", strategyID, type, profit);
+                addOrder(o);
+                System.out.println(o);
+                messageSender.sendMessage("queue/OrderBroker", o);
+                System.out.println("SOLD TO RECOVER POSITION");
+                openPosition = !openPosition;
+
+                lastTwoTradeProfit =
+                        (double) (currentPrice - executedOrderPrice ) * volume;
+                profit += lastTwoTradeProfit;
+                System.out.println("------------------------");
+                System.out.println("lastTwoTradeProfit: ");
+                System.out.println(lastTwoTradeProfit);
+                System.out.println("persisted profit: ");
+                System.out.println(profit);
+                System.out.println("------------------------");
+
+
+            }
+        } else {
+            //after we sold now we are buying
+            System.out.println("now we should buy");
+            if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
+                o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
+                        volume, stockName, new Date(), "", strategyID, type, profit);
+                addOrder(o);
+                System.out.println(o);
+                messageSender.sendMessage("queue/OrderBroker", o);
+                System.out.println("BOUGHT TO RECOVER POSITION");
+
+                openPosition = !openPosition;
+
+                lastTwoTradeProfit =
+                        (double) (executedOrderPrice - currentPrice ) * volume;
+                profit += lastTwoTradeProfit;
+                System.out.println("------------------------");
+                System.out.println("lastTwoTradeProfit: ");
+                System.out.println(lastTwoTradeProfit);
+                System.out.println("persisted profit: ");
+                System.out.println(profit);
+                System.out.println("------------------------");
+
+
+
+            }
+        }
+    }
+
+
+    public void triggerOrder(double currentPrice){
+        openPosition = true;
+        executedOrderPrice = currentPrice;
+        Order o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
+                volume, stockName, new Date(), "", strategyID, type, profit);
+        addOrder(o);
+        System.out.println(o);
+        messageSender.sendMessage("queue/OrderBroker", o);
+    }
+
     public void performStrategy() throws JSONException {
         System.out.println("in boll perf strat");
         System.out.println("durationTime");
@@ -272,93 +340,19 @@ public class BollingerBand implements Strategy, Serializable {
         System.out.println(profit);
 
         if (openPosition == false){
-
-
-
             if (currentPrice > highTarget && currentPrice != -1) {
                 buying = false;
-                openPosition = true;
-                executedOrderPrice = currentPrice;
-                o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
-                        volume, stockName, new Date(), "", strategyID, type);
-                addOrder(o);
-                System.out.println(o);
-                messageSender.sendMessage("queue/OrderBroker", o);
+                triggerOrder(currentPrice);
                 System.out.println("WE'RE SELLING BECAUSE HIT HIGH TARGET and PRICE SHOULD GO " +
                         "DOWN");
             }else if (currentPrice < lowTarget && currentPrice != -1){
                 buying = true;
-                openPosition = true;
-                executedOrderPrice = currentPrice;
-                o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
-                        volume, stockName, new Date(), "", strategyID, type);
-                addOrder(o);
-                System.out.println(o);
-                messageSender.sendMessage("queue/OrderBroker", o);
+                triggerOrder(currentPrice);
                 System.out.println("WE'RE BUYING BECAUSE HIT LOW TARGET and PRICE SHOULD GO UP");
             }
         } else {
-            //trigger exit position
-            if (buying) {
-                //after we bought now we are selling
-                System.out.println("now we should sell");
-                if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
-                    o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                            volume, stockName, new Date(), "", strategyID, type);
-                    addOrder(o);
-                    System.out.println(o);
-                    messageSender.sendMessage("queue/OrderBroker", o);
-                    System.out.println("SOLD TO RECOVER POSITION");
-                    openPosition = !openPosition;
-
-                    lastTwoTradeProfit =
-                            (double) (currentPrice - executedOrderPrice ) * volume;
-                    profit += lastTwoTradeProfit;
-                    System.out.println("------------------------");
-                    System.out.println("lastTwoTradeProfit: ");
-                    System.out.println(lastTwoTradeProfit);
-                    System.out.println("persisted profit: ");
-                    System.out.println(profit);
-                    System.out.println("------------------------");
-
-
-                }
-            } else {
-                //after we sold now we are buying
-                System.out.println("now we should buy");
-                if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
-                    o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                            volume, stockName, new Date(), "", strategyID, type);
-                    addOrder(o);
-                    System.out.println(o);
-                    messageSender.sendMessage("queue/OrderBroker", o);
-                    System.out.println("BOUGHT TO RECOVER POSITION");
-
-                    openPosition = !openPosition;
-
-                    lastTwoTradeProfit =
-                            (double) (executedOrderPrice - currentPrice ) * volume;
-                    profit += lastTwoTradeProfit;
-                    System.out.println("------------------------");
-                    System.out.println("lastTwoTradeProfit: ");
-                    System.out.println(lastTwoTradeProfit);
-                    System.out.println("persisted profit: ");
-                    System.out.println(profit);
-                    System.out.println("------------------------");
-
-
-
-                }
-            }
+            triggerExitStrategy(currentPrice);
         }
-
-
-
-
-
-
-
-
 
     }
 
