@@ -13,4 +13,45 @@
 <body>
   <app-root></app-root>
 </body>
+<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+<script>
+  function doThis(guid) {
+    $.ajax({
+      type: "GET",
+      url: 'http://localhost:8081/history/orders/'+ guid,
+      contentType:"application/json",
+      success: function(response) {
+        console.log('HEY')
+        console.log(response)
+        let dataPoints = [];
+      	let y = 0;
+      	for ( var i = 0; i < response.orders.length; i++ ) {
+      		y = response.orders[i].profit
+          console.log(y)
+      		dataPoints.push({ y: y});
+      	}
+
+      	let chart = new CanvasJS.Chart("chartContainer", {
+      		zoomEnabled: true,
+      		animationEnabled: true,
+      		exportEnabled: true,
+      		title: {
+      			text: "Two Moving Averages Example"
+      		},
+      		subtitles:[{
+      			text: "Try Zooming and Panning"
+      		}],
+      		data: [
+      		{
+      			type: "line",
+      			dataPoints: dataPoints
+      		}]
+      	});
+      	chart.render();
+      }
+    });
+
+  }
+</script>
+
 </html>
