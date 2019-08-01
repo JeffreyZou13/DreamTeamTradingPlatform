@@ -12,21 +12,13 @@ export class GraphComponent implements OnInit {
   history:any;
 
   constructor() {
-  //   $.ajax({
-  //     type: "GET",
-  //     url: 'http://localhost:8081/history/orders/pnl/two moving averages',
-  //     contentType:"application/json",
-  //     success: function(response) {
-  //       console.log('HISTORY OF STRATEGIES')
-  //       console.log(response)
-  //     }
-  //   )
+
   }
 
   	ngOnInit() {
       $.ajax({
         type: "GET",
-        url: 'http://localhost:8081/history/orders/abb5c2f5-9a81-4d0a-a1e0-48cc50892b66',
+        url: 'http://localhost:8081/history/orders/5e5f2c7f-7122-4a0b-9f7b-627798139204',
         contentType:"application/json",
         success: function(response) {
           console.log(response)
@@ -59,13 +51,5 @@ export class GraphComponent implements OnInit {
         }
       });
 
-      // $.ajax({
-      //   type: "GET",
-      //   url: 'http://localhost:8081/history/strategies/notstopped',
-      //   contentType: 'application/json",
-      //   success: function(response) {
-      //     console.log(response);
-      //   }
-      // });
     }
 }
