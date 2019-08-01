@@ -33,6 +33,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
     @Column(name="volume")private int volume;
     @Column(name="cut_off_percentage") private double cutOffPercentage; //the cutoff that stops the
     @Column(name="buying")private boolean buying; //true if buying, false if selling
+    @Column(name="state") private String state; // state of the strategy: running, paused, stopped
 
     @Column(name="delta") private double delta = 0.02;
     @Transient private boolean openPosition = false;
@@ -53,6 +54,13 @@ public class TwoMovingAverages implements Strategy, Serializable {
         o.setTwoMovingAverages(this);
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public double getProfit() {
         return profit;
@@ -168,6 +176,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
         this.cutOffPercentage = cutOffPercentage;
         this.priceGetter = priceGetter;
         this.messageSender = messageSender;
+        this.state = "running";
     }
 
     public TwoMovingAverages() {} // Need it for JPA

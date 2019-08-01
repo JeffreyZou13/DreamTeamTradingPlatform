@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS two_moving_averages (
     volume INTEGER,
     cut_off_percentage DECIMAL(3,2),
     buying BOOLEAN,
+    `state` VARCHAR(7),
     delta DECIMAL(3,2),
     profit DECIMAL(9,4)
 );
