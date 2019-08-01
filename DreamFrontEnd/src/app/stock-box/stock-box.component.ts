@@ -47,16 +47,25 @@ export class StockBoxComponent implements OnInit {
     var yId = "y" + this.stratCounter;
     var gId = "g" + this.stratCounter;
     var rId = "r" + this.stratCounter;
+    var newStrat;
 
-    console.log(strat.toLowerCase())
-
-    var newStrat = {
-      "type":strat.toLowerCase(),
-      "stock": stockName,
-      "shortPeriod": 1,
-      "longPeriod": 3,
-      "size":stockQuantity
+    if(strat  == "Two Moving Averages"){ //tma
+      newStrat = {
+        "type":strat.toLowerCase(),
+        "stock": stockName,
+        "shortPeriod": shortVal,
+        "longPeriod": longVal,
+        "size":stockQuantity
+      }
+    }else{  //bollinger band
+      newStrat = {
+        "type":strat.toLowerCase(),
+        "stock": stockName,
+        "durationTime": shortVal,
+        "size":stockQuantity
+      }
     }
+
 
     if(stockName == "" || stockQuantity == ""
       || strat == "Select Strategy" ){
