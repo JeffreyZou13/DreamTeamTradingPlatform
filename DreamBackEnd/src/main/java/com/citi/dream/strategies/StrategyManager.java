@@ -34,6 +34,7 @@ public class StrategyManager {
         this.strategies = strategies;
     }
 
+    // Create strategy
     public Strategy createStrategy(String type, int longTime, int shortTime, String stockName, int volume, String strategyID, double cutOffPercentage) {
         if (type.equals("two moving averages")) {
             logger.info("Creating a two moving averages strategy");
@@ -54,10 +55,48 @@ public class StrategyManager {
         return null;
     }
 
+    // Pause strategy
+    public boolean pauseStrategy(String strategyID) {
+        // Set stategy's state to be paused
+        TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
+        if (currentStrategy != null && currentStrategy.getState().equals("running")) {
+            logger.info("pausing strategy <" + strategyID + ">");
+            currentStrategy.setState("paused");
+            return true;
+        } else {
+            logger.warn("pausing a non-existent/blocked strategy");
+            return false;
+        }
+    }
+
+    // Resume strategy
+    public boolean resumeStrategy(String strategyID) {
+        TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
+        if (currentStrategy != null && currentStrategy.getState().equals("paused")) {
+            logger.info("resuming strategy <" + strategyID + ">");
+            currentStrategy.setState("running");
+            return true;
+        } else {
+            logger.warn("resuming a non-existent/stopped strategy");
+            return false;
+        }
+
+    }
+
     // Stopping strategy
-    public Strategy stopStrategy(String strategyID) {
-        // Remove it from the running strategies and update it to active
-        return strategies.remove(strategyID);
+    public boolean stopStrategy(String strategyID) {
+        // Remove it from the running strategies and update its state to stopped
+        TwoMovingAverages currentStrategy = twoMovingAveragesRepository.findById(strategyID).orElse(null);
+        if (currentStrategy != null) {
+            logger.info("stopping strategy <" + strategyID + ">");
+            currentStrategy.setState("stopped");
+            twoMovingAveragesRepository.save(currentStrategy);
+            strategies.remove(strategyID);
+            return true;
+        } else {
+            logger.warn("stopping a non-existent strategy");
+            return false;
+        }
     }
 
     public Strategy deleteStrategy(String strategyID) {
@@ -65,13 +104,13 @@ public class StrategyManager {
         return strategies.remove(strategyID);
     }
 
-    // TODO schedule strategy
     @Scheduled(fixedDelay = 1000)
     public void runStrategies() throws JSONException {
         logger.info("Running strategies");
         for (String strategyID : strategies.keySet()) {
-            // TODO Check if paused
-            strategies.get(strategyID).performStrategy();
+            TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
+            if (currentStrategy.getState().equals("running"))
+                strategies.get(strategyID).performStrategy();
         }
     }
 }
