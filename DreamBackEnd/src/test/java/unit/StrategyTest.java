@@ -35,34 +35,6 @@ public class StrategyTest {
     private MessageSender messageSender;
 
     @Test
-    public void testIfCanGetOneStockPrice() throws JSONException {
-
-//        String stockName = "msft";
-//        PriceGetter pg = new PriceGetter();
-////        JSONObject result = pg.getStockPrice(stockName);
-//        System.out.println(result.getString("symbol"));
-
-    }
-
-    @Test
-    public void testIfCanGetListOfStockPrice() throws JSONException {
-
-        String stockName = "msft";
-        int numOfValues = 20;
-
-        double[] priceArray = new double[numOfValues];
-        JSONArray result = priceGetter.getStockData().get(stockName);
-        for(int i=0; i<numOfValues; i++) {
-            priceArray[i] = Double.parseDouble(result.getJSONObject(i).getString("price"));
-//            System.out.println(result.getJSONObject(i).getString("price"));
-
-        }
-        for (int i=0; i<numOfValues; i++) {
-            System.out.println(priceArray[i]);
-        }
-    }
-
-    @Test
     public void testIfManagerCanCreateStrategy() {
         ArrayList<Integer> timeList = new ArrayList<>();
         timeList.add(1);

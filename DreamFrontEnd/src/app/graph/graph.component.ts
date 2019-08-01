@@ -8,33 +8,55 @@ import * as CanvasJS from './canvasjs.min.js';
 })
 export class GraphComponent implements OnInit {
 
-  constructor() { }
+  history:any;
+
+  constructor() {
+  //   $.ajax({
+  //     type: "GET",
+  //     url: 'http://localhost:8081/history/orders/pnl/two moving averages',
+  //     contentType:"application/json",
+  //     success: function(response) {
+  //       console.log('HISTORY OF STRATEGIES')
+  //       console.log(response)
+  //     }
+  //   )
+  }
 
   	ngOnInit() {
-	let dataPoints = [];
-	let y = 0;		
-	for ( var i = 0; i < 10000; i++ ) {		  
-		y += Math.round(5 + Math.random() * (-5 - 5));	
-		dataPoints.push({ y: y});
-	}
-	let chart = new CanvasJS.Chart("chartContainer", {
-		zoomEnabled: true,
-		animationEnabled: true,
-		exportEnabled: true,
-		title: {
-			text: "Performance Demo - 10000 DataPoints"
-		},
-		subtitles:[{
-			text: "Try Zooming and Panning"
-		}],
-		data: [
-		{
-			type: "line",                
-			dataPoints: dataPoints
-		}]
-	});
-		
-	chart.render();
-    }
+//"12d4fd2b-7e58-4d89-9bc3-c2b3e2445836"
+      $.ajax({
+        type: "GET",
+        url: 'http://localhost:8081/history/orders/12d4fd2b-7e58-4d89-9bc3-c2b3e2445836',
+        contentType:"application/json",
+        success: function(response) {
+          console.log(response)
+          let dataPoints = [];
+        	let y = 0;
+        	for ( var i = 0; i < response.orders.length; i++ ) {
+        		y += response.orders[i].profit
+        		dataPoints.push({ y: y});
+        	}
 
+        	let chart = new CanvasJS.Chart("chartContainer", {
+        		zoomEnabled: true,
+        		animationEnabled: true,
+        		exportEnabled: true,
+        		title: {
+        			text: "Performance Demo - 10000 DataPoints"
+        		},
+        		subtitles:[{
+        			text: "Try Zooming and Panning"
+        		}],
+        		data: [
+        		{
+        			type: "line",
+        			dataPoints: dataPoints
+        		}]
+        	});
+
+        	chart.render();
+
+        }
+      })
+    }
 }
