@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -29,9 +30,19 @@ public class StrategyController {
         logger.info(strategy.getType());
         StrategyResponse resp = new StrategyResponse();
 
+//        for testing bollinger band only,
+//        please delete later after changing frontend input
+        strategy.setType("bollinger band");
+//        ===============
         // Generate an ID and create a new strategy
         String strategyId = UUID.randomUUID().toString();
-        strategyManager.createStrategy(strategy.getType(), strategy.getLongPeriod(), strategy.getShortPeriod(),
+
+        ArrayList<Integer> timeList = new ArrayList<>();
+        timeList.add(strategy.getLongPeriod());
+        timeList.add(strategy.getShortPeriod());
+        timeList.add(strategy.getDurationTime());
+
+        strategyManager.createStrategy(strategy.getType(), timeList,
                 strategy.getStock(), strategy.getSize(), strategyId, 0.001);
         resp.setResult("successfully started a new strategy of type " + strategy.getType() + " with id " + strategyId);
         resp.setId(strategyId);

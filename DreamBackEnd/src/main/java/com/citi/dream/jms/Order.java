@@ -64,7 +64,7 @@ public class Order implements Serializable {
         this.twoMovingAverages = twoMovingAverages;
     }
 
-    @JoinColumn (name="two_avg_id", referencedColumnName ="strategyID", nullable = false)
+    @JoinColumn (name="two_avg_id", referencedColumnName ="strategyID", nullable = true)
     @ManyToOne
     @com.fasterxml.jackson.annotation.JsonIgnore
     private TwoMovingAverages twoMovingAverages;
@@ -78,7 +78,7 @@ public class Order implements Serializable {
         this.bollingerBand = bollingerBand;
     }
 
-    @JoinColumn (name="bollinger_band_id", referencedColumnName ="strategyID", nullable = false)
+    @JoinColumn (name="bollinger_band_id", referencedColumnName ="strategyID", nullable = true)
     @ManyToOne
     @com.fasterxml.jackson.annotation.JsonIgnore
     private BollingerBand bollingerBand;

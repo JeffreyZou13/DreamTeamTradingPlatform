@@ -35,16 +35,21 @@ public class StrategyManager {
     }
 
     // Create strategy
-    public Strategy createStrategy(String type, int longTime, int shortTime, String stockName, int volume, String strategyID, double cutOffPercentage) {
+    public Strategy createStrategy(String type, ArrayList<Integer> timeList,
+                                   String stockName, int volume, String strategyID, double cutOffPercentage) {
         if (type.equals("two moving averages")) {
             logger.info("Creating a two moving averages strategy");
-            TwoMovingAverages newStrategy = new TwoMovingAverages(type, longTime, shortTime, stockName, volume, strategyID, cutOffPercentage, priceGetter, messageSender);
+            logger.info("longTime: "+ timeList.get(0) + " shortTime: " + timeList.get(1));
+            TwoMovingAverages newStrategy = new TwoMovingAverages(type, timeList.get(0),
+                    timeList.get(1), stockName, volume, strategyID, cutOffPercentage, priceGetter, messageSender);
             twoMovingAveragesRepository.save(newStrategy);
             strategies.put(strategyID, newStrategy);
             return newStrategy;
         } else if (type.equals("bollinger band")) {
             logger.info("Creating a bollinger band strategy");
-            BollingerBand newStrategy = new BollingerBand(type, longTime, stockName, volume,
+            logger.info("durationTime: "+ timeList.get(2);
+
+            BollingerBand newStrategy = new BollingerBand(type, timeList.get(2), stockName, volume,
                     strategyID, cutOffPercentage, priceGetter, messageSender);
             bollingerBandRepository.save(newStrategy);
             strategies.put(strategyID, newStrategy);

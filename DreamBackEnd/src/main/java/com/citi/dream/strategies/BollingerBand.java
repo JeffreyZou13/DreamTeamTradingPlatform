@@ -19,12 +19,14 @@ public class BollingerBand implements Strategy, Serializable {
     @Column(name= "strategyID")
     private String strategyID;
     @Column(name="type") private String type;
-    @Column(name="durationTime") private int durationTime;
-    @Column(name="numOfStddev") private double numOfStddev = 2;
+    @Column(name="duration_time") private int durationTime;
+    @Column(name="num_of_stddev") private double numOfStddev = 2;
     @Column(name="stock_name")private String stockName;
     @Column(name="volume")private int volume;
     @Column(name="cut_off_percentage") private double cutOffPercentage; //the cutoff that stops the
     @Column(name="buying")private boolean buying; //true if buying, false if selling
+    @Column(name="state") private String state; // state of the strategy: running, paused, stopped
+
     @Transient
     private boolean openPosition = false;
     @Transient private double executedOrderPrice = -1;

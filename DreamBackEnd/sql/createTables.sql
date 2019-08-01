@@ -8,10 +8,23 @@ CREATE TABLE IF NOT EXISTS two_moving_averages (
     short_time INTEGER,
     stock_name VARCHAR(4),
     volume INTEGER,
-    cut_off_percentage DECIMAL(3,2),
+    cut_off_percentage DECIMAL(5,4),
     buying BOOLEAN,
     `state` VARCHAR(7),
     delta DECIMAL(3,2),
+    profit DECIMAL(9,4)
+);
+
+CREATE TABLE IF NOT EXISTS bollinger_band (
+    strategyID VARCHAR(36) PRIMARY KEY,
+    `type` VARCHAR(50),
+    duration_time INTEGER,
+    num_of_stddev INTEGER,
+    stock_name VARCHAR(4),
+    volume INTEGER,
+    cut_off_percentage DECIMAL(5,4),
+    buying BOOLEAN,
+    `state` VARCHAR(7),
     profit DECIMAL(9,4)
 );
 
@@ -26,6 +39,9 @@ CREATE TABLE IF NOT EXISTS orders (
     strategy_type VARCHAR(50),
     profit DECIMAL(9,4),
     strategyID VARCHAR(36),
-    two_avg_id VARCHAR(36) NOT NULL,
-    FOREIGN KEY (two_avg_id) REFERENCES two_moving_averages(strategyID)
+    two_avg_id VARCHAR(36),
+    bollinger_band_id VARCHAR(36),
+    FOREIGN KEY (two_avg_id) REFERENCES two_moving_averages(strategyID),
+	FOREIGN KEY (bollinger_band_id) REFERENCES bollinger_band(strategyID)
+
 );
