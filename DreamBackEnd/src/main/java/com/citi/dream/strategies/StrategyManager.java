@@ -93,6 +93,16 @@ public class StrategyManager {
         return strategies.remove(strategyID);
     }
 
+    // Save the strategies every so often
+    @Scheduled(fixedDelay = 5000, initialDelay = 2000)
+    public void updateStrategies() {
+        logger.info("updating all the strategies in to the DB");
+        for (String strategyID : strategies.keySet()) {
+            TwoMovingAverages currentStrategy = (TwoMovingAverages) strategies.get(strategyID);
+            twoMovingAveragesRepository.save(currentStrategy);
+        }
+    }
+
     @Scheduled(fixedDelay = 1000)
     public void runStrategies() throws JSONException {
         logger.info("Running strategies");
