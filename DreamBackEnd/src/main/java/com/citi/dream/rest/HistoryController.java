@@ -33,7 +33,7 @@ public class HistoryController {
         logger.info("Getting strategy " + id);
         HistoryResponse resp = new HistoryResponse();
         resp.setStrategy(historyManager.getStrategy(id));
-        resp.setResult("successfully got strategy with id " + id);
+        resp.setResult("successfully got strategy with id <" + id + ">");
         return resp;
     }
 
@@ -53,7 +53,7 @@ public class HistoryController {
         logger.info("Getting all orders under strategy " + id);
         HistoryResponse resp = new HistoryResponse();
         resp.setOrders(historyManager.getOrdersByStrategyID(id));
-        resp.setResult("successfully got all orders under strategy " + id);
+        resp.setResult("successfully got all orders under strategy <" + id + ">");
         return resp;
     }
 
@@ -62,8 +62,8 @@ public class HistoryController {
     public HistoryResponse getOrdersPnlByStrategyType(@PathVariable String type) {
         logger.info("Getting orders by strategy type, sorted by time");
         HistoryResponse resp = new HistoryResponse();
-        historyManager.getOrdersPnlByStrategyType(type);
-        // TODO
+        resp.setOrders(historyManager.getOrdersPnlByStrategyType(type));
+        resp.setResult("successfully got orders by strategy <" + type + "> sorted by time ascending");
         return resp;
     }
 }
