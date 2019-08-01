@@ -199,6 +199,35 @@ public class BollingerBand implements Strategy, Serializable {
         return sum / period;
     }
 
+
+    public double calculateStddev(int period) throws JSONException {
+
+        double avg = calculateAverage(period);
+        double stddev = -1;
+        double sum = 0;
+        JSONArray result = priceGetter.getStockData().get(this.stockName);
+
+
+//        System.out.println("result is:::");
+//        System.out.println(result);
+        if (result != null) {
+            double squareDev;
+            for (int i = 0; i < period && i < result.length(); i++) {
+                squareDev =
+                        Math.pow(Double.parseDouble(result.getJSONObject(i).getString("price"))-avg, 2);
+                sum += squareDev;
+            }
+        }
+
+
+        stddev = Math.sqrt(sum/period);
+//        System.out.println("sum: ");
+//        System.out.println(sum);
+//        System.out.println("dev: ");
+//        System.out.println(stddev);
+        return stddev;
+    }
+
     public void performStrategy() throws JSONException {
         System.out.println("in boll perf strat");
         System.out.println("durationTime");
@@ -213,8 +242,15 @@ public class BollingerBand implements Strategy, Serializable {
         if (currentStockPrice != null && currentStockPrice.length() > 0) {
             currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
         }
-        System.out.println("current price: ");
-        System.out.println(currentPrice);
+        System.out.println("current avg: ");
+        System.out.println(calculateAverage(durationTime));
+
+
+        System.out.println("current stddev: ");
+        System.out.println(calculateStddev(durationTime));
+
+
+
 
 
 
