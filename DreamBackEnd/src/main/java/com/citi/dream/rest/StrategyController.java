@@ -26,13 +26,22 @@ public class StrategyController {
     // Start up a new strategy
     @RequestMapping(method = RequestMethod.POST, value="/start", consumes="application/json")
     public StrategyResponse startStrategy(@RequestBody StrategyForm strategy) {
-        //        for testing bollinger band only,
-//        please delete later after changing frontend input
-        strategy.setType("bollinger band");
+
+
+
         ArrayList<Integer> timeList = new ArrayList<>();
         timeList.add(strategy.getLongPeriod());
         timeList.add(strategy.getShortPeriod());
-        timeList.add(10);
+        timeList.add(strategy.getDurationTime());
+
+
+
+        //        for testing bollinger band only,
+//        please bypass it later after changing frontend input
+//        strategy.setType("bollinger band");
+//        timeList.add(strategy.getLongPeriod());
+//        timeList.add(strategy.getShortPeriod());
+//        timeList.add(10);
 //        ===============
         logger.info("Entered startStrategy");
         logger.info(strategy.getType());

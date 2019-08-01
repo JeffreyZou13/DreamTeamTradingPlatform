@@ -231,25 +231,25 @@ public class TwoMovingAverages implements Strategy, Serializable {
         }
 
 
-        System.out.println("current price");
-        System.out.println(currentPrice);
-        System.out.println("buying");
-        System.out.println(buying);
-        System.out.println("openPosition");
-        System.out.println(openPosition);
-        System.out.println("execPrice");
-        System.out.println(executedOrderPrice);
-        System.out.println("cutoffPercentage");
-        System.out.println(cutOffPercentage);
-        System.out.println("targetPrice");
-        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
-        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
-        System.out.println(targetPrice1);
-        System.out.println(targetPrice2);
-        System.out.println("currentPrice");
-        System.out.println(currentPrice);
-        System.out.println("lastTwoTradeProfit");
-        System.out.println(lastTwoTradeProfit);
+//        System.out.println("current price");
+//        System.out.println(currentPrice);
+//        System.out.println("buying");
+//        System.out.println(buying);
+//        System.out.println("openPosition");
+//        System.out.println(openPosition);
+//        System.out.println("execPrice");
+//        System.out.println(executedOrderPrice);
+//        System.out.println("cutoffPercentage");
+//        System.out.println(cutOffPercentage);
+//        System.out.println("targetPrice");
+//        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
+//        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
+//        System.out.println(targetPrice1);
+//        System.out.println(targetPrice2);
+//        System.out.println("currentPrice");
+//        System.out.println(currentPrice);
+//        System.out.println("lastTwoTradeProfit");
+//        System.out.println(lastTwoTradeProfit);
         System.out.println("profit");
         System.out.println(profit);
 

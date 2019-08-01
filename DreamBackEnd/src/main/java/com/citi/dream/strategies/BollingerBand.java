@@ -252,21 +252,21 @@ public class BollingerBand implements Strategy, Serializable {
         double highTarget = avg + numOfStddev * stddev;
         double lowTarget =  avg - numOfStddev * stddev;
 
-        System.out.println("current price");
-        System.out.println(currentPrice);
-        System.out.println("current avg: ");
-        System.out.println(avg);
-        System.out.println("current stddev: ");
-        System.out.println(stddev);
-        System.out.println("high target");
-        System.out.println(highTarget);
-        System.out.println("low target");
-        System.out.println(lowTarget);
-        System.out.println("targetPrice");
-        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
-        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
-        System.out.println(targetPrice1);
-        System.out.println(targetPrice2);
+//        System.out.println("current price");
+//        System.out.println(currentPrice);
+//        System.out.println("current avg: ");
+//        System.out.println(avg);
+//        System.out.println("current stddev: ");
+//        System.out.println(stddev);
+//        System.out.println("high target");
+//        System.out.println(highTarget);
+//        System.out.println("low target");
+//        System.out.println(lowTarget);
+//        System.out.println("targetPrice");
+//        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
+//        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
+//        System.out.println(targetPrice1);
+//        System.out.println(targetPrice2);
 
         System.out.println("persisted profit");
         System.out.println(profit);
