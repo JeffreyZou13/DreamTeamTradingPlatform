@@ -6,6 +6,7 @@ import com.citi.dream.strategies.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class StrategyTest {
     private MessageSender messageSender;
 
     @Test
+    @Ignore
     public void testIfManagerCanCreateStrategy() {
         ArrayList<Integer> timeList = new ArrayList<>();
         timeList.add(1);
@@ -51,6 +53,7 @@ public class StrategyTest {
 
 
     @Test
+    @Ignore
     public void testIfICanCalculateAverage()throws JSONException{
 
 
@@ -63,6 +66,7 @@ public class StrategyTest {
 
 //    @Repeat(value = 10)
     @Test
+    @Ignore
     public void testIfICanPerformTwoMovingAverages() throws JSONException {
         TwoMovingAverages ma = new TwoMovingAverages("Two Moving Averages", 10,5,"msft",
                 100, "aa-bb-cc-dd",.01, priceGetter, messageSender);
@@ -79,6 +83,7 @@ public class StrategyTest {
 //    ========
 
     @Test
+    @Ignore
     public void testIfBBCanCalculateAverage()throws JSONException{
 
 
