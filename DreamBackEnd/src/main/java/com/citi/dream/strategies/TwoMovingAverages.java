@@ -212,11 +212,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
         System.out.println("short average: " + shortAverage);
         System.out.println("-------------------------------");
 
-        if (shortAverage > longAverage) {
-            buying = false;
-        } else {  //if shortAverage < longAverage
-            buying = true;
-        }
+
 
         JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
         if (currentStockPrice != null && currentStockPrice.length() > 0) {
@@ -224,45 +220,57 @@ public class TwoMovingAverages implements Strategy, Serializable {
         }
 
 
-        System.out.println("current price");
-        System.out.println(currentPrice);
-        System.out.println("buying");
-        System.out.println(buying);
-        System.out.println("execPrice");
-        System.out.println(executedOrderPrice);
-        System.out.println("cutoffPercentage");
-        System.out.println(cutOffPercentage);
-        System.out.println("targetPrice");
-        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
-        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
-        System.out.println(targetPrice1);
-        System.out.println(targetPrice2);
-        System.out.println("currentPrice");
-        System.out.println(currentPrice);
-        System.out.println("lastTwoTradeProfit");
-        System.out.println(lastTwoTradeProfit);
-        System.out.println("profit");
-        System.out.println(profit);
+//        System.out.println("current price");
+//        System.out.println(currentPrice);
+//        System.out.println("buying");
+//        System.out.println(buying);
+//        System.out.println("openPosition");
+//        System.out.println(openPosition);
+//        System.out.println("execPrice");
+//        System.out.println(executedOrderPrice);
+//        System.out.println("cutoffPercentage");
+//        System.out.println(cutOffPercentage);
+//        System.out.println("targetPrice");
+//        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
+//        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
+//        System.out.println(targetPrice1);
+//        System.out.println(targetPrice2);
+//        System.out.println("currentPrice");
+//        System.out.println(currentPrice);
+//        System.out.println("lastTwoTradeProfit");
+//        System.out.println(lastTwoTradeProfit);
+//        System.out.println("profit");
+//        System.out.println(profit);
 
 
 
 
         //if currently is closed position, we can open a position
-        if (openPosition == false && Math.abs(longAverage - shortAverage) < delta && currentPrice != -1) {
-            openPosition = true;
-            executedOrderPrice = currentPrice;
-            o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
-                    volume, stockName, new Date(), "", strategyID, type);
-            addOrder(o);
-            System.out.println(o);
-            messageSender.sendMessage("queue/OrderBroker", o);
-            System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
-        } else if (openPosition) {
+        if (openPosition == false){
+
+            if (shortAverage > longAverage) {
+                buying = false;
+            } else {  //if shortAverage < longAverage
+                buying = true;
+            }
+
+            if (Math.abs(longAverage - shortAverage) < delta && currentPrice != -1) {
+                openPosition = true;
+                executedOrderPrice = currentPrice;
+                o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
+                        volume, stockName, new Date(), "", strategyID, type);
+                addOrder(o);
+                System.out.println(o);
+                messageSender.sendMessage("queue/OrderBroker", o);
+                System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
+            }
+        } else {
             //trigger exit position
             if (buying) {
                 //after we bought now we are selling
+                System.out.println("now we should sell");
                 if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
-                    o = new Order(!buying, UUID.randomUUID().toString(), executedOrderPrice,
+                    o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
                            volume, stockName, new Date(), "", strategyID, type);
                     addOrder(o);
                     System.out.println(o);
@@ -284,8 +292,9 @@ public class TwoMovingAverages implements Strategy, Serializable {
                 }
             } else {
                 //after we sold now we are buying
+                System.out.println("now we should buy");
                 if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
-                    o = new Order(!buying, UUID.randomUUID().toString(), executedOrderPrice,
+                    o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
                             volume, stockName, new Date(), "", strategyID, type);
                     addOrder(o);
                     System.out.println(o);
