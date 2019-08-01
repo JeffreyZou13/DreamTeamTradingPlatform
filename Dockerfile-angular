@@ -9,3 +9,5 @@ RUN npm install
 RUN npm install -g @angular/cli@6.2.4
 
 COPY ./DreamFrontEnd /app
+
+CMD ["ng", "serve"]
