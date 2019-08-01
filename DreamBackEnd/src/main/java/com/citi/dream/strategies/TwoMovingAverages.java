@@ -210,7 +210,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
 
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID, type);
+                        volume, stockName, new Date(), "", strategyID, type, profit);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
@@ -234,7 +234,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
             System.out.println("now we should buy");
             if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID, type);
+                        volume, stockName, new Date(), "", strategyID, type, profit);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
@@ -324,7 +324,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
                 openPosition = true;
                 executedOrderPrice = currentPrice;
                 Order o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
-                        volume, stockName, new Date(), "", strategyID, type);
+                        volume, stockName, new Date(), "", strategyID, type, profit);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);

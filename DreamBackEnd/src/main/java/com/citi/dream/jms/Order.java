@@ -90,7 +90,7 @@ public class Order implements Serializable {
 //    private CompactDisc disc;
 
     public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate,
-                 String response, String strategyID, String strategyType) {
+                 String response, String strategyID, String strategyType, double profit) {
         this.id = id;
         this.buy = buy;
         this.price = price;
@@ -100,7 +100,7 @@ public class Order implements Serializable {
         this.response = response;
         this.strategyID = strategyID;
         this.strategyType = strategyType;
-        this.profit = buy ? price * size * -1 : price * size;
+        this.profit = profit;
     }
 
     public Order() {} // Need this for JPA
