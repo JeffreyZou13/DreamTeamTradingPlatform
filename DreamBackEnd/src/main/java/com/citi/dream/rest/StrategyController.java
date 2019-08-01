@@ -30,18 +30,18 @@ public class StrategyController {
 
 
         ArrayList<Integer> timeList = new ArrayList<>();
-//        timeList.add(strategy.getLongPeriod());
-//        timeList.add(strategy.getShortPeriod());
-//        timeList.add(strategy.getDurationTime());
+        timeList.add(strategy.getLongPeriod());
+        timeList.add(strategy.getShortPeriod());
+        timeList.add(strategy.getDurationTime());
 
 
 
         //        for testing bollinger band only,
 //        please bypass it later after changing frontend input
-        strategy.setType("bollinger band");
-        timeList.add(strategy.getLongPeriod());
-        timeList.add(strategy.getShortPeriod());
-        timeList.add(10);
+//        strategy.setType("bollinger band");
+//        timeList.add(strategy.getLongPeriod());
+//        timeList.add(strategy.getShortPeriod());
+//        timeList.add(10);
 //        ===============
         logger.info("Entered startStrategy");
         logger.info(strategy.getType());
