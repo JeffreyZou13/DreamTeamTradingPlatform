@@ -21,16 +21,18 @@
   function doThis(guid, name, type, volume) {
     $.ajax({
       type: "GET",
-      url: 'http://localhost:8081/history/orders/'+ guid,
+      url: 'http://localhost:8081/history/orders/pnlpercentage/'+ guid,
       contentType:"application/json",
       success: function(response) {
-        console.log('HEY')
         console.log(response)
         let dataPoints = [];
+        let dataPoints2 = [];
       	let y = 0;
+        let y2 =  0;
         variables = response.orders.length;
       	for ( var i = 0; i < response.orders.length; i++ ) {
-      		y = response.orders[i].profit
+      		y = response.orders[i].profit;
+          y2 = response.orders[i].pnl;
           markup =
           `<tr>
             <td>${response.orders[i].stock}</td>
@@ -43,6 +45,7 @@
           $("#t2").append(markup);
           document.getElementById("t2").style["display"] = "";
       		dataPoints.push({ y: y});
+          dataPoints2.push({ y: y2});
       	}
 
       	let chart = new CanvasJS.Chart("chartContainer", {
@@ -62,16 +65,79 @@
       		}]
       	});
 
+        let chart2 = new CanvasJS.Chart("chartContainer2", {
+      		zoomEnabled: true,
+      		animationEnabled: true,
+      		exportEnabled: true,
+      		title: {
+      			text: "PNL GRAPH"
+      		},
+      		subtitles:[{
+      			text: "Try Zooming and Panning"
+      		}],
+      		data: [
+      		{
+      			type: "line",
+      			dataPoints: dataPoints2
+      		}]
+      	});
+
         if(variables > 0){
       	   chart.render();
+           chart2.render();
            document.getElementById('no-data').style.display = "none";
          }else{
            console.log('this one had no data')
+           document.getElementById('chartContainer2').style.display = "none";
+           document.getElementById('chartContainer').style.display = "none";
            document.getElementById('no-data').style.display = "";
 
          }
       }
     });
+    //
+    // $.ajax({
+    //   type: "GET",
+    //   url: 'http://localhost:8081/history/orders/pnlpercentage/'+ guid,
+    //   contentType:"application/json",
+    //   success: function(response) {
+    //     console.log('PNL')
+    //     console.log(response)
+    //     let dataPoints = [];
+    //     let y = 0;
+    //     variables = response.orders.length;
+    //     for ( var i = 0; i < response.orders.length; i++ ) {
+    //       y = response.orders[i].profit
+    //       document.getElementById("t2").style["display"] = "";
+    //       dataPoints.push({ y: y});
+    //     }
+    //
+    //     let chart2 = new CanvasJS.Chart("chartContainer", {
+    //       zoomEnabled: true,
+    //       animationEnabled: true,
+    //       exportEnabled: true,
+    //       title: {
+    //         text: "Profit for " + name + " with volume " + volume + " and " + type  + " Strategy"
+    //       },
+    //       subtitles:[{
+    //         text: "Try Zooming and Panning"
+    //       }],
+    //       data: [
+    //       {
+    //         type: "line",
+    //         dataPoints: dataPoints
+    //       }]
+    //     });
+    //
+    //     if(variables > 0){
+    //        chart2.render();
+    //        document.getElementById('no-data').style.display = "none";
+    //      }else{
+    //        console.log('this one had no data')
+    //        document.getElementById('no-data').style.display = "";
+    //      }
+    //   }
+    // });
 
   }
 </script>

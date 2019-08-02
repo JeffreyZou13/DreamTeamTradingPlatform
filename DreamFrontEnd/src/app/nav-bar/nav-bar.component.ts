@@ -14,6 +14,7 @@ export class NavBarComponent implements OnInit {
     document.getElementById("graphPage").style.display = "";
     document.getElementById("allTrades").style.display = "none";
     document.getElementById("chartContainer").style.display = "";
+    document.getElementById("chartContainer2").style.display = "";
     document.getElementById("menu2").classList.add("active");
     document.getElementById("menu1").classList.remove("active");
   }
@@ -23,6 +24,7 @@ export class NavBarComponent implements OnInit {
     document.getElementById("graphPage").style.display = "none";
     document.getElementById("allTrades").style.display = "";
     document.getElementById("chartContainer").style.display = "none";
+    document.getElementById("chartContainer2").style.display = "";
     document.getElementById("menu2").classList.remove("active");
     document.getElementById("menu1").classList.add("active")
   }

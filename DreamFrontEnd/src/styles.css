@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-/* 
+/*
 button{
     margin:15px;
 } */
@@ -15,5 +15,8 @@ button{
 
 body{
 	margin:15px;
+}
 
+.canvasjs-chart-canvas{
+  /* position:relative!important; */
 }
