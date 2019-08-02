@@ -10,9 +10,7 @@ declare let $:any;
 export class GraphComponent implements OnInit {
   history:any;
 
-
   constructor() {
-
 
   }
 
@@ -27,54 +25,33 @@ export class GraphComponent implements OnInit {
         url: 'http://localhost:8081/history/strategies',
         contentType: 'application/json',
         success: (response)=> {
+          console.log('this is the one im looking for')
           console.log(response)
 
-
           for (var i = 0; i < response.strategies["bollinger band"].length; i++){
-            var x= response.strategies["bollinger band"][i]['strategyID']
-            // var x = '5e5f2c7f-7122-4a0b-9f7b-627798139204'
+            var id = response.strategies["bollinger band"][i]['strategyID']
+            var name = response.strategies["bollinger band"][i]['stockName']
+            var type = 'Bollinger Band'
+            var name  = response.strategies["bollinger band"][i]['stockName']
             var markup =
-            `<button ngbDropdownItem onclick="doThis('${x}')">
+            `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}', '${name}', '${type}')">
             ${response.strategies["bollinger band"][i]['strategyID']}
+            </button>`
+            $("#performanceSelector2").append(markup);
+          }
+
+          for (var i = 0; i < response.strategies["two moving averages"].length; i++){
+            var id= response.strategies["two moving averages"][i]['strategyID']
+            var name= response.strategies["two moving averages"][i]['stockName']
+            var type = 'Two Moving Averages'
+            var markup =
+            `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}','${name}','${type}')">
+            ${response.strategies["two moving averages"][i]['strategyID']}
             </button>`
             $("#performanceSelector2").append(markup);
           }
         }
       })
-
-      // $.ajax({
-      //   type: "GET",
-      //   url: 'http://localhost:8081/history/orders/5e5f2c7f-7122-4a0b-9f7b-627798139204',
-      //   contentType:"application/json",
-      //   success: function(response) {
-      //     console.log(response)
-      //     let dataPoints = [];
-      //   	let y = 0;
-      //   	for ( var i = 0; i < response.orders.length; i++ ) {
-      //   		y = response.orders[i].profit
-      //   		dataPoints.push({ y: y});
-      //   	}
-      //
-      //   	let chart = new CanvasJS.Chart("chartContainer", {
-      //   		zoomEnabled: true,
-      //   		animationEnabled: true,
-      //   		exportEnabled: true,
-      //   		title: {
-      //   			text: "Two Moving Averages Example"
-      //   		},
-      //   		subtitles:[{
-      //   			text: "Try Zooming and Panning"
-      //   		}],
-      //   		data: [
-      //   		{
-      //   			type: "line",
-      //   			dataPoints: dataPoints
-      //   		}]
-      //   	});
-      //   	chart.render();
-      //
-      //   }
-      // });
 
     }
 }
