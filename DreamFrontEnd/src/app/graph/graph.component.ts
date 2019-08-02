@@ -20,7 +20,6 @@ export class GraphComponent implements OnInit {
         console.log("I AM HERE");
       }
 
-    function worker(){
       $.ajax({
         type: "GET",
         url: 'http://localhost:8081/history/strategies',
@@ -53,7 +52,7 @@ export class GraphComponent implements OnInit {
           }
         }
       })
-    }
+
 
     // setInterval(worker,5000)
   }

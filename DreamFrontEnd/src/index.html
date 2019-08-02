@@ -16,6 +16,8 @@
 </body>
 <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 <script>
+
+  var variables;
   function doThis(guid, name, type, volume) {
     $.ajax({
       type: "GET",
@@ -26,9 +28,20 @@
         console.log(response)
         let dataPoints = [];
       	let y = 0;
+        variables = response.orders.length;
       	for ( var i = 0; i < response.orders.length; i++ ) {
       		y = response.orders[i].profit
-          console.log(y)
+          markup =
+          `<tr>
+            <td>${response.orders[i].stock}</td>
+            <td>${response.orders[i].price}</td>
+            <td>${response.orders[i].buy}</td>
+            <td>${response.orders[i].response}</td>
+            <td>${response.orders[i].size}</td>
+            <td>${response.orders[i].whenAsDate}</td>
+          </tr>`
+          $("#t2").append(markup);
+          document.getElementById("t2").style["display"] = "";
       		dataPoints.push({ y: y});
       	}
 
@@ -48,7 +61,15 @@
       			dataPoints: dataPoints
       		}]
       	});
-      	chart.render();
+
+        if(variables > 0){
+      	   chart.render();
+           document.getElementById('no-data').style.display = "none";
+         }else{
+           console.log('this one had no data')
+           document.getElementById('no-data').style.display = "";
+
+         }
       }
     });
 
