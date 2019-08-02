@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: dts
+spec:
+  host: dts.appsrvdev2.conygre.com
+  port:
+    targetPort: '8081'
+  to:
+    kind: Service
+    name: dts

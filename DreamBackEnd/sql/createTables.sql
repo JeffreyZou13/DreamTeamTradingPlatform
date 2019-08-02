@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS orders (
     strategyID VARCHAR(36),
     two_avg_id VARCHAR(36),
     bollinger_band_id VARCHAR(36),
+    pnl DECIMAL(5, 4),
     FOREIGN KEY (two_avg_id) REFERENCES two_moving_averages(strategyID),
 	FOREIGN KEY (bollinger_band_id) REFERENCES bollinger_band(strategyID)
-
 );
