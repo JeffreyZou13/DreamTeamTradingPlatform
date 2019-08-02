@@ -33,6 +33,8 @@ public class BollingerBand implements Strategy, Serializable {
     @Transient private double executedOrderPrice = -1;
 
     @Column(name="profit") private double profit;
+    @Transient private double pnl;
+
 
     @OneToMany(mappedBy="bollingerBand", cascade={CascadeType.MERGE, CascadeType.PERSIST})
     @Transient transient List<Order> orderList = new ArrayList<>();
@@ -239,7 +241,7 @@ public class BollingerBand implements Strategy, Serializable {
             if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
 
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID, type, profit);
+                        volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
@@ -249,6 +251,7 @@ public class BollingerBand implements Strategy, Serializable {
                 lastTwoTradeProfit =
                         (double) (currentPrice - executedOrderPrice ) * volume;
                 profit += lastTwoTradeProfit;
+                pnl = lastTwoTradeProfit / executedOrderPrice;
                 System.out.println("------------------------");
                 System.out.println("lastTwoTradeProfit: ");
                 System.out.println(lastTwoTradeProfit);
@@ -263,7 +266,7 @@ public class BollingerBand implements Strategy, Serializable {
             System.out.println("now we should buy");
             if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID, type, profit);
+                        volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
@@ -273,6 +276,7 @@ public class BollingerBand implements Strategy, Serializable {
 
                 lastTwoTradeProfit =
                         (double) (executedOrderPrice - currentPrice ) * volume;
+                pnl = lastTwoTradeProfit / currentPrice;
                 profit += lastTwoTradeProfit;
                 System.out.println("------------------------");
                 System.out.println("lastTwoTradeProfit: ");
@@ -292,7 +296,7 @@ public class BollingerBand implements Strategy, Serializable {
         openPosition = true;
         executedOrderPrice = currentPrice;
         Order o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
-                volume, stockName, new Date(), "", strategyID, type, profit);
+                volume, stockName, new Date(), "", strategyID, type, profit, pnl);
         addOrder(o);
         System.out.println(o);
         messageSender.sendMessage("queue/OrderBroker", o);
