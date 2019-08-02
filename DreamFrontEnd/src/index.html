@@ -95,49 +95,6 @@
          }
       }
     });
-    //
-    // $.ajax({
-    //   type: "GET",
-    //   url: 'http://localhost:8081/history/orders/pnlpercentage/'+ guid,
-    //   contentType:"application/json",
-    //   success: function(response) {
-    //     console.log('PNL')
-    //     console.log(response)
-    //     let dataPoints = [];
-    //     let y = 0;
-    //     variables = response.orders.length;
-    //     for ( var i = 0; i < response.orders.length; i++ ) {
-    //       y = response.orders[i].profit
-    //       document.getElementById("t2").style["display"] = "";
-    //       dataPoints.push({ y: y});
-    //     }
-    //
-    //     let chart2 = new CanvasJS.Chart("chartContainer", {
-    //       zoomEnabled: true,
-    //       animationEnabled: true,
-    //       exportEnabled: true,
-    //       title: {
-    //         text: "Profit for " + name + " with volume " + volume + " and " + type  + " Strategy"
-    //       },
-    //       subtitles:[{
-    //         text: "Try Zooming and Panning"
-    //       }],
-    //       data: [
-    //       {
-    //         type: "line",
-    //         dataPoints: dataPoints
-    //       }]
-    //     });
-    //
-    //     if(variables > 0){
-    //        chart2.render();
-    //        document.getElementById('no-data').style.display = "none";
-    //      }else{
-    //        console.log('this one had no data')
-    //        document.getElementById('no-data').style.display = "";
-    //      }
-    //   }
-    // });
 
   }
 </script>

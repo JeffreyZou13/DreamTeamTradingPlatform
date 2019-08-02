@@ -127,8 +127,8 @@ export class StockBoxComponent implements OnInit {
           var id = ($(this).attr("id")).substring(2);
           document.getElementById("graphPage").style.display = "";
           document.getElementById("allTrades").style.display = "none";
-          document.getElementById("chartContainer").style.display = "";
-          document.getElementById("chartContainer2").style.display = "";
+          document.getElementById("chartContainer").style.display = "inline-block";
+          document.getElementById("chartContainer2").style.display = "inline-block";
           document.getElementById("menu2").classList.add("active");
           document.getElementById("menu1").classList.remove("active");
           console.log(document.getElementById("K-" +  id).innerHTML)
@@ -286,8 +286,8 @@ export class StockBoxComponent implements OnInit {
             var id = ($(this).attr("id")).substring(2);
             document.getElementById("graphPage").style.display = "";
             document.getElementById("allTrades").style.display = "none";
-            document.getElementById("chartContainer").style.display = "";
-            document.getElementById("chartContainer2").style.display = "";
+            document.getElementById("chartContainer").style.display = "inline-block";
+            document.getElementById("chartContainer2").style.display = "inline-block";
             document.getElementById("menu2").classList.add("active");
             document.getElementById("menu1").classList.remove("active");
             console.log(document.getElementById("K-" +  id).innerHTML)
