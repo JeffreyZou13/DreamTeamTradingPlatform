@@ -90,19 +90,20 @@ spec:
               stage("Create Deployment Config") {
                   steps {
                       dir('dts') {
-                          sh '(oc get deploymentconfig | grep mysql) || oc apply -f openshiftnew/mysql-deploymentconfig.yaml'
-                          sh '(oc get deploymentconfig | grep dt) || oc apply -f openshiftnew/dt-deploymentconfig.yaml'
-                          sh '(oc get deploymentconfig | grep angular) || oc apply -f openshiftnew/angular-deploymentconfig.yaml'
+                          sh '(oc get deploymentconfig | grep mysql) || oc apply -f openshiftnew_backend/mysql-deploymentconfig.yaml'
+                          sh '(oc get deploymentconfig | grep dt) || oc apply -f openshiftnew_backend/dt-deploymentconfig.yaml'
+                          sh '(oc get deploymentconfig | grep angular) || oc apply -f openshiftnew_frontend/angular-deploymentconfig.yaml'
                           sh 'oc expose svc/dt || echo "dts already exposed"'
+                          sh 'oc expose svc/angular || echo "frontend already exposed"'
                       }
                   }
               }
               stage("Create Services and rollout deployment") {
                   steps {
                       dir('dts') {
-                          sh '(oc get svc | grep mysql) || oc apply -f openshiftnew/mysql-service.yaml'
-                          sh '(oc get svc | grep dt) || oc apply -f openshiftnew/dt-service.yaml'
-                          sh '(oc get svc | grep angular) || oc apply -f openshiftnew/angular-service.yaml'
+                          sh '(oc get svc | grep mysql) || oc apply -f openshiftnew_backend/mysql-service.yaml'
+                          sh '(oc get svc | grep dt) || oc apply -f openshiftnew_backend/dt-service.yaml'
+                          sh '(oc get svc | grep angular) || oc apply -f openshiftnew_frontend/angular-service.yaml'
                       }
                   }
               }
@@ -110,6 +111,7 @@ spec:
                   steps {
                       dir('dts') {
                           sh '((oc get route | grep dt) && echo "dt already exposed") || oc expose svc/dts'
+                          sh '((oc get route | grep angular) && echo "angular already exposed") || oc expose svc/front'
                           sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep dts`"'
                       }
                   }
