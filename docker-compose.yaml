@@ -16,22 +16,22 @@ services:
     command: --explicit_defaults_for_timestamp
   dt:
     container_name: spring
-      build:
-        context: .
-        dockerfile: Dockerfile-spring
-      image: dt/spring:1.0.0
-      links:
-        - mysql:mysql
-      ports:
-        - "8080:8081"
-      restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile-spring
+    image: dt/spring:1.0.0
+    links:
+      - mysql:mysql
+    ports:
+      - "8080:8081"
+    restart: always
 
   angular:
     container_name: angular
-      build:
-        context: .
-        dockerfile: Dockerfile-angular
-      image: dt/angular:1.0.0
-      ports:
-        - "80:4200"
-      restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile-angular
+    image: dt/angular:1.0.0
+    ports:
+      - "80:4200"
+    restart: always
