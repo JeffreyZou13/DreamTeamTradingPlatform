@@ -47,6 +47,7 @@ export class StockBoxComponent implements OnInit {
     var yId = "y" + this.stratCounter;
     var gId = "g" + this.stratCounter;
     var rId = "r" + this.stratCounter;
+    var aId = "a" +  this.stratCounter;
     var newStrat;
 
     if(strat  == "Two Moving Averages"){ //tma
@@ -89,6 +90,9 @@ export class StockBoxComponent implements OnInit {
           <button type="button" class="btn btn-warning" style="margin:0px" id=${yId}>Pause</button>
           <button type="button" class="btn btn-danger" style="margin:0px" id=${rId}>Exit</button>
         </td>
+        <td>
+          <button type="button" class="btn btn-secondary" style="margin:0px" id=${aId}>View Analytics</button>
+        </td
       </tr>
     </tbody>`
 
@@ -170,6 +174,7 @@ export class StockBoxComponent implements OnInit {
         document.getElementById(yId).id = "Y-" + response.id;
         document.getElementById(rId).id = "R-" + response.id;
         document.getElementById(gId).id = "G-" + response.id;
+        document.getElementById(aId).id = "A-" + response.id;
         console.log("Posted a new strategy")
       }
     });
@@ -210,6 +215,9 @@ export class StockBoxComponent implements OnInit {
                 <button type="button" class="btn btn-warning" style="margin:0px" id=${"Y-"+response.strategies["bollinger band"][i][0]}>Pause</button>
                 <button type="button" class="btn btn-danger" style="margin:0px" id=${"R-"+response.strategies["bollinger band"][i][0]}>Exit</button>
               </td>
+              <td>
+                <button type="button" class="btn btn-secondary" style="margin:0px" id=${"A-"+response.strategies["bollinger band"][i][0]}>View Analytics</button>
+              </td>
             </tr>
           </tbody>`
 
@@ -239,6 +247,9 @@ export class StockBoxComponent implements OnInit {
                 <button type="button" class="btn btn-success" style="margin:0px" id=${"G-"+response.strategies["two moving averages"][i][0]}>Restart</button>
                 <button type="button" class="btn btn-warning" style="margin:0px" id=${"Y-"+response.strategies["two moving averages"][i][0]}>Pause</button>
                 <button type="button" class="btn btn-danger" style="margin:0px" id=${"R-"+response.strategies["two moving averages"][i][0]}>Exit</button>
+              </td>
+              <td>
+              <button type="button" class="btn btn-secondary" style="margin:0px" id=${"A-"+response.strategies["two moving averages"][i][0]}>View Analytics</button>
               </td>
             </tr>
           </tbody>`
