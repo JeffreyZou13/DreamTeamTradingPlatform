@@ -27,83 +27,100 @@ spec:
                                 userRemoteConfigs: [[url: 'https://github.com/JeffreyZou13/DreamTeamTradingPlatform.git']]
                             ])
                   }
-                }
-                stage("Build JAR") {
+              }
+              stage("Build JAR") {
                   steps {
-                    dir('dts/DreamBackEnd') {
-                      sh 'mvn -Dmaven.test.skip=true clean package'
-                    }
+                      dir('dts/DreamBackEnd') {
+                          sh 'mvn -Dmaven.test.skip=true clean package'
+                      }
                   }
-                }
-                stage("Create Build For Spring Boot Server") {
+              }
+              stage("Create Build For Spring Boot Server") {
                   steps {
-                    dir('dts/DreamBackEnd') {
-                      sh 'oc new-build --strategy docker --binary --name spring || echo "Build already exists"'
-                    }
+                      dir('dts') {
+                          sh 'oc new-build --strategy docker --binary --name spring || echo "Build already exists"'
+                      }
                   }
-                }
-                stage("Build Spring Boot Server Image") {
+              }
+              stage("Build Spring Boot Server Image") {
                   steps {
-                    dir('dts/DreamBackEnd') {
-                      sh 'cp Dockerfile-spring Dockerfile'
-                      sh 'oc start-build spring --from-dir . --follow && rm Dockerfile'
-                    }
+                      dir('dts') {
+                          sh 'cp Dockerfile-spring Dockerfile'
+                          sh 'oc start-build spring --from-dir . --follow && rm Dockerfile'
+                      }
                   }
-                }
-                stage("Create Build For Database Server") {
+              }
+              stage("Create Build For Database Server") {
                   steps {
-                    dir('dts/DreamBackEnd') {
-                      sh 'oc new-build --strategy docker --binary --name mysql || echo "Build already exists"'
-                    }
+                      dir('dts') {
+                          sh 'oc new-build --strategy docker --binary --name mysql || echo "Build already exists"'
+                      }
                   }
-                }
-                stage("Build Database Image") {
+              }
+              stage("Build Database Image") {
                   steps {
-                    dir('dts/DreamBackEnd') {
-                      sh 'cp Dockerfile-mysql Dockerfile'
-                      sh 'oc start-build mysql --from-dir . --follow && rm Dockerfile'
-                    }
+                      dir('dts') {
+                          sh 'cp Dockerfile-mysql Dockerfile'
+                          sh 'oc start-build mysql --from-dir . --follow && rm Dockerfile'
+                      }
                   }
-                }
-                stage("Create persistent storage") {
+              }
+              stage("Create Build For Angular Server") {
                   steps {
-                    dir('dts/DreamBackEnd') {
-                      sh '(oc get PersistentVolumeClaim | grep mysql-claim0) || oc apply -f openshiftnew/mysql-claim0-persistentvolumeclaim.yaml'
-                    }
+                      dir('dts') {
+                          sh 'oc new-build --strategy docker --binary --name angular || echo "Build already exists"'
+                      }
                   }
-                }
-                stage("Create Deployment Config") {
+              }
+              stage("Build Angular Server Image") {
                   steps {
-                    dir('cds/Solutions/workspace/CompactDiscDaoWithRestAndBoot') {
-                      sh '(oc get deploymentconfig | grep mysql) || oc apply -f openshiftnew/mysql-deploymentconfig.yaml'
-                      sh '(oc get deploymentconfig | grep cd) || oc apply -f openshiftnew/cd-deploymentconfig.yaml'
-                      sh 'oc expose svc/cd || echo "cds already exposed"'
-                    }
+                      dir('dts') {
+                          sh 'cp Dockerfile-angular Dockerfile'
+                          sh 'oc start-build angular --from-dir . --follow && rm Dockerfile'
+                      }
                   }
-                }
-                stage("Create Services and rollout deployment") {
+              }
+              stage("Create persistent storage") {
                   steps {
-                    dir('cds/Solutions/workspace/CompactDiscDaoWithRestAndBoot') {
-                      sh '(oc get svc | grep mysql) || oc apply -f openshiftnew/mysql-service.yaml'
-                      sh '(oc get svc | grep cd) || oc apply -f openshiftnew/cd-service.yaml'
-                    }
+                      dir('dts') {
+                          sh '(oc get PersistentVolumeClaim | grep mysql-claim0) || oc apply -f openshiftnew/mysql-claim0-persistentvolumeclaim.yaml'
+                      }
                   }
-                }
-                stage("Create Public route") {
+              }
+              stage("Create Deployment Config") {
                   steps {
-                    dir('cds/Solutions/workspace/CompactDiscDaoWithRestAndBoot') {
-                      sh '((oc get route | grep cd) && echo "cd already exposed") || oc expose svc/cds'
-                      sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep cds`"'
-                    }
+                      dir('dts') {
+                          sh '(oc get deploymentconfig | grep mysql) || oc apply -f openshiftnew/mysql-deploymentconfig.yaml'
+                          sh '(oc get deploymentconfig | grep dt) || oc apply -f openshiftnew/dt-deploymentconfig.yaml'
+                          sh '(oc get deploymentconfig | grep angular) || oc apply -f openshiftnew/angular-deploymentconfig.yaml'
+                          sh 'oc expose svc/dt || echo "dts already exposed"'
+                      }
                   }
-                }
-                stage("Clean up on Isle 4") {
+              }
+              stage("Create Services and rollout deployment") {
                   steps {
-                    dir('cds/Solutions/workspace/CompactDiscDaoWithRestAndBoot') {
-                      sh 'oc delete pods `oc get pods | grep \'0/1\' | awk \'{print $1}\'`'
-                    }
+                      dir('dts') {
+                          sh '(oc get svc | grep mysql) || oc apply -f openshiftnew/mysql-service.yaml'
+                          sh '(oc get svc | grep dt) || oc apply -f openshiftnew/dt-service.yaml'
+                          sh '(oc get svc | grep angular) || oc apply -f openshiftnew/angular-service.yaml'
+                      }
                   }
-                }
+              }
+              stage("Create Public route") {
+                  steps {
+                      dir('dts') {
+                          sh '((oc get route | grep dt) && echo "dt already exposed") || oc expose svc/dts'
+                          sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep dts`"'
+                      }
+                  }
+              }
+              stage("Clean up on Isle 4") {
+                  steps {
+                      dir('dts') {
+                          sh 'oc delete pods `oc get pods | grep \'0/1\' | awk \'{print $1}\'`'
+                      }
+                  }
+              }
           }
       }
     type: JenkinsPipeline

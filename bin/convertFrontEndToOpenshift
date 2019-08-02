@@ -1,8 +1,8 @@
 #!/bin/bash
 
 DOCKERREG=dockerreg.conygre.com
-DNSNAME=dts.appsrvdev2.conygre.com
-PORTNUMBER=8081
+DNSNAME=dts.frontend.appsrvdev2.conygre.com
+PORTNUMBER=4200
 
 # Check we are in the directory where docker-compose.yaml is
 if [[ ! -e docker-compose.yaml ]]
@@ -12,11 +12,11 @@ then
 fi
 
 # Convert docker to openshift
-if [[ ! -d openshiftnew ]]
+if [[ ! -d openshiftnew_frontend ]]
 then
-	mkdir openshiftnew
+	mkdir openshiftnew_frontend
 fi
-cd openshiftnew
+cd openshiftnew_frontend
 kompose convert -f ../docker-compose.yaml --provider=openshift
 
 # Set the Docker registry location
@@ -45,7 +45,7 @@ then
 	read PORTNUMBER
 fi
 
-sed -e "s/DNSNAME/${DNSNAME}/" -e "s/PORTNUMBER/${PORTNUMBER}/" ../bin/app-route.yaml >app-route.yaml
+sed -e "s/DNSNAME/${DNSNAME}/" -e "s/PORTNUMBER/${PORTNUMBER}/" ../bin/app-route-front.yaml >app-route-front.yaml
 
 # To import into OC
 #oc apply -f <list of the yaml files>
