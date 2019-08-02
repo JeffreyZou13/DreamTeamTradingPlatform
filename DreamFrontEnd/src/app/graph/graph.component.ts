@@ -34,7 +34,7 @@ export class GraphComponent implements OnInit {
             var name  = response.strategies["bollinger band"][i]['stockName']
             var markup =
             `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}', '${name}', '${type}','${volume}')">
-            ${response.strategies["bollinger band"][i]['strategyID']}
+            ${response.strategies["bollinger band"][i]['strategyID']})"
             </button>`
             $("#performanceSelector2").append(markup);
           }
@@ -46,7 +46,7 @@ export class GraphComponent implements OnInit {
             var type = 'Two Moving Averages'
             var markup =
             `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}','${name}','${type}','${volume}')">
-            ${response.strategies["two moving averages"][i]['strategyID']}
+            ${response.strategies["two moving averages"][i]['strategyID']})"
             </button>`
             $("#performanceSelector2").append(markup);
           }
