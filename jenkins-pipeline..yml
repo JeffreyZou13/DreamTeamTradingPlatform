@@ -113,6 +113,7 @@ spec:
                           sh '((oc get route | grep dt) && echo "dt already exposed") || oc expose svc/dts'
                           sh '((oc get route | grep angular) && echo "angular already exposed") || oc expose svc/front'
                           sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep dts`"'
+                          sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep angular`"'
                       }
                   }
               }
