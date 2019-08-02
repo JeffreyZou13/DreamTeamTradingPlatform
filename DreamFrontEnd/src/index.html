@@ -16,7 +16,7 @@
 </body>
 <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 <script>
-  function doThis(guid, name,  type) {
+  function doThis(guid, name, type, volume) {
     $.ajax({
       type: "GET",
       url: 'http://localhost:8081/history/orders/'+ guid,
@@ -37,7 +37,7 @@
       		animationEnabled: true,
       		exportEnabled: true,
       		title: {
-      			text: "Profit for " + name + " with " + type  + " Strategy"
+      			text: "Profit for " + name + " with volume " + volume + " and " + type  + " Strategy"
       		},
       		subtitles:[{
       			text: "Try Zooming and Panning"

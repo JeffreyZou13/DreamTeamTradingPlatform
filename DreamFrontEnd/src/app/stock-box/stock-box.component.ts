@@ -48,6 +48,9 @@ export class StockBoxComponent implements OnInit {
     var gId = "g" + this.stratCounter;
     var rId = "r" + this.stratCounter;
     var aId = "a" +  this.stratCounter;
+    var nId = "n" +  this.stratCounter;
+    var qId = "q" +  this.stratCounter;
+    var kId = "k" +  this.stratCounter;
     var newStrat;
 
     if(strat  == "Two Moving Averages"){ //tma
@@ -80,9 +83,9 @@ export class StockBoxComponent implements OnInit {
     var markup =
     `<tbody id=${stratId} style="background:#e1f5e6">
       <tr>
-        <td>${stockName}</td>
-        <td>${stockQuantity}</td>
-        <td>${strat}</td>
+        <td id=${nId}>${stockName}</td>
+        <td id=${qId}>${stockQuantity}</td>
+        <td id=${kId}>${strat}</td>
         <td>1</td>
         <td>Running</td>
         <td>
@@ -117,6 +120,21 @@ export class StockBoxComponent implements OnInit {
             }
         })
       })
+
+      //CLICKING Analytics
+      $(".btn-secondary").click(
+        function(){
+          var id = ($(this).attr("id")).substring(2);
+          document.getElementById("graphPage").style.display = "";
+          document.getElementById("allTrades").style.display = "none";
+          document.getElementById("chartContainer").style.display = "";
+          document.getElementById("menu2").classList.add("active");
+          document.getElementById("menu1").classList.remove("active");
+          console.log(document.getElementById("K-" +  id).innerHTML)
+          doThis(id,document.getElementById("N-" +  id).innerHTML,
+                document.getElementById("K-" +  id).innerHTML, document.getElementById("Q-" +  id).innerHTML)
+        }
+      )
 
       //PAUSING A STRATEGY
       $(".btn-warning").click(
@@ -175,6 +193,9 @@ export class StockBoxComponent implements OnInit {
         document.getElementById(rId).id = "R-" + response.id;
         document.getElementById(gId).id = "G-" + response.id;
         document.getElementById(aId).id = "A-" + response.id;
+        document.getElementById(nId).id = "N-" + response.id;
+        document.getElementById(qId).id = "Q-" + response.id;
+        document.getElementById(kId).id = "K-" + response.id;
         console.log("Posted a new strategy")
       }
     });
@@ -205,9 +226,9 @@ export class StockBoxComponent implements OnInit {
           var markup =
           `<tbody id=${"strat"+response.strategies["bollinger band"][i][0]} style="background:${backgroundColor}">
             <tr>
-              <td>${response.strategies["bollinger band"][i][3]}</td>
-              <td>${response.strategies["bollinger band"][i][4]}</td>
-              <td>bollinger band</td>
+              <td id=${"N-"+response.strategies["bollinger band"][i][0]}>${response.strategies["bollinger band"][i][3]}</td>
+              <td id=${"Q-"+response.strategies["bollinger band"][i][0]}>${response.strategies["bollinger band"][i][4]}</td>
+              <td id=${"K-"+response.strategies["bollinger band"][i][0]}>bollinger band</td>
               <td>1</td>
               <td>Running</td>
               <td>
@@ -238,9 +259,9 @@ export class StockBoxComponent implements OnInit {
           var markup =
           `<tbody id=${"strat"+response.strategies["two moving averages"][i][0]} style="background:${backgroundColor}">
             <tr>
-              <td>${response.strategies["two moving averages"][i][3]}</td>
-              <td>${response.strategies["two moving averages"][i][4]}</td>
-              <td>two moving averages</td>
+              <td id=${"N-"+response.strategies["two moving averages"][i][0]}>${response.strategies["two moving averages"][i][3]}</td>
+              <td id=${"Q-"+response.strategies["two moving averages"][i][0]}>${response.strategies["two moving averages"][i][4]}</td>
+              <td id=${"K-"+response.strategies["two moving averages"][i][0]}>two moving averages</td>
               <td>1</td>
               <td>Running</td>
               <td>
@@ -257,6 +278,21 @@ export class StockBoxComponent implements OnInit {
           $("#t1").append(markup);
           document.getElementById("t1").style["display"] = "";
         }
+
+        //CLICKING Analytics
+        $(".btn-secondary").click(
+          function(){
+            var id = ($(this).attr("id")).substring(2);
+            document.getElementById("graphPage").style.display = "";
+            document.getElementById("allTrades").style.display = "none";
+            document.getElementById("chartContainer").style.display = "";
+            document.getElementById("menu2").classList.add("active");
+            document.getElementById("menu1").classList.remove("active");
+            console.log(document.getElementById("K-" +  id).innerHTML)
+            doThis(id,document.getElementById("N-" +  id).innerHTML,
+                  document.getElementById("K-" +  id).innerHTML, document.getElementById("Q-" +  id).innerHTML)
+          }
+        )
 
         //PAUSING A STRATEGY
         $(".btn-warning").click(
