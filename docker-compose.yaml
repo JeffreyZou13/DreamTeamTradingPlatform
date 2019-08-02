@@ -14,7 +14,7 @@ services:
       environment:
         MYSQL_ROOT_PASSWORD: c0nygre
       command: --explicit_defaults_for_timestamp
-  cd:
+  dt:
     container_name: spring
       build:
         context: .
@@ -24,4 +24,14 @@ services:
         - mysql:mysql
       ports:
         - "8081:8080"
+      restart: always
+
+  angular:
+    container_name: angular
+      build:
+        context: .
+        dockerfile: Dockerfile-angular
+      image: dt/angular:1.0.0
+      ports:
+        - "4200:4200"
       restart: always
