@@ -76,4 +76,14 @@ public class HistoryController {
         resp.setResult("successfully got orders by strategy <" + type + "> sorted by time ascending");
         return resp;
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/orders/pnlpercentage/{strategy_id}")
+    public HistoryResponse getOrdersPnlPercentageByStrategyID(@PathVariable String strategy_id) {
+        logger.info("Getting orders by strategy id, sorted by time");
+        HistoryResponse resp = new HistoryResponse();
+        resp.setOrders(historyManager.getOrdersPnlPercentageByStrategyID(strategy_id));
+        resp.setResult("successfully got orders by strategy id <" + strategy_id + "> sorted by time " +
+                "ascending");
+        return resp;
+    }
 }

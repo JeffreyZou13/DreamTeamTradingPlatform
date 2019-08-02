@@ -49,6 +49,32 @@ public class TwoMovingAverages implements Strategy, Serializable {
     @Transient
     private transient MessageSender messageSender;
 
+    @Transient private double pnl;
+
+    public boolean isOpenPosition() {
+        return openPosition;
+    }
+
+    public void setOpenPosition(boolean openPosition) {
+        this.openPosition = openPosition;
+    }
+
+    public double getExecutedOrderPrice() {
+        return executedOrderPrice;
+    }
+
+    public void setExecutedOrderPrice(double executedOrderPrice) {
+        this.executedOrderPrice = executedOrderPrice;
+    }
+
+    public double getPnl() {
+        return pnl;
+    }
+
+    public void setPnl(double pnl) {
+        this.pnl = pnl;
+    }
+
     public void addOrder(Order o) {
         orderList.add(o);
         o.setTwoMovingAverages(this);
@@ -179,6 +205,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
         this.priceGetter = priceGetter;
         this.messageSender = messageSender;
         this.state = "running";
+        this.pnl = 0;
     }
 
     public TwoMovingAverages() {} // Need it for JPA
@@ -210,7 +237,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
 
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID, type, profit);
+                        volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
@@ -219,6 +246,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
                 lastTwoTradeProfit =
                         (double) (currentPrice - executedOrderPrice ) * volume;
+                pnl = lastTwoTradeProfit / executedOrderPrice;
                 profit += lastTwoTradeProfit;
                 System.out.println("------------------------");
                 System.out.println("lastTwoTradeProfit: ");
@@ -234,7 +262,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
             System.out.println("now we should buy");
             if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
-                        volume, stockName, new Date(), "", strategyID, type, profit);
+                        volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
@@ -244,6 +272,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
                 lastTwoTradeProfit =
                         (double) (executedOrderPrice - currentPrice ) * volume;
+                pnl = lastTwoTradeProfit / currentPrice;
                 profit += lastTwoTradeProfit;
                 System.out.println("------------------------");
                 System.out.println("lastTwoTradeProfit: ");
@@ -324,7 +353,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
                 openPosition = true;
                 executedOrderPrice = currentPrice;
                 Order o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
-                        volume, stockName, new Date(), "", strategyID, type, profit);
+                        volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
                 System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);

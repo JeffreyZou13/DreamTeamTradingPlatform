@@ -37,6 +37,15 @@ public class Order implements Serializable {
     @Column(name="strategyID") private String strategyID;
     @Column(name="strategy_type") private String strategyType;
     @Column(name="profit") private double profit;
+    @Column(name="pnl") private double pnl;
+
+    public double getPnl() {
+        return pnl;
+    }
+
+    public void setPnl(double pnl) {
+        this.pnl = pnl;
+    }
 
     public double getProfit() {
         return profit;
@@ -90,7 +99,8 @@ public class Order implements Serializable {
 //    private CompactDisc disc;
 
     public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate,
-                 String response, String strategyID, String strategyType, double profit) {
+                 String response, String strategyID, String strategyType, double profit,
+                 double pnl) {
         this.id = id;
         this.buy = buy;
         this.price = price;
@@ -101,6 +111,7 @@ public class Order implements Serializable {
         this.strategyID = strategyID;
         this.strategyType = strategyType;
         this.profit = profit;
+        this.pnl = pnl;
     }
 
     public Order() {} // Need this for JPA
