@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: front
+spec:
+  host: dts.frontend.appsrvdev2.conygre.com
+  port:
+    targetPort: '4200'
+  to:
+    kind: Service
+    name: front
