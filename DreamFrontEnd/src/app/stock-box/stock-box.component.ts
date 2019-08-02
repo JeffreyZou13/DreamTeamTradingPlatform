@@ -186,6 +186,8 @@ export class StockBoxComponent implements OnInit {
       contentType: 'application/json',
       success: (response)=> {
         console.log(response)
+
+        //BOLLINGER BAND RELOAD
         for (var i = 0; i < response.strategies["bollinger band"].length; i++){
           var backgroundColor;
 
@@ -207,6 +209,36 @@ export class StockBoxComponent implements OnInit {
                 <button type="button" class="btn btn-success" style="margin:0px" id=${"G-"+response.strategies["bollinger band"][i][0]}>Restart</button>
                 <button type="button" class="btn btn-warning" style="margin:0px" id=${"Y-"+response.strategies["bollinger band"][i][0]}>Pause</button>
                 <button type="button" class="btn btn-danger" style="margin:0px" id=${"R-"+response.strategies["bollinger band"][i][0]}>Exit</button>
+              </td>
+            </tr>
+          </tbody>`
+
+          $("#t1").append(markup);
+          document.getElementById("t1").style["display"] = "";
+        }
+
+        //TWO MOVING AVERAGES RELOAD
+        for (var i = 0; i < response.strategies["two moving averages"].length; i++){
+          var backgroundColor;
+
+          if(response.strategies["two moving averages"][i][6]  == "paused"){
+            backgroundColor = "#feffd4";
+          }else{
+            backgroundColor = "#e1f5e6";
+          }
+
+          var markup =
+          `<tbody id=${"strat"+response.strategies["two moving averages"][i][0]} style="background:${backgroundColor}">
+            <tr>
+              <td>${response.strategies["two moving averages"][i][3]}</td>
+              <td>${response.strategies["two moving averages"][i][4]}</td>
+              <td>two moving averages</td>
+              <td>1</td>
+              <td>Running</td>
+              <td>
+                <button type="button" class="btn btn-success" style="margin:0px" id=${"G-"+response.strategies["two moving averages"][i][0]}>Restart</button>
+                <button type="button" class="btn btn-warning" style="margin:0px" id=${"Y-"+response.strategies["two moving averages"][i][0]}>Pause</button>
+                <button type="button" class="btn btn-danger" style="margin:0px" id=${"R-"+response.strategies["two moving averages"][i][0]}>Exit</button>
               </td>
             </tr>
           </tbody>`

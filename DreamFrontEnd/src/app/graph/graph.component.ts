@@ -8,7 +8,6 @@ declare let $:any;
   styleUrls: ['./graph.component.css']
 })
 export class GraphComponent implements OnInit {
-
   history:any;
 
   constructor() {
@@ -16,40 +15,43 @@ export class GraphComponent implements OnInit {
   }
 
   	ngOnInit() {
+
+      function doThis() {
+        console.log("I AM HERE");
+      }
+
       $.ajax({
         type: "GET",
-        url: 'http://localhost:8081/history/orders/5e5f2c7f-7122-4a0b-9f7b-627798139204',
-        contentType:"application/json",
-        success: function(response) {
+        url: 'http://localhost:8081/history/strategies',
+        contentType: 'application/json',
+        success: (response)=> {
+          console.log('this is the one im looking for')
           console.log(response)
-          let dataPoints = [];
-        	let y = 0;
-        	for ( var i = 0; i < response.orders.length; i++ ) {
-        		y = response.orders[i].profit
-        		dataPoints.push({ y: y});
-        	}
 
-        	let chart = new CanvasJS.Chart("chartContainer", {
-        		zoomEnabled: true,
-        		animationEnabled: true,
-        		exportEnabled: true,
-        		title: {
-        			text: "Performance Demo - 10000 DataPoints"
-        		},
-        		subtitles:[{
-        			text: "Try Zooming and Panning"
-        		}],
-        		data: [
-        		{
-        			type: "line",
-        			dataPoints: dataPoints
-        		}]
-        	});
+          for (var i = 0; i < response.strategies["bollinger band"].length; i++){
+            var id = response.strategies["bollinger band"][i]['strategyID']
+            var name = response.strategies["bollinger band"][i]['stockName']
+            var type = 'Bollinger Band'
+            var name  = response.strategies["bollinger band"][i]['stockName']
+            var markup =
+            `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}', '${name}', '${type}')">
+            ${response.strategies["bollinger band"][i]['strategyID']}
+            </button>`
+            $("#performanceSelector2").append(markup);
+          }
 
-        	chart.render();
-
+          for (var i = 0; i < response.strategies["two moving averages"].length; i++){
+            var id= response.strategies["two moving averages"][i]['strategyID']
+            var name= response.strategies["two moving averages"][i]['stockName']
+            var type = 'Two Moving Averages'
+            var markup =
+            `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}','${name}','${type}')">
+            ${response.strategies["two moving averages"][i]['strategyID']}
+            </button>`
+            $("#performanceSelector2").append(markup);
+          }
         }
-      });
+      })
 
     }
 }

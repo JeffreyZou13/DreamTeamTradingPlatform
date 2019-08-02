@@ -1,1 +1,7 @@
-<div id="chartContainer" style="margin-left:auto;margin-right:auto; width:100%; display:none;"></div>
+<div ngbDropdown class="d-inline-block" id="performanceDropDown">
+<label for="performanceSelector"></label>
+<button class="btn btn-outline-primary" id="performanceSelector" ngbDropdownToggle>View Strategy Performance</button>
+  <div ngbDropdownMenu aria-labelledby="performanceSelector" id="performanceSelector2"></div>
+</div>
+<div id="currentId" style="display:none;">I hold the current ID</div>
+<div id="chartContainer"  style="display:none;"></div>
