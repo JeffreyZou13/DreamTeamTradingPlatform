@@ -16,7 +16,8 @@
 <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 <script>
   var variables;
-  function doThis(guid, name, type, volume) {
+  doThis = (guid, name, type, volume) => {
+    var variables;
     $.ajax({
       type: "GET",
       url: 'http://localhost:8081/history/orders/pnlpercentage/'+ guid,
@@ -88,6 +89,7 @@
            console.log('this one had no data')
            document.getElementById('chartContainer2').style.display = "none";
            document.getElementById('chartContainer').style.display = "none";
+           document.getElementById('t2').style.display = "none";
            document.getElementById('no-data').style.display = "";
 
          }

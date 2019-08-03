@@ -16,16 +16,11 @@ export class GraphComponent implements OnInit {
 
   	ngOnInit() {
 
-      function doThis() {
-        console.log("I AM HERE");
-      }
-
       $.ajax({
         type: "GET",
         url: 'http://localhost:8081/history/strategies',
         contentType: 'application/json',
         success: (response)=> {
-          console.log('this is the one im looking for')
 
           for (var i = 0; i < response.strategies["bollinger band"].length; i++){
             var id = response.strategies["bollinger band"][i]['strategyID']
