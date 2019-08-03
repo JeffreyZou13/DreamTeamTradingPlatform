@@ -132,8 +132,8 @@ export class StockBoxComponent implements OnInit {
           document.getElementById("menu2").classList.add("active");
           document.getElementById("menu1").classList.remove("active");
           console.log(document.getElementById("K-" +  id).innerHTML)
-          doThis(id,document.getElementById("N-" +  id).innerHTML,
-                document.getElementById("K-" +  id).innerHTML, document.getElementById("Q-" +  id).innerHTML)
+          doThis(id,document.getElementById("N-" +  id).innerHTML, document.getElementById("K-" +  id).innerHTML,
+          document.getElementById("Q-" +  id).innerHTML, document.getElementById("A-" +  id).innerHTML)
         }
       )
 
@@ -292,7 +292,9 @@ export class StockBoxComponent implements OnInit {
             document.getElementById("menu1").classList.remove("active");
             console.log(document.getElementById("K-" +  id).innerHTML)
             doThis(id,document.getElementById("N-" +  id).innerHTML,
-                  document.getElementById("K-" +  id).innerHTML, document.getElementById("Q-" +  id).innerHTML)
+                  document.getElementById("K-" +  id).innerHTML,
+                  document.getElementById("Q-" +  id).innerHTML,
+                document.getElementById("A-" +  id).innerHTML)
           }
         )
 
