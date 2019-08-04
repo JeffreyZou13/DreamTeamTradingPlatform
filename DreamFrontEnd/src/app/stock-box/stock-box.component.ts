@@ -3,6 +3,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { map } from "rxjs/operators";
 import {CanvasJS} from '../graph/canvasjs.min.js'
+declare let $:any;
 
 
 @Component({
@@ -19,86 +20,6 @@ export class StockBoxComponent implements OnInit {
   stratCounter:number = 0;
   addEles:boolean = false;
 
-  doThis(guid, name, type, volume) {
-    var variables;
-    $.ajax({
-      type: "GET",
-      url: 'http://localhost:8081/history/orders/pnlpercentage/'+ guid,
-      contentType:"application/json",
-      success: function(response) {
-        console.log(response)
-        let dataPoints = [];
-        let dataPoints2 = [];
-      	let y = 0;
-        let y2 =  0;
-        variables = response.orders.length;
-      	for ( var i = 0; i < response.orders.length; i++ ) {
-      		y = response.orders[i].profit;
-          y2 = response.orders[i].pnl;
-          var markup =
-          `<tr>
-            <td>${response.orders[i].stock}</td>
-            <td>${response.orders[i].price}</td>
-            <td>${response.orders[i].buy}</td>
-            <td>${response.orders[i].response}</td>
-            <td>${response.orders[i].size}</td>
-            <td>${response.orders[i].whenAsDate}</td>
-          </tr>`
-          $("#t2").append(markup);
-          document.getElementById("t2").style["display"] = "";
-      		dataPoints.push({ y: y});
-          dataPoints2.push({ y: y2});
-      	}
-
-      	let chart = new CanvasJS.Chart("chartContainer", {
-      		zoomEnabled: true,
-      		animationEnabled: true,
-      		exportEnabled: true,
-      		title: {
-      			text: "Profit for " + name + " with volume " + volume + " and " + type  + " Strategy"
-      		},
-      		subtitles:[{
-      			text: "Try Zooming and Panning"
-      		}],
-      		data: [
-      		{
-      			type: "line",
-      			dataPoints: dataPoints
-      		}]
-      	});
-
-        let chart2 = new CanvasJS.Chart("chartContainer2", {
-      		zoomEnabled: true,
-      		animationEnabled: true,
-      		exportEnabled: true,
-      		title: {
-      			text: "PNL GRAPH"
-      		},
-      		subtitles:[{
-      			text: "Try Zooming and Panning"
-      		}],
-      		data: [
-      		{
-      			type: "line",
-      			dataPoints: dataPoints2
-      		}]
-      	});
-
-        if(variables > 0){
-      	   chart.render();
-           chart2.render();
-           document.getElementById('no-data').style.display = "none";
-         }else{
-           console.log('this one had no data')
-           document.getElementById('chartContainer2').style.display = "none";
-           document.getElementById('chartContainer').style.display = "none";
-           document.getElementById('t2').style.display = "none";
-           document.getElementById('no-data').style.display = "";
-
-         }
-      }
-    });
-  }
 
   changeLabel(obj1 ,obj2) {
     (<HTMLInputElement>document.getElementById(obj1)).innerHTML = obj2;
