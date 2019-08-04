@@ -52,7 +52,7 @@
       		animationEnabled: true,
       		exportEnabled: true,
       		title: {
-      			text: "Profit for " + name + " with volume " + volume + " and " + type  + " Strategy"
+      			text: "Profit over Time"
       		},
       		subtitles:[{
       			text: "Try Zooming and Panning"
@@ -69,7 +69,7 @@
       		animationEnabled: true,
       		exportEnabled: true,
       		title: {
-      			text: "PNL GRAPH"
+      			text: "Profit as a Percentage"
       		},
       		subtitles:[{
       			text: "Try Zooming and Panning"
@@ -85,6 +85,7 @@
       	   chart.render();
            chart2.render();
            document.getElementById('no-data').style.display = "none";
+           document.getElementById('title1').innerHTML = "Data for "  + name + " with volume of  " + volume + " " + type;
          }else{
            console.log('this one had no data')
            document.getElementById('chartContainer2').style.display = "none";
