@@ -1,5 +1,4 @@
-# Dream Team Trading Platform
-
+<h1 align=center>Dream Team Trading Platform</h1>
 <h5 align=center>Automatic trading platform that will make you money.</h5>
 
 ## Project
