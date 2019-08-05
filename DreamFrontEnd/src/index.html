@@ -9,27 +9,42 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
   <app-root></app-root>
 </body>
 <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 <script>
-  function doThis(guid, name, type, volume) {
+  var variables;
+  doThis = (guid, name, type, volume) => {
+    var variables;
     $.ajax({
       type: "GET",
-      url: 'http://localhost:8081/history/orders/'+ guid,
+      url: 'http://localhost:8081/history/orders/pnlpercentage/'+ guid,
       contentType:"application/json",
       success: function(response) {
-        console.log('HEY')
         console.log(response)
         let dataPoints = [];
+        let dataPoints2 = [];
       	let y = 0;
+        let y2 =  0;
+        variables = response.orders.length;
       	for ( var i = 0; i < response.orders.length; i++ ) {
-      		y = response.orders[i].profit
-          console.log(y)
+      		y = response.orders[i].profit;
+          y2 = response.orders[i].pnl;
+          markup =
+          `<tr>
+            <td>${response.orders[i].stock}</td>
+            <td>${response.orders[i].price}</td>
+            <td>${response.orders[i].buy}</td>
+            <td>${response.orders[i].response}</td>
+            <td>${response.orders[i].size}</td>
+            <td>${response.orders[i].whenAsDate}</td>
+          </tr>`
+          $("#t2").append(markup);
+          document.getElementById("t2").style["display"] = "";
       		dataPoints.push({ y: y});
+          dataPoints2.push({ y: y2});
       	}
 
       	let chart = new CanvasJS.Chart("chartContainer", {
@@ -37,7 +52,7 @@
       		animationEnabled: true,
       		exportEnabled: true,
       		title: {
-      			text: "Profit for " + name + " with volume " + volume + " and " + type  + " Strategy"
+      			text: "Profit over Time"
       		},
       		subtitles:[{
       			text: "Try Zooming and Panning"
@@ -48,10 +63,39 @@
       			dataPoints: dataPoints
       		}]
       	});
-      	chart.render();
+
+        let chart2 = new CanvasJS.Chart("chartContainer2", {
+      		zoomEnabled: true,
+      		animationEnabled: true,
+      		exportEnabled: true,
+      		title: {
+      			text: "Profit as a Percentage"
+      		},
+      		subtitles:[{
+      			text: "Try Zooming and Panning"
+      		}],
+      		data: [
+      		{
+      			type: "line",
+      			dataPoints: dataPoints2
+      		}]
+      	});
+
+        if(variables > 0){
+      	   chart.render();
+           chart2.render();
+           document.getElementById('no-data').style.display = "none";
+           document.getElementById('title1').innerHTML = "Data for "  + name + " with volume of  " + volume + " " + type;
+         }else{
+           console.log('this one had no data')
+           document.getElementById('chartContainer2').style.display = "none";
+           document.getElementById('chartContainer').style.display = "none";
+           document.getElementById('t2').style.display = "none";
+           document.getElementById('no-data').style.display = "";
+
+         }
       }
     });
-
   }
 </script>
 

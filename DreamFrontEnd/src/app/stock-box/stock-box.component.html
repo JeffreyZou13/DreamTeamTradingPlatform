@@ -8,7 +8,7 @@
           <div class="form-group">
             <div class="floaty">
               <label for="stockSelector">Stock:</label>
-              <input type="email" class="form-control" id="stockSelector" (click)="stockClick()">
+              <input type="email" class="form-control" id="stockSelector">
             </div>
             <div class="floaty">
               <label for="stockSelector">Quantity:</label>
@@ -33,7 +33,7 @@
       <div class="row">
         <div class="center">
           <div ngbDropdown class="d-inline-block">
-              <label>Time Frames: </label>
+              <label id="theLabel">Time Frames: </label>
               <button class="btn btn-outline-primary" id="shortSelector" ngbDropdownToggle>Short Time</button>
                 <div ngbDropdownMenu aria-labelledby="shortSelector">
                   <button (click)="changeLabel('shortSelector','1')" ngbDropdownItem>1</button>
@@ -55,7 +55,7 @@
     </div>
   </div>
   <br><br>
-  <table class="table" id="t1" style="display:none">
+  <table class="table" id="t1" style="display:none;">
     <thead>
       <tr>
         <th scope="col">Stock</th>

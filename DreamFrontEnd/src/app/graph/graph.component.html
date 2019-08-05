@@ -1,8 +1,28 @@
-<div class="center">
+<div style="width:14%; margin: 0 auto">
   <div ngbDropdown class="d-inline-block" id="performanceDropDown">
   <label for="performanceSelector"></label>
   <button class="btn btn-outline-primary" id="performanceSelector" ngbDropdownToggle>View Strategy Performance</button>
     <div ngbDropdownMenu aria-labelledby="performanceSelector" id="performanceSelector2"></div>
   </div>
 </div>
-<div id="chartContainer"  style="display:none;"></div>
+<div id="no-data" style="display:none;"> This chart has no data</div>
+<div style="margin: 0 auto; text-align: center;">
+  <h1 id="title1"></h1>
+</div>
+<div id="chartContainer"  style="display:none; width: 50%; height: 300px;"></div>
+<div id="chartContainer2"  style="display:none; width: 50%; height: 300px;"></div>
+<div style="clear:both"></div>
+<div style="height:300px; overflow:auto">
+  <table class="table" id="t2" style="display:none;" >
+    <thead>
+      <tr>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Buy</th>
+        <th>Response</th>
+        <th>Size</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+  </table>
+</div>

@@ -16,26 +16,22 @@ export class GraphComponent implements OnInit {
 
   	ngOnInit() {
 
-      function doThis() {
-        console.log("I AM HERE");
-      }
-
-    function worker(){
       $.ajax({
         type: "GET",
         url: 'http://localhost:8081/history/strategies',
         contentType: 'application/json',
         success: (response)=> {
-          console.log('this is the one im looking for')
 
           for (var i = 0; i < response.strategies["bollinger band"].length; i++){
+            console.log(response)
             var id = response.strategies["bollinger band"][i]['strategyID']
             var volume = response.strategies["bollinger band"][i]['volume']
             var type = 'Bollinger Band'
             var name  = response.strategies["bollinger band"][i]['stockName']
+            var label = name + ", " + volume + ", " + type + ", " + response.strategies["bollinger band"][i]['state']
             var markup =
             `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}', '${name}', '${type}','${volume}')">
-            ${response.strategies["bollinger band"][i]['strategyID']}
+            ${label}
             </button>`
             $("#performanceSelector2").append(markup);
           }
@@ -45,15 +41,16 @@ export class GraphComponent implements OnInit {
             var name= response.strategies["two moving averages"][i]['stockName']
             var volume= response.strategies["two moving averages"][i]['volume']
             var type = 'Two Moving Averages'
+            var label = name + ", " + volume + ", " + type + ", " + response.strategies["bollinger band"][i]['state']
             var markup =
             `<button class="dropdown-item" ngbDropdownItem onclick="doThis('${id}','${name}','${type}','${volume}')">
-            ${response.strategies["two moving averages"][i]['strategyID']}
+            ${label}
             </button>`
             $("#performanceSelector2").append(markup);
           }
         }
       })
-    }
+
 
     // setInterval(worker,5000)
   }
