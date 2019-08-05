@@ -3,8 +3,6 @@ package com.citi.dream.strategies;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +14,6 @@ import java.util.HashMap;
 
 @Component
 public class PriceGetter {
-
-//    private JSONObject stock;
-//    private JSONArray stocklist;
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
@@ -50,49 +45,6 @@ public class PriceGetter {
     public void setStockData(HashMap<String, JSONArray> stockData) {
         this.stockData = stockData;
     }
-
-//    public JSONObject getStock() {
-//        return stock;
-//    }
-//
-//    public void setStock(JSONObject stock) {
-//        this.stock = stock;
-//    }
-//
-//    public JSONArray getStocklist() {
-//        return stocklist;
-//    }
-//
-//    public void setStocklist(JSONArray stocklist) {
-//        this.stocklist = stocklist;
-//    }
-
-    /*
-    @Scheduled(fixedRate = 1000)
-    public double getStockPrice(String stockName) throws JSONException {
-        String requestURL  = "http://nyc31.conygre.com:31/Stock/getStockPrice/" + stockName;
-        StringBuilder result = new StringBuilder();
-        JSONObject actualResult = new JSONObject();
-        try {
-            URL url = new URL(requestURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-            rd.close();
-            actualResult = new JSONObject(result.toString());
-        } catch(Exception e){
-
-        }finally{
-//            return result.toString();
-            setStock(actualResult);
-            return Double.parseDouble(actualResult.getString("price"));
-        }
-
-    }*/
 
     @Scheduled(fixedRate = 1000)
     public void populateStockData(){
@@ -126,23 +78,3 @@ public class PriceGetter {
     }
 
 }
-
-//    public static String getHTML(String urlToRead) throws Exception {
-//        StringBuilder result = new StringBuilder();
-//        URL url = new URL(urlToRead);
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestMethod("GET");
-//        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//        String line;
-//        while ((line = rd.readLine()) != null) {
-//            result.append(line);
-//        }
-//        rd.close();
-//        return result.toString();
-//    }
-//
-//    public static void main(String[] args) throws Exception
-//    {
-//        System.out.println(getHTML(args[0]));
-//    }
-//}

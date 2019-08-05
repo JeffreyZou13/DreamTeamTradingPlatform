@@ -38,12 +38,10 @@ public class StrategyManager {
     // Create strategy
     public Strategy createStrategy(String type, ArrayList<Integer> timeList,
                                    String stockName, int volume, String strategyID, double cutOffPercentage) {
-        System.out.println("timeList: ");
-        System.out.println(timeList.get(0));
-        System.out.println(timeList.get(1));
-        System.out.println(timeList.get(2));
-
-
+        logger.info("timeList: ");
+        logger.info(timeList.get(0));
+        logger.info(timeList.get(1));
+        logger.info(timeList.get(2));
         if (type.equals("two moving averages")) {
             logger.info("Creating a two moving averages strategy");
             logger.info("longTime: "+ timeList.get(0) + " shortTime: " + timeList.get(1));

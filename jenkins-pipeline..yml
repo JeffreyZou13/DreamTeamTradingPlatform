@@ -7,16 +7,8 @@ spec:
     jenkinsPipelineStrategy:
       jenkinsfile: |-
         pipeline {
-          agent any
-          tools {
-              maven 'Maven3.5.4'
-          }
+          agent { label "maven" }
           stages {
-              stage('Build') {
-                  steps {
-                      sh 'mvn clean package'
-                  }
-              }
               stage("Clone Source") {
                   steps {
                     checkout([$class: 'GitSCM',
@@ -38,7 +30,7 @@ spec:
               stage("Create Build For Spring Boot Server") {
                   steps {
                       dir('dts') {
-                          sh 'oc new-build --strategy docker --binary --name spring || echo "Build already exists"'
+                          sh 'oc new-build --strategy docker --binary --name dt || echo "Build already exists"'
                       }
                   }
               }
@@ -46,7 +38,7 @@ spec:
                   steps {
                       dir('dts') {
                           sh 'cp Dockerfile-spring Dockerfile'
-                          sh 'oc start-build spring --from-dir . --follow && rm Dockerfile'
+                          sh 'oc start-build dt --from-dir . --follow && rm Dockerfile'
                       }
                   }
               }
@@ -110,8 +102,8 @@ spec:
               stage("Create Public route") {
                   steps {
                       dir('dts') {
-                          sh '((oc get route | grep dt) && echo "dt already exposed") || oc expose svc/dts'
-                          sh '((oc get route | grep angular) && echo "angular already exposed") || oc expose svc/front'
+                          sh '((oc get route | grep dt) && echo "dt already exposed") || oc expose svc/dt'
+                          sh '((oc get route | grep angular) && echo "angular already exposed") || oc expose svc/angular'
                           sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep dts`"'
                           sh 'echo "Internet route is `oc get route | awk \'{print $2}\' | grep angular`"'
                       }

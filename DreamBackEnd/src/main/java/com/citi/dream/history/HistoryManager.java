@@ -69,8 +69,8 @@ public class HistoryManager {
         return orderRepository.findByStrategyTypeOrderByWhenAsDate(type);
     }
 
-    public List<Order> getOrdersPnlPercentageByStrategyID(String stratedy_id) {
-        logger.info("Getting orders by strategy id <" + stratedy_id + ">");
-        return orderRepository.findByStrategyIDOrderByWhenAsDate(stratedy_id);
+    public List<Order> getOrdersPnlPercentageByStrategyID(String strategy_id) {
+        logger.info("Getting orders by strategy id <" + strategy_id + ">");
+        return orderRepository.findByStrategyIDOrderByWhenAsDate(strategy_id);
     }
 }

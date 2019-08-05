@@ -191,8 +191,6 @@ public class BollingerBand implements Strategy, Serializable {
     public double calculateAverage(int period) throws JSONException {
 
         JSONArray result = priceGetter.getStockData().get(this.stockName);
-//        System.out.println("result is:::");
-//        System.out.println(result);
         double sum = 0;
         if (result != null) {
             for (int i = 0; i < period && i < result.length(); i++) {
@@ -211,9 +209,6 @@ public class BollingerBand implements Strategy, Serializable {
         double sum = 0;
         JSONArray result = priceGetter.getStockData().get(this.stockName);
 
-
-//        System.out.println("result is:::");
-//        System.out.println(result);
         if (result != null) {
             double squareDev;
             for (int i = 0; i < period && i < result.length(); i++) {
@@ -225,10 +220,6 @@ public class BollingerBand implements Strategy, Serializable {
 
 
         stddev = Math.sqrt(sum/period);
-//        System.out.println("sum: ");
-//        System.out.println(sum);
-//        System.out.println("dev: ");
-//        System.out.println(stddev);
         return stddev;
     }
 
@@ -237,40 +228,26 @@ public class BollingerBand implements Strategy, Serializable {
         Order o;
         if (buying) {
             //after we bought now we are selling
-            System.out.println("now we should sell");
             if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
 
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
                         volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
-                System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
-                System.out.println("SOLD TO RECOVER POSITION");
                 openPosition = !openPosition;
 
                 lastTwoTradeProfit =
                         (double) (currentPrice - executedOrderPrice ) * volume;
                 profit += lastTwoTradeProfit;
                 pnl = lastTwoTradeProfit / executedOrderPrice;
-                System.out.println("------------------------");
-                System.out.println("lastTwoTradeProfit: ");
-                System.out.println(lastTwoTradeProfit);
-                System.out.println("persisted profit: ");
-                System.out.println(profit);
-                System.out.println("------------------------");
-
-
             }
         } else {
             //after we sold now we are buying
-            System.out.println("now we should buy");
             if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
                         volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
-                System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
-                System.out.println("BOUGHT TO RECOVER POSITION");
 
                 openPosition = !openPosition;
 
@@ -278,15 +255,6 @@ public class BollingerBand implements Strategy, Serializable {
                         (double) (executedOrderPrice - currentPrice ) * volume;
                 pnl = lastTwoTradeProfit / currentPrice;
                 profit += lastTwoTradeProfit;
-                System.out.println("------------------------");
-                System.out.println("lastTwoTradeProfit: ");
-                System.out.println(lastTwoTradeProfit);
-                System.out.println("persisted profit: ");
-                System.out.println(profit);
-                System.out.println("------------------------");
-
-
-
             }
         }
     }
@@ -298,20 +266,14 @@ public class BollingerBand implements Strategy, Serializable {
         Order o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
                 volume, stockName, new Date(), "", strategyID, type, profit, pnl);
         addOrder(o);
-        System.out.println(o);
         messageSender.sendMessage("queue/OrderBroker", o);
     }
 
     public void performStrategy() throws JSONException {
-        System.out.println("in boll perf strat");
-        System.out.println("durationTime");
-        System.out.println(durationTime);
         this.priceGetter.setStockName(this.stockName);
         this.priceGetter.setNumOfStocks(this.durationTime);
-        double lastTwoTradeProfit = 0;
         double stddev = calculateStddev(durationTime);
         double avg = calculateAverage(durationTime);
-        Order o;
 
         double currentPrice = -1.0;
         JSONArray currentStockPrice = this.priceGetter.getStockData().get(stockName);
@@ -319,40 +281,16 @@ public class BollingerBand implements Strategy, Serializable {
             currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
         }
 
-
-
         double highTarget = avg + numOfStddev * stddev;
         double lowTarget =  avg - numOfStddev * stddev;
-
-//        System.out.println("current price");
-//        System.out.println(currentPrice);
-//        System.out.println("current avg: ");
-//        System.out.println(avg);
-//        System.out.println("current stddev: ");
-//        System.out.println(stddev);
-//        System.out.println("high target");
-//        System.out.println(highTarget);
-//        System.out.println("low target");
-//        System.out.println(lowTarget);
-//        System.out.println("targetPrice");
-//        double targetPrice1 = (double) executedOrderPrice * (1+cutOffPercentage);
-//        double targetPrice2 = (double) executedOrderPrice * (1-cutOffPercentage);
-//        System.out.println(targetPrice1);
-//        System.out.println(targetPrice2);
-
-        System.out.println("persisted profit");
-        System.out.println(profit);
 
         if (openPosition == false){
             if (currentPrice > highTarget && currentPrice != -1) {
                 buying = false;
                 triggerOrder(currentPrice);
-                System.out.println("WE'RE SELLING BECAUSE HIT HIGH TARGET and PRICE SHOULD GO " +
-                        "DOWN");
             }else if (currentPrice < lowTarget && currentPrice != -1){
                 buying = true;
                 triggerOrder(currentPrice);
-                System.out.println("WE'RE BUYING BECAUSE HIT LOW TARGET and PRICE SHOULD GO UP");
             }
         } else {
             triggerExitStrategy(currentPrice);

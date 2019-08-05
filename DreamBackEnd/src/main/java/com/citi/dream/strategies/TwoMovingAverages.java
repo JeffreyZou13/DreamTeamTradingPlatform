@@ -3,12 +3,8 @@ package com.citi.dream.strategies;
 
 import com.citi.dream.jms.MessageSender;
 import com.citi.dream.jms.Order;
-import org.aspectj.weaver.ast.Or;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -213,8 +209,6 @@ public class TwoMovingAverages implements Strategy, Serializable {
     public double calculateAverage(int period) throws JSONException {
 
         JSONArray result = priceGetter.getStockData().get(this.stockName);
-//        System.out.println("result is:::");
-//        System.out.println(result);
         double sum = 0;
         if (result != null) {
             for(int i = 0; i < period && i < result.length(); i++) {
@@ -232,41 +226,42 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
         if (buying) {
             //after we bought now we are selling
-            System.out.println("now we should sell");
+//            System.out.println("now we should sell");
             if (currentPrice >= (double) executedOrderPrice * (1+cutOffPercentage)){
 
 
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
                         volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
-                System.out.println(o);
+//                System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
-                System.out.println("SOLD TO RECOVER POSITION");
+//                System.out.println("SOLD TO RECOVER POSITION");
                 openPosition = !openPosition;
 
                 lastTwoTradeProfit =
                         (double) (currentPrice - executedOrderPrice ) * volume;
                 pnl = lastTwoTradeProfit / executedOrderPrice;
                 profit += lastTwoTradeProfit;
+                /*
                 System.out.println("------------------------");
                 System.out.println("lastTwoTradeProfit: ");
                 System.out.println(lastTwoTradeProfit);
                 System.out.println("persisted profit: ");
                 System.out.println(profit);
-                System.out.println("------------------------");
+                System.out.println("------------------------");*/
 
 
             }
         } else {
             //after we sold now we are buying
-            System.out.println("now we should buy");
+//            System.out.println("now we should buy");
             if (currentPrice <= (double) executedOrderPrice * (1-cutOffPercentage)) {
                 o = new Order(!buying, UUID.randomUUID().toString(), currentPrice,
                         volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
-                System.out.println(o);
+//                System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
-                System.out.println("BOUGHT TO RECOVER POSITION");
+//                System.out.println("BOUGHT TO RECOVER POSITION");
 
                 openPosition = !openPosition;
 
@@ -274,12 +269,13 @@ public class TwoMovingAverages implements Strategy, Serializable {
                         (double) (executedOrderPrice - currentPrice ) * volume;
                 pnl = lastTwoTradeProfit / currentPrice;
                 profit += lastTwoTradeProfit;
+                /*
                 System.out.println("------------------------");
                 System.out.println("lastTwoTradeProfit: ");
                 System.out.println(lastTwoTradeProfit);
                 System.out.println("persisted profit: ");
                 System.out.println(profit);
-                System.out.println("------------------------");
+                System.out.println("------------------------");*/
 
 
 
@@ -289,24 +285,22 @@ public class TwoMovingAverages implements Strategy, Serializable {
 
 
     public void performStrategy() throws JSONException {
+        /*
         System.out.println("shortTime");
         System.out.println(shortTime);
         System.out.println("longTime");
-        System.out.println(longTime);
+        System.out.println(longTime);*/
         this.priceGetter.setStockName(this.stockName);
         this.priceGetter.setNumOfStocks(this.volume);
         double shortAverage = calculateAverage(shortTime);
         double longAverage = calculateAverage(longTime);
         double currentPrice = -1.0;
 
-
-
-
-
+        /*
         System.out.println("-------------------------------");
         System.out.println("long average: " + longAverage);
         System.out.println("short average: " + shortAverage);
-        System.out.println("-------------------------------");
+        System.out.println("-------------------------------");*/
 
 
 
@@ -315,7 +309,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
             currentPrice = Double.parseDouble(currentStockPrice.getJSONObject(0).getString("price"));
         }
 
-
+        /*
         System.out.println("current price");
         System.out.println(currentPrice);
         System.out.println("buying");
@@ -335,10 +329,7 @@ public class TwoMovingAverages implements Strategy, Serializable {
         System.out.println(currentPrice);
 
         System.out.println("profit");
-        System.out.println(profit);
-
-
-
+        System.out.println(profit);*/
 
         //if currently is closed position, we can open a position
         if (openPosition == false){
@@ -355,9 +346,9 @@ public class TwoMovingAverages implements Strategy, Serializable {
                 Order o = new Order(buying, UUID.randomUUID().toString(), executedOrderPrice,
                         volume, stockName, new Date(), "", strategyID, type, profit, pnl);
                 addOrder(o);
-                System.out.println(o);
+//                System.out.println(o);
                 messageSender.sendMessage("queue/OrderBroker", o);
-                System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
+//                System.out.println("WE'RE EXECUTING SOMETHING YEAH BOII");
             }
         } else {
             //trigger exit position

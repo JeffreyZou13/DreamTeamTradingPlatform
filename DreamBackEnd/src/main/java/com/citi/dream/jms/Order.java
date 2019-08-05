@@ -2,7 +2,6 @@ package com.citi.dream.jms;
 
 
 import com.citi.dream.strategies.BollingerBand;
-import com.citi.dream.strategies.Strategy;
 
 import com.citi.dream.strategies.TwoMovingAverages;
 
@@ -13,15 +12,6 @@ import java.util.Date;
 
 @Entity
 @Table(name="orders")
-
-//@NamedQueries(
-//        {
-//                @NamedQuery(name="orders.getAll",
-//                        query="select order from Orders",
-//                        hints = {@QueryHint(name = "org.hibernate.cacheable", value = "true")})
-//        })
-
-
 public class Order implements Serializable {
 
     @Id
@@ -91,12 +81,6 @@ public class Order implements Serializable {
     @ManyToOne
     @com.fasterxml.jackson.annotation.JsonIgnore
     private BollingerBand bollingerBand;
-//    ===========================
-
-//    @JoinColumn (name="cd_id", referencedColumnName="id", nullable = false)
-//    @ManyToOne
-//    @com.fasterxml.jackson.annotation.JsonIgnore
-//    private CompactDisc disc;
 
     public Order(boolean buy, String id, double price, int size, String stock, Date whenAsDate,
                  String response, String strategyID, String strategyType, double profit,
